@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SHOP - MAMALIVRE | Futuristic Handmade</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Inter:wght@300;400;600&family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="noise-overlay"></div>
+    <div class="cursor-glow" id="cursor-glow"></div>
+
+    <nav class="navbar" id="navbar">
+        <a href="index.html" class="logo-link">
+            <img src="file:///C:/Users/55119/.gemini/antigravity/brain/f1f5cf30-f9bf-462b-8b1d-1f1d3f12cc43/media__1773336696420.png" alt="Mamalivre Logo" class="brand-logo">
+        </a>
+        <div class="nav-links">
+            <a href="index.html" class="nav-link">Home</a>
+            <a href="shop.html" class="nav-link" style="color:var(--neon-teal); border-bottom: 1px solid var(--neon-teal);">Loja</a>
+            <a href="blog.html" class="nav-link">Blog / Editorial</a>
+        </div>
+    </nav>
+
+    <!-- Page Header (Small Hero) -->
+    <header class="page-header section-darker" style="padding: 150px 5% 50px; text-align: center; border-bottom: 1px solid var(--glass-border);">
+        <h1 class="glitch-text" style="font-size: 3rem; margin-bottom: 1rem;">THE <span class="neon-text-teal">SHOP</span></h1>
+        <p class="section-desc">Hardware pesado. Peças feitas à mão. Explore o abismo.</p>
+        
+        <!-- Optional Filter Bar -->
+        <div class="shop-filters" style="margin-top: 2rem; display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;">
+            <button class="btn-outline active-filter">Tudo</button>
+            <button class="btn-outline">Chokers</button>
+            <button class="btn-outline">Bags</button>
+            <button class="btn-outline">Custom</button>
+        </div>
+    </header>
+
+    <!-- Dynamic Shop Grid -->
+    <section class="section">
+        <div class="container">
+            <div class="product-grid" id="shop-product-grid">
+                <!-- Products will be injected here by products.js and script.js -->
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <img src="file:///C:/Users/55119/.gemini/antigravity/brain/f1f5cf30-f9bf-462b-8b1d-1f1d3f12cc43/media__1773336696420.png" alt="MAMALIVRE" height="30" class="logo">
+                    <p>Criações originais, artesanais e intensas. <br>Feito em São Paulo.</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                &copy; 2026 MAMALIVRE. Todos os direitos reservados.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Main Script Handles API Fetching -->
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,58 @@
+{
+  "products": [
+    {
+      "id": "p1",
+      "name": "Cyber Choker O-Ring",
+      "category": "Chokers",
+      "price": "R$ 180,00",
+      "image": "img/choker.png",
+      "description": "Colar de couro fake texturizado com O-ring central gigante e spikers de aço.",
+      "link": "https://wa.me/5511999999999?text=Oie!%20Quero%20encomendar%20a%20Cyber%20Choker!"
+    },
+    {
+      "id": "p2",
+      "name": "Heavy Hardware Bag",
+      "category": "Bags",
+      "price": "R$ 450,00",
+      "image": "img/bag.png",
+      "description": "Bolsa statement coberta em strass negro com fechos de carabineiro pesado e correntes brutas.",
+      "link": "https://wa.me/5511999999999?text=Oie!%20Quero%20encomendar%20a%20Heavy%20Hardware%20Bag!"
+    },
+    {
+      "id": "p3",
+      "name": "Neon Goth Harness",
+      "category": "Custom",
+      "price": "Sob Medida",
+      "image": "img/harness.png",
+      "description": "Harness de corpo inteiro entrelaçado com argolas metálicas e acabamento neon reagente.",
+      "link": "https://wa.me/5511999999999?text=Oie!%20Quero%20fazer%20um%20orçamento%20Custom!"
+    },
+    {
+      "id": "p4",
+      "name": "Chrome Spiked Choker",
+      "category": "Chokers",
+      "price": "R$ 210,00",
+      "image": "img/spiked.png",
+      "description": "Spikes massivos e correntes grossas de metal cromado. Peso e presença indescritíveis.",
+      "link": "https://wa.me/5511999999999"
+    },
+    {
+      "id": "p5",
+      "name": "Mini Tactical Bag",
+      "category": "Bags",
+      "price": "R$ 380,00",
+      "image": "img/tactical.png",
+      "description": "Design tático utilitário com bolsos removíveis e detalhes refletivos.",
+      "link": "https://wa.me/5511999999999"
+    },
+    {
+      "id": "p6",
+      "name": "Belt Triplo Industrial",
+      "category": "Acessórios",
+      "price": "R$ 250,00",
+      "image": "img/belt.png",
+      "description": "Cinto triplo conectável com fivelas de liberação rápida e painéis de acrílico neon.",
+      "link": "https://wa.me/5511999999999"
+    }
+  ]
+}

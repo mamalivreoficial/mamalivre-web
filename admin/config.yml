@@ -1,0 +1,24 @@
+backend:
+  name: git-gateway
+  branch: main # Branch to update (optional; defaults to master)
+
+media_folder: "img"
+public_folder: "img"
+
+collections:
+  - name: "loja"
+    label: "Produtos da Loja"
+    folder: "data"
+    create: true
+    extension: "json"
+    format: "json"
+    editor:
+      preview: false
+    fields:
+      - {label: "ID do Produto", name: "id", widget: "string"}
+      - {label: "Nome da Peça", name: "name", widget: "string"}
+      - {label: "Categoria", name: "category", widget: "select", options: ["Bags", "Chokers", "Acessórios", "Custom"]}
+      - {label: "Preço", name: "price", widget: "string"}
+      - {label: "Foto Oficial", name: "image", widget: "image"}
+      - {label: "Descrição Editorial", name: "description", widget: "text"}
+      - {label: "Link do WhatsApp (Comprar)", name: "link", widget: "string"}

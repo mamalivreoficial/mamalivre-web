@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BLOG & EDITORIAL - MAMALIVRE</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Inter:wght@300;400;600&family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .tumblr-container {
+            width: 100vw;
+            height: 90vh; /* Takes almost full height of screen */
+            overflow: hidden;
+            background: #000;
+        }
+        .tumblr-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        /* Custom scrollbar override for the container to match the dark theme */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-dark); 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 0, 255, 0.4); 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--neon-magenta); 
+        }
+    </style>
+</head>
+<body>
+    <div class="noise-overlay"></div>
+    <div class="cursor-glow" id="cursor-glow"></div>
+
+    <nav class="navbar" id="navbar">
+        <a href="index.html" class="logo-link">
+            <img src="file:///C:/Users/55119/.gemini/antigravity/brain/f1f5cf30-f9bf-462b-8b1d-1f1d3f12cc43/media__1773336696420.png" alt="Mamalivre Logo" class="brand-logo">
+        </a>
+        <div class="nav-links">
+            <a href="index.html" class="nav-link">Home</a>
+            <a href="shop.html" class="nav-link">Loja</a>
+            <a href="blog.html" class="nav-link" style="color:var(--neon-magenta); border-bottom: 1px solid var(--neon-magenta);">Blog / Editorial</a>
+        </div>
+    </nav>
+
+    <!-- Page Header (Small Hero) -->
+    <header class="page-header section-darker" style="padding: 150px 5% 50px; text-align: center; border-bottom: 1px solid var(--glass-border);">
+        <h1 class="glitch-text" style="font-size: 3rem; margin-bottom: 1rem;"><span class="neon-text">EDITORIAL</span> DIARY</h1>
+        <p class="section-desc">Moodboard oficial, inspirações, backstages e processos da Mamalivre.</p>
+    </header>
+
+    <!-- Tumblr Integration Area -->
+    <section class="section" style="padding: 0; margin-top: -1px;">
+        <div class="tumblr-container reveal">
+            <!-- Embedding Tumblr Blog Via iFrame for direct interaction -->
+            <iframe src="https://mamalivre.tumblr.com/" title="Mamalivre Tumblr Blog"></iframe>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <img src="file:///C:/Users/55119/.gemini/antigravity/brain/f1f5cf30-f9bf-462b-8b1d-1f1d3f12cc43/media__1773336696420.png" alt="MAMALIVRE" height="30" class="logo">
+                    <p>Criações originais, artesanais e intensas. <br>Feito em São Paulo.</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                &copy; 2026 MAMALIVRE. Todos os direitos reservados.
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
