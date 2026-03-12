@@ -340,9 +340,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     });
                 });
                 
-                // Re-run the scroll observer for the generated reveal elements
-                const hiddenElements = document.querySelectorAll('.reveal');
-                hiddenElements.forEach((el) => scrollObserver.observe(el));
+                // Re-run the reveal function for the generated reveal elements
+                setTimeout(reveal, 100);
             })
             .catch(error => console.error("Erro carregando produtos da loja:", error));
     }
