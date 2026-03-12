@@ -291,9 +291,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 const productsArray = data.products || data; // Handle object wrapper or direct array
                 
                 productsArray.forEach((product, index) => {
-                    const delay = index * 0.1;
                     const cardHTML = `
-                        <div class="product-card reveal" style="transition-delay: ${delay}s">
+                        <div class="product-card">
                             <div class="card-glass">
                                 <div class="card-glow"></div>
                                 <div class="product-img-wrap">
