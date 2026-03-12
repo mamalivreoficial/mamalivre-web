@@ -5,7 +5,7 @@
       "name": "Cyber Choker O-Ring",
       "category": "Chokers",
       "price": "R$ 180,00",
-      "image": "img/choker.png",
+      "image": "https://images.unsplash.com/photo-1584916201218-f4242ceb4809?q=80&w=600",
       "description": "Colar de couro fake texturizado com O-ring central gigante e spikers de aço.",
       "link": "https://wa.me/5511999999999?text=Oie!%20Quero%20encomendar%20a%20Cyber%20Choker!"
     },
@@ -14,7 +14,7 @@
       "name": "Heavy Hardware Bag",
       "category": "Bags",
       "price": "R$ 450,00",
-      "image": "img/bag.png",
+      "image": "https://images.unsplash.com/photo-1590874103328-eac38a683ce7?q=80&w=600",
       "description": "Bolsa statement coberta em strass negro com fechos de carabineiro pesado e correntes brutas.",
       "link": "https://wa.me/5511999999999?text=Oie!%20Quero%20encomendar%20a%20Heavy%20Hardware%20Bag!"
     },
@@ -23,7 +23,7 @@
       "name": "Neon Goth Harness",
       "category": "Custom",
       "price": "Sob Medida",
-      "image": "img/harness.png",
+      "image": "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=600",
       "description": "Harness de corpo inteiro entrelaçado com argolas metálicas e acabamento neon reagente.",
       "link": "https://wa.me/5511999999999?text=Oie!%20Quero%20fazer%20um%20orçamento%20Custom!"
     },
@@ -32,7 +32,7 @@
       "name": "Chrome Spiked Choker",
       "category": "Chokers",
       "price": "R$ 210,00",
-      "image": "img/spiked.png",
+      "image": "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?q=80&w=600",
       "description": "Spikes massivos e correntes grossas de metal cromado. Peso e presença indescritíveis.",
       "link": "https://wa.me/5511999999999"
     },
@@ -41,7 +41,7 @@
       "name": "Mini Tactical Bag",
       "category": "Bags",
       "price": "R$ 380,00",
-      "image": "img/tactical.png",
+      "image": "https://images.unsplash.com/photo-1549298916-f52d724204b4?q=80&w=600",
       "description": "Design tático utilitário com bolsos removíveis e detalhes refletivos.",
       "link": "https://wa.me/5511999999999"
     },
@@ -50,7 +50,7 @@
       "name": "Belt Triplo Industrial",
       "category": "Acessórios",
       "price": "R$ 250,00",
-      "image": "img/belt.png",
+      "image": "https://images.unsplash.com/photo-1584916201218-f4242ceb4809?q=80&w=600",
       "description": "Cinto triplo conectável com fivelas de liberação rápida e painéis de acrílico neon.",
       "link": "https://wa.me/5511999999999"
     }
