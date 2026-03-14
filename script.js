@@ -71,9 +71,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // 3. Reveal Elements on Scroll
-    const reveals = document.querySelectorAll('.reveal');
-
     function reveal() {
+        const reveals = document.querySelectorAll('.reveal');
         const windowHeight = window.innerHeight;
         const elementVisible = 100;
 
