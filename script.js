@@ -27,15 +27,37 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 150);
     });
 
-    // Change glow color based on hover target
-    const interactiveElements = document.querySelectorAll('a, button, .product-card');
-    interactiveElements.forEach(el => {
-        el.addEventListener('mouseenter', () => {
+    // 1.5 Mobile Menu Toggle
+    const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+    const navLinks = document.querySelector('.nav-links');
+
+    if (mobileMenuBtn && navLinks) {
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenuBtn.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        });
+
+        // Close menu when clicking a link
+        navLinks.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenuBtn.classList.remove('active');
+                navLinks.classList.remove('active');
+            });
+        });
+    }
+
+    // Change glow color based on hover target (including dynamic ones)
+    document.addEventListener('mouseover', (e) => {
+        const el = e.target.closest('a, button, .product-card');
+        if (el) {
             cursorGlow.style.background = 'radial-gradient(circle, var(--neon-teal-dim) 0%, rgba(0,0,0,0) 70%)';
-        });
-        el.addEventListener('mouseleave', () => {
+        }
+    });
+    document.addEventListener('mouseout', (e) => {
+        const el = e.target.closest('a, button, .product-card');
+        if (el) {
             cursorGlow.style.background = 'radial-gradient(circle, var(--neon-magenta-dim) 0%, rgba(0,0,0,0) 70%)';
-        });
+        }
     });
 
     // 2. Navbar Scroll Effect
@@ -281,67 +303,90 @@ document.addEventListener('DOMContentLoaded', () => {
         observer.observe(heroSection);
     }
 
-    // 8. Shop Dynamic Product Rendering (via JSON Fetch)
+    // 8. Shared Product Rendering Logic
+    function createProductCard(product) {
+        return `
+            <div class="product-card reveal">
+                <div class="card-glass">
+                    <div class="card-glow"></div>
+                    <div class="product-img-wrap">
+                        <img src="${product.image}" alt="${product.name}" class="product-img">
+                    </div>
+                    <div class="product-info">
+                        <h3 style="display: flex; justify-content: space-between; align-items: center;">
+                            ${product.name}
+                            <span style="font-size: 0.9rem; color: var(--neon-teal); font-weight: 400;">${product.price}</span>
+                        </h3>
+                        <p>${product.description}</p>
+                        <a href="${product.link}" target="_blank" class="btn-outline">
+                            EU QUERO
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M5 12h14m-7-7 7 7-7 7"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    function applyTiltEffect(cards) {
+        cards.forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                const rotateX = ((y - centerY) / centerY) * -5;
+                const rotateY = ((x - centerX) / centerX) * 5;
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-10px)`;
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0px)`;
+            });
+        });
+    }
+
     const shopGrid = document.getElementById('shop-product-grid');
-    if (shopGrid) {
+    const indexGrid = document.getElementById('index-product-grid');
+
+    if (shopGrid || indexGrid) {
         fetch('data/products.json')
             .then(response => response.json())
             .then(data => {
-                shopGrid.innerHTML = ''; // Clear existing
-                const productsArray = data.products || data; // Handle object wrapper or direct array
-                
-                productsArray.forEach((product, index) => {
-                    const cardHTML = `
-                        <div class="product-card">
-                            <div class="card-glass">
-                                <div class="card-glow"></div>
-                                <div class="product-img-wrap">
-                                    <img src="${product.image}" alt="${product.name}" class="product-img">
-                                </div>
-                                <div class="product-info">
-                                    <h3 style="display: flex; justify-content: space-between; align-items: center;">
-                                        ${product.name}
-                                        <span style="font-size: 0.9rem; color: var(--neon-teal); font-weight: 400;">${product.price}</span>
-                                    </h3>
-                                    <p>${product.description}</p>
-                                    <a href="${product.link}" target="_blank" class="btn-outline">
-                                        EU QUERO
-                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <path d="M5 12h14m-7-7 7 7-7 7"/>
-                                        </svg>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                    shopGrid.insertAdjacentHTML('beforeend', cardHTML);
-                });
+                const products = data.products || data;
 
-                // Re-apply 3D tilt effect for newly injected cards
-                const newCards = document.querySelectorAll('.card-glass');
-                newCards.forEach(card => {
-                    card.addEventListener('mousemove', (e) => {
-                        const rect = card.getBoundingClientRect();
-                        const x = e.clientX - rect.left;
-                        const y = e.clientY - rect.top;
+                if (indexGrid) {
+                    indexGrid.innerHTML = products.slice(0, 2).map(createProductCard).join('');
+                    applyTiltEffect(indexGrid.querySelectorAll('.card-glass'));
+                    setTimeout(reveal, 100);
+                }
+
+                if (shopGrid) {
+                    const renderShop = (filter = 'Tudo') => {
+                        const filtered = filter === 'Tudo' 
+                            ? products 
+                            : products.filter(p => p.category === filter);
                         
-                        const centerX = rect.width / 2;
-                        const centerY = rect.height / 2;
-                        
-                        const rotateX = ((y - centerY) / centerY) * -5;
-                        const rotateY = ((x - centerX) / centerX) * 5;
-                        
-                        card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-10px)`;
+                        shopGrid.innerHTML = filtered.map(createProductCard).join('');
+                        applyTiltEffect(shopGrid.querySelectorAll('.card-glass'));
+                        setTimeout(reveal, 100);
+                    };
+
+                    renderShop();
+
+                    // Filter Logic
+                    const filterBtns = document.querySelectorAll('.shop-filters .btn-outline');
+                    filterBtns.forEach(btn => {
+                        btn.addEventListener('click', () => {
+                            filterBtns.forEach(b => b.classList.remove('active-filter'));
+                            btn.classList.add('active-filter');
+                            renderShop(btn.textContent.trim());
+                        });
                     });
-                    
-                    card.addEventListener('mouseleave', () => {
-                        card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0px)`;
-                    });
-                });
-                
-                // Re-run the reveal function for the generated reveal elements
-                setTimeout(reveal, 100);
+                }
             })
-            .catch(error => console.error("Erro carregando produtos da loja:", error));
+            .catch(error => console.error("Erro carregando produtos:", error));
     }
 });
