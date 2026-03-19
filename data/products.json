@@ -2,39 +2,39 @@
   "products": [
     {
       "id": "p1",
-      "name": "Cyber Choker O-Ring",
-      "category": "Chokers",
-      "price": "300",
+      "name": "Mini Bag Shine Preta",
+      "category": "Bags",
+      "price": "329,00",
       "image": "img/img_8258.jpg",
-      "description": "Colar de couro fake texturizado com O-ring central gigante e spikers de aço.",
-      "link": "https://wa.me/5511959843718?text=Oie!%20Quero%20encomendar%20a%20Cyber%20Choker!"
+      "description": "Nossa Mini Bag Shine Preta.\n.\nEla é confeccionada em couro upcycling e adornada com strass de vidro. Equipada com dois fechos magnéticos para um fechamento prático, apresenta um toque final com argolas robustas.\n \nInclui um pingente fixo de metal com a inicial do nome da marca M, juntamente com duas correntes, uma longa e outra curta, ambas removíveis que podem ser usadas individualmente ou combinadas.\n \nOs PINGS intercambiáveis e exclusivos estão disponíveis para compra individualmente em nossa loja online, na seção dedicada aos PINGS.\n \nMateriais: Cristal, vidro, metal e couro.\n.\n#minibagshine #bagshine #bag #minibolsa #ping #cristal #turmalinanegra #proteção #joiaexclusiva #feitaamao #handmade",
+      "link": "wa.me/5511959843718"
     },
     {
       "id": "p2",
-      "name": "Heavy Hardware Bag",
+      "name": "Mini Bag Shine Golden",
       "category": "Bags",
       "price": "R$ 450,00",
-      "image": "https://images.unsplash.com/photo-1590874103328-eac38a683ce7?q=80&w=600",
-      "description": "Bolsa statement coberta em strass negro com fechos de carabineiro pesado e correntes brutas.",
-      "link": "https://wa.me/5511999999999?text=Oie!%20Quero%20encomendar%20a%20Heavy%20Hardware%20Bag!"
+      "image": "img/img_8248.jpg",
+      "description": "Nossa Mini Bag Shine Golden.\n.\nEla é confeccionada em couro upcycling e adornada com strass de vidro. Equipada com dois fechos magnéticos para um fechamento prático, apresenta um toque final com argolas robustas.\n \nInclui um pingente fixo de cristal de citrino rutilado, juntamente com correntes, uma longa e outra curta, ambas removíveis que podem ser usadas individualmente ou combinadas.\n \nOs PINGS intercambiáveis e exclusivos estão disponíveis para compra individualmente em nossa loja online, na seção dedicada aos PINGS.\n \nMateriais: Cristal, vidro, metal e couro.\n.\n#minibagshine #bagshine #bag #minibolsa #ping #cristal #turmalinanegra #proteção #joiaexclusiva #feitaamao #handmade",
+      "link": "wa.me/5511959843718"
     },
     {
       "id": "p3",
-      "name": "Neon Goth Harness",
-      "category": "Custom",
-      "price": "Sob Medida",
-      "image": "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=600",
-      "description": "Harness de corpo inteiro entrelaçado com argolas metálicas e acabamento neon reagente.",
-      "link": "https://wa.me/5511999999999?text=Oie!%20Quero%20fazer%20um%20orçamento%20Custom!"
+      "name": "Mini Bag Shine Prata",
+      "category": "Bags",
+      "price": "329,00",
+      "image": "img/20250205_232502.jpg",
+      "description": "Nossa Mini Bag Shine Prata, disponível no site em diversas cores e tamanho. \n.\nEla é confeccionada em couro upcycling e adornada com strass de vidro. Equipada com dois fechos magnéticos para um fechamento prático, apresenta um toque final com argolas robustas.\n \nInclui um pingente fixo, juntamente com duas correntes, uma longa e outra curta, ambas removíveis que podem ser usadas individualmente ou combinadas.\n \nOs PINGS intercambiáveis e exclusivos estão disponíveis para compra individualmente em nossa loja online, na seção dedicada aos PINGS.\n \nMateriais: Cristal, vidro, metal e couro.\n.\n#minibagshine #bagshine #bag #minibolsa #ping #cristal #turmalinanegra #proteção #joiaexclusiva #feitaamao #handmade",
+      "link": "wa.me/5511959843718"
     },
     {
       "id": "p4",
-      "name": "Chrome Spiked Choker",
-      "category": "Chokers",
-      "price": "R$ 210,00",
-      "image": "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?q=80&w=600",
-      "description": "Spikes massivos e correntes grossas de metal cromado. Peso e presença indescritíveis.",
-      "link": "https://wa.me/5511999999999"
+      "name": "Shine Furta Cor ",
+      "category": "Bags",
+      "price": "197,00",
+      "image": "img/img_7949.jpg",
+      "description": "Mini bolsinha feita com couro UPCYCLING e corrente destacável. Pode ser usada como corrente, na transversal e como cinto. Se preferir retire a corrente e pendure na sua bolsa. Uma joia versátil e colecionável, as peças se movem, encaixam e desencaixam, um lego que estimula sua criatividade.",
+      "link": "wa.me/5511959843718"
     },
     {
       "id": "p5",
@@ -53,6 +53,15 @@
       "image": "https://images.unsplash.com/photo-1584916201218-f4242ceb4809?q=80&w=600",
       "description": "Cinto triplo conectável com fivelas de liberação rápida e painéis de acrílico neon.",
       "link": "https://wa.me/5511999999999"
+    },
+    {
+      "id": "M7",
+      "name": "Porta Isqueiro (Lightner Rosa Couro)",
+      "category": "Bags",
+      "price": "197,00",
+      "description": "Mini bolsinha feita com couro UPCYCLING e corrente destacável. Pode ser usada como corrente, na transversal e como cinto. Se preferir retire a corrente e pendure na sua bolsa. Uma joia versátil e colecionável, as peças se movem, encaixam e desencaixam, um lego que estimula sua criatividade.",
+      "link": "wa.me/5511959843718",
+      "image": "img/img_8203.jpg"
     }
   ]
 }
