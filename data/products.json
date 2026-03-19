@@ -1,7 +1,7 @@
 {
   "products": [
     {
-      "id": "p1",
+      "id": "M1",
       "name": "Mini Bag Shine Preta",
       "category": "Bags",
       "price": "329,00",
@@ -10,7 +10,7 @@
       "link": "wa.me/5511959843718"
     },
     {
-      "id": "p2",
+      "id": "M2",
       "name": "Mini Bag Shine Golden",
       "category": "Bags",
       "price": "R$ 450,00",
@@ -19,7 +19,7 @@
       "link": "wa.me/5511959843718"
     },
     {
-      "id": "p3",
+      "id": "M3",
       "name": "Mini Bag Shine Prata",
       "category": "Bags",
       "price": "329,00",
@@ -28,7 +28,7 @@
       "link": "wa.me/5511959843718"
     },
     {
-      "id": "p4",
+      "id": "M4",
       "name": "Shine Furta Cor ",
       "category": "Bags",
       "price": "197,00",
@@ -37,25 +37,7 @@
       "link": "wa.me/5511959843718"
     },
     {
-      "id": "p5",
-      "name": "Mini Tactical Bag",
-      "category": "Bags",
-      "price": "R$ 380,00",
-      "image": "https://images.unsplash.com/photo-1549298916-f52d724204b4?q=80&w=600",
-      "description": "Design tático utilitário com bolsos removíveis e detalhes refletivos.",
-      "link": "https://wa.me/5511999999999"
-    },
-    {
-      "id": "p6",
-      "name": "Belt Triplo Industrial",
-      "category": "Acessórios",
-      "price": "R$ 250,00",
-      "image": "https://images.unsplash.com/photo-1584916201218-f4242ceb4809?q=80&w=600",
-      "description": "Cinto triplo conectável com fivelas de liberação rápida e painéis de acrílico neon.",
-      "link": "https://wa.me/5511999999999"
-    },
-    {
-      "id": "M7",
+      "id": "M5",
       "name": "Porta Isqueiro (Lightner Rosa Couro)",
       "category": "Bags",
       "price": "197,00",
