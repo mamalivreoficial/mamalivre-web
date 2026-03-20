@@ -198,6 +198,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (heroVideo && heroSec) {
         // Start muted for autoplay success
         heroVideo.muted = true;
+        heroVideo.volume = 0.6; // Reduced 40% as requested
 
         // A. Interaction-to-Unmute: Unmute on first click anywhere
         const unmuteOnFirstClick = () => {
@@ -205,11 +206,9 @@ document.addEventListener('DOMContentLoaded', () => {
             heroVideo.play().catch(e => console.log("Audio play blocked", e));
             document.removeEventListener('click', unmuteOnFirstClick);
             document.removeEventListener('touchstart', unmuteOnFirstClick);
-            document.removeEventListener('mousemove', unmuteOnFirstClick);
         };
-        document.addEventListener('click', unmuteOnFirstClick);
-        document.addEventListener('touchstart', unmuteOnFirstClick);
-        document.addEventListener('mousemove', unmuteOnFirstClick);
+        document.addEventListener('click', unmuteOnFirstClick, { once: true });
+        document.addEventListener('touchstart', unmuteOnFirstClick, { once: true });
 
         // B. Autopause on Scroll: Only play when visible (Performance)
         const videoObserver = new IntersectionObserver((entries) => {
