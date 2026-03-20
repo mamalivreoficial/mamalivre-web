@@ -4,12 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MAMALIVRE | Admin</title>
-    <!-- Cache buster and absolute paths for Vercel trailing slash issue -->
-    <link rel="stylesheet" href="/admin/admin-style.css?v=3">
-    <!-- Google Fonts -->
+    <link rel="stylesheet" href="/admin/admin-style.css?v=5">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900&family=Outfit:wght@100..900&display=swap" rel="stylesheet">
+    <style>
+        .drag-over {
+            border: 2px dashed var(--neon-teal) !important;
+            opacity: 0.8;
+            transform: scale(1.02);
+            transition: all 0.2s ease;
+        }
+        /* Hide scrollbar track but allow scrolling */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+    </style>
 </head>
 <body>
 
@@ -27,44 +37,42 @@
     <!-- MAIN DASHBOARD -->
     <div id="dashboard" class="dashboard hidden">
         
+        <!-- Header -->
         <header class="dashboard-header">
             <h1 class="logo-neon-text" style="font-size: 1.5rem; letter-spacing: 2px;">MAMA LIVRE ADMIN</h1>
             <div class="header-actions">
-            <!-- Dynamic Save Buttons -->
-            <span id="save-status">Tudo atualizado</span>
-            <button class="btn-secondary" id="btn-new-product" onclick="addNewProduct()">+ Novo Produto</button>
-            <button class="btn-primary" id="btn-save" onclick="saveToGitHub()">Salvar Produtos no Site</button>
-            <button class="btn-outline" onclick="logout()">Sair</button>
-        </div>
+                <span id="save-status">Tudo atualizado</span>
+                <button class="btn-secondary" id="btn-new-product" onclick="addNewProduct()">+ Novo Produto</button>
+                <button class="btn-primary" id="btn-save" onclick="saveToGitHub()">Salvar Produtos no Site</button>
+                <button class="btn-outline" onclick="logout()">Sair</button>
+            </div>
         </header>
 
-    <!-- Main Navigation Tabs -->
-    <div class="main-tabs" style="display:flex; padding: 15px 30px; background: var(--bg-dark); border-bottom: 1px solid var(--border-color); gap: 20px;">
-        <button class="tab-btn active" id="mtab-products" onclick="switchMainTab('products')" style="border: 1px solid #333; padding: 8px 15px; border-radius: 6px;">📦 Gerenciar Produtos</button>
-        <button class="tab-btn" id="mtab-site" onclick="switchMainTab('site')" style="border: 1px solid #333; padding: 8px 15px; border-radius: 6px;">⚙️ Textos e Mídia do Site</button>
-    </div>
+        <!-- Main Navigation Tabs -->
+        <div class="main-tabs" style="display:flex; padding: 10px 30px; background: var(--bg-dark); border-bottom: 1px solid var(--border-color); gap: 15px;">
+            <button class="tab-btn active" id="mtab-products" onclick="switchMainTab('products')" style="border: 1px solid var(--neon-teal); padding: 8px 18px; border-radius: 6px; color: #fff;">📦 Gerenciar Produtos</button>
+            <button class="tab-btn" id="mtab-site" onclick="switchMainTab('site')" style="border: 1px solid #333; padding: 8px 18px; border-radius: 6px; color: #888;">⚙️ Textos e Mídia do Site</button>
+        </div>
 
-    <!-- PRODUCTS VIEW -->
-    <div class="split-view" id="view-products" style="display: flex; flex: 1; overflow: hidden; height: calc(100vh - 130px);">
-        <!-- Left Panel: Grid -->
-            <div class="panel-left" style="flex: 0 0 450px; border-right: 1px solid var(--border-color); padding: 20px; display: flex; flex-direction: column; background: var(--bg-dark); overflow-y: auto;">
-                <h2>Seus Produtos</h2>
+        <!-- PRODUCTS VIEW -->
+        <div id="view-products" style="display: flex; height: calc(100vh - 110px); overflow: hidden;">
+            
+            <!-- Left Panel: Product Grid -->
+            <div style="flex: 0 0 450px; border-right: 1px solid var(--border-color); padding: 20px; display: flex; flex-direction: column; background: var(--bg-dark); overflow: hidden;">
+                <h2 style="font-size: 1.2rem; margin-bottom: 15px; font-weight: 600;">Seus Produtos</h2>
                 <input type="text" class="search-bar" id="search-products" placeholder="Buscar por nome ou categoria..." onkeyup="filterGrid()">
-                <div class="product-grid" id="product-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding-bottom: 50px;">
-                    <!-- Cards will be injected via JS -->
-                    <div class="loading-spinner">Carregando seus produtos do GitHub...</div>
+                <div id="product-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; overflow-y: auto; padding-bottom: 40px; scrollbar-width: thin;">
+                    <div class="loading-spinner">Carregando produtos...</div>
                 </div>
             </div>
 
-            <!-- RIGHT PANEL: PREVIEW & EDITOR -->
+            <!-- Right Panel: Editor -->
             <div class="panel-right" style="flex: 1; background: #0d0d0d; overflow-y: auto; position: relative;">
                 
-                <!-- If nothing selected -->
                 <div id="empty-state" class="empty-selection">
-                    Esolha um produto ao lado para editar ou crie um novo.
+                    Escolha um produto ao lado para editar ou crie um novo.
                 </div>
 
-                <!-- Editor Container -->
                 <div id="editor-container" class="editor-container hidden">
                     
                     <div class="editor-tabs">
@@ -83,11 +91,9 @@
                             <input type="text" id="p-name" oninput="updatePreview()">
                         </div>
                         <div class="form-group">
-                            <label>Categoria (Escreva uma nova ou escolha da lista clicando e apertando a seta pra baixo)</label>
+                            <label>Categoria (Escreva uma nova ou escolha da lista)</label>
                             <input type="text" id="p-category" list="cat-suggestions" placeholder="Ex: Bags, Chokers..." oninput="updatePreview()">
-                            <datalist id="cat-suggestions">
-                                <!-- Preenchido pelo JS -->
-                            </datalist>
+                            <datalist id="cat-suggestions"></datalist>
                         </div>
                         <div class="form-group">
                             <label>Preço (R$)</label>
@@ -95,12 +101,12 @@
                         </div>
                         <div class="form-group">
                             <label>URL Imagem de Capa (ex: img/bolsa.jpg)</label>
-                            <div style="display: flex; gap: 10px; align-items: start;">
+                            <div style="display: flex; gap: 10px; align-items: flex-start;">
                                 <div style="flex:1;">
                                     <input type="text" id="p-image" oninput="updatePreview()">
                                     <img id="p-image-preview" src="" style="width:100px; margin-top:10px; border-radius:5px; display:none;">
                                 </div>
-                                <button class="btn-secondary" onclick="document.getElementById('upload-cover').click()" style="white-space:nowrap; padding: 0 15px; border-radius: 4px; height: 42px;">⬆️ Fazer Upload</button>
+                                <button class="btn-secondary" onclick="document.getElementById('upload-cover').click()" style="white-space:nowrap; padding: 0 15px; height: 42px; border-radius: 4px;">⬆️ Upload</button>
                                 <input type="file" id="upload-cover" accept="image/*" style="display:none;" onchange="handleImageUpload(event, 'p-image')">
                             </div>
                         </div>
@@ -108,7 +114,7 @@
                             <label>Imagens Extras (URLs separadas por vírgula)</label>
                             <div style="display: flex; gap: 10px;">
                                 <input type="text" id="p-images" placeholder="img/b1.jpg, img/b2.jpg" oninput="updatePreview()" style="flex: 1;">
-                                <button class="btn-secondary" onclick="document.getElementById('upload-extra').click()" style="white-space:nowrap; padding: 0 15px; border-radius: 4px; height: 42px;">⬆️ Mais Fotos</button>
+                                <button class="btn-secondary" onclick="document.getElementById('upload-extra').click()" style="white-space:nowrap; padding: 0 15px; height: 42px; border-radius: 4px;">⬆️ Add Foto</button>
                                 <input type="file" id="upload-extra" accept="image/*" style="display:none;" onchange="handleImageUpload(event, 'p-images')">
                             </div>
                         </div>
@@ -117,7 +123,7 @@
                             <textarea id="p-desc" rows="6" oninput="updatePreview()"></textarea>
                         </div>
                         <div class="form-group">
-                            <label>Link (Opcional - caso queira manter do Instagram)</label>
+                            <label>Link WhatsApp (Opcional)</label>
                             <input type="text" id="p-link" oninput="updatePreview()">
                         </div>
                         <button class="btn-danger" style="margin-top: 20px; width: 100%;" onclick="deleteCurrentProduct()">Excluir Este Produto</button>
@@ -133,7 +139,7 @@
                                 <div class="lp-cat" id="lp-category">Categoria</div>
                                 <h1 class="lp-name" id="lp-name">Nome do Produto</h1>
                                 <div class="lp-price" id="lp-price">R$ 0,00</div>
-                                <div class="lp-desc" id="lp-desc">Descrição longa do produto aparecerá aqui com quebras de linha...</div>
+                                <div class="lp-desc" id="lp-desc">Descrição longa do produto...</div>
                                 <div class="lp-buy-btn">COMPRAR VIA WHATSAPP (Demonstração)</div>
                             </div>
                         </div>
@@ -141,79 +147,74 @@
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- SITE SETTINGS VIEW -->
-    <div class="tab-content hidden" id="view-site" style="height: calc(100vh - 130px); overflow-y: auto; padding: 40px; margin: 0 auto; max-width: 1000px; color: #fff;">
-        <h2 style="margin-bottom: 20px; font-size: 1.5rem; color: #fff;">Configurações Globais do Site</h2>
-        <p style="color: #aaa; margin-bottom: 30px;">Edite os textos principais, vídeos e títulos exibidos para os clientes na página inicial e na loja.</p>
+        <!-- SITE SETTINGS VIEW (hidden by default, shown when tab is active) -->
+        <div id="view-site" style="display: none; height: calc(100vh - 110px); overflow-y: auto; padding: 40px; max-width: 1000px; margin: 0 auto; color: #fff;">
+            <h2 style="margin-bottom: 12px; font-size: 1.5rem;">⚙️ Configurações Globais do Site</h2>
+            <p style="color: #aaa; margin-bottom: 30px;">Edite os textos e vídeos exibidos na página inicial e na loja. Clique em "Salvar Textos no Site" quando terminar.</p>
 
-        <!-- Form fields mapped to site.json -->
-        <div class="form-group">
-            <label>Texto Principal Neon (Home)</label>
-            <input type="text" id="s-heroLogo" oninput="markSiteUnsaved()">
-        </div>
-        <div class="form-group">
-            <label>URL do Vídeo de Fundo (Home)</label>
-            <input type="text" id="s-heroVideo" placeholder="ex: hero_video.mp4" oninput="markSiteUnsaved()">
-        </div>
-        <div class="form-group" style="display:flex; gap: 10px;">
-            <div style="flex:1;">
-                <label>Subtítulo dos Produtos (Início)</label>
-                <input type="text" id="s-homePrefix" oninput="markSiteUnsaved()">
+            <div class="form-group">
+                <label>Letreiro Neon Principal (Home) — ex: MAMA LIVRE</label>
+                <input type="text" id="s-heroLogo" oninput="markSiteUnsaved()">
             </div>
-            <div style="flex:1;">
-                <label>Subtítulo em Neon</label>
-                <input type="text" id="s-homeHighlight" oninput="markSiteUnsaved()">
+            <div class="form-group">
+                <label>Caminho do Vídeo de Fundo (Home) — ex: img/hero.mp4</label>
+                <input type="text" id="s-heroVideo" placeholder="img/hero.mp4" oninput="markSiteUnsaved()">
             </div>
-        </div>
-        <div class="form-group">
-            <label>Descrição Curta dos Produtos (Home)</label>
-            <input type="text" id="s-homeDesc" oninput="markSiteUnsaved()">
-        </div>
-        
-        <hr style="border-color: #333; margin: 30px 0;">
-        
-        <div class="form-group" style="display:flex; gap: 10px;">
-            <div style="flex:1;">
-                <label>Sessão Sob Medida (Início)</label>
-                <input type="text" id="s-customPrefix" oninput="markSiteUnsaved()">
+            
+            <hr style="border-color: #222; margin: 25px 0;">
+
+            <div class="form-group" style="display:flex; gap: 15px;">
+                <div style="flex:1;">
+                    <label>Subtítulo dos Produtos — Parte Normal</label>
+                    <input type="text" id="s-homePrefix" oninput="markSiteUnsaved()">
+                </div>
+                <div style="flex:1;">
+                    <label>Subtítulo dos Produtos — Parte em Neon</label>
+                    <input type="text" id="s-homeHighlight" oninput="markSiteUnsaved()">
+                </div>
             </div>
-            <div style="flex:1;">
-                <label>Sob Medida em Neon</label>
-                <input type="text" id="s-customHighlight" oninput="markSiteUnsaved()">
+            <div class="form-group">
+                <label>Descrição Curta abaixo dos Produtos (Home)</label>
+                <input type="text" id="s-homeDesc" oninput="markSiteUnsaved()">
             </div>
-        </div>
-        <div class="form-group">
-            <label>Texto 1 Sob Medida</label>
-            <textarea id="s-customText1" rows="2" oninput="markSiteUnsaved()"></textarea>
-        </div>
-        <div class="form-group">
-            <label>Texto 2 Sob Medida</label>
-            <textarea id="s-customText2" rows="2" oninput="markSiteUnsaved()"></textarea>
+
+            <hr style="border-color: #222; margin: 25px 0;">
+
+            <div class="form-group" style="display:flex; gap: 15px;">
+                <div style="flex:1;">
+                    <label>Seção "Sob Medida" — Título Normal</label>
+                    <input type="text" id="s-customPrefix" oninput="markSiteUnsaved()">
+                </div>
+                <div style="flex:1;">
+                    <label>Seção "Sob Medida" — Título em Neon</label>
+                    <input type="text" id="s-customHighlight" oninput="markSiteUnsaved()">
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Texto 1 — Seção Sob Medida</label>
+                <textarea id="s-customText1" rows="2" oninput="markSiteUnsaved()"></textarea>
+            </div>
+            <div class="form-group">
+                <label>Texto 2 — Seção Sob Medida</label>
+                <textarea id="s-customText2" rows="2" oninput="markSiteUnsaved()"></textarea>
+            </div>
+
+            <hr style="border-color: #222; margin: 25px 0;">
+
+            <div class="form-group">
+                <label>Letreiro Neon da Página da Loja — ex: LOJA</label>
+                <input type="text" id="s-shopLogo" oninput="markSiteUnsaved()">
+            </div>
+            <div class="form-group">
+                <label>Subtexto da Página da Loja</label>
+                <input type="text" id="s-shopDesc" oninput="markSiteUnsaved()">
+            </div>
         </div>
 
-        <hr style="border-color: #333; margin: 30px 0;">
+    </div><!-- end #dashboard -->
 
-        <div class="form-group">
-            <label>Texto Principal Neon (Página da Loja)</label>
-            <input type="text" id="s-shopLogo" oninput="markSiteUnsaved()">
-        </div>
-        <div class="form-group">
-            <label>Subtexto da Página da Loja</label>
-            <input type="text" id="s-shopDesc" oninput="markSiteUnsaved()">
-        </div>
-    </div>
-    </div>
-    <style>
-        .drag-over {
-            border: 2px dashed var(--neon-teal) !important;
-            opacity: 0.8;
-            transform: scale(1.02);
-            transition: all 0.2s ease;
-        }
-    </style>
     <!-- Scripts -->
-    <script src="/admin/admin.js?v=4"></script>
+    <script src="/admin/admin.js?v=5"></script>
 </body>
 </html>

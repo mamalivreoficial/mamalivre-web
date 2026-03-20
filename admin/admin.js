@@ -41,26 +41,34 @@ async function showDashboard() {
 // MAIN TABS
 function switchMainTab(tab) {
     activeMainTab = tab;
-    document.getElementById('mtab-products').style.borderColor = tab === 'products' ? 'var(--neon-teal)' : '#333';
-    document.getElementById('mtab-site').style.borderColor = tab === 'site' ? 'var(--neon-teal)' : '#333';
-    document.getElementById('mtab-products').style.color = tab === 'products' ? '#fff' : '#888';
-    document.getElementById('mtab-site').style.color = tab === 'site' ? '#fff' : '#888';
+    
+    const productsBtn = document.getElementById('mtab-products');
+    const siteBtn = document.getElementById('mtab-site');
+    const viewProducts = document.getElementById('view-products');
+    const viewSite = document.getElementById('view-site');
 
     if (tab === 'products') {
-        document.getElementById('view-products').classList.remove('hidden');
-        document.getElementById('view-site').classList.add('hidden');
-        document.getElementById('btn-new-product').classList.remove('hidden');
+        productsBtn.style.borderColor = 'var(--neon-teal)';
+        productsBtn.style.color = '#fff';
+        siteBtn.style.borderColor = '#333';
+        siteBtn.style.color = '#888';
+        viewProducts.style.display = 'flex';
+        viewSite.style.display = 'none';
+        document.getElementById('btn-new-product').style.display = '';
         document.getElementById('btn-save').textContent = 'Salvar Produtos no Site';
-        document.getElementById('save-status').textContent = 'Tudo atualizado';
-        document.getElementById('save-status').style.color = '#888';
     } else {
-        document.getElementById('view-products').classList.add('hidden');
-        document.getElementById('view-site').classList.remove('hidden');
-        document.getElementById('btn-new-product').classList.add('hidden');
+        siteBtn.style.borderColor = 'var(--neon-teal)';
+        siteBtn.style.color = '#fff';
+        productsBtn.style.borderColor = '#333';
+        productsBtn.style.color = '#888';
+        viewProducts.style.display = 'none';
+        viewSite.style.display = 'block';
+        document.getElementById('btn-new-product').style.display = 'none';
         document.getElementById('btn-save').textContent = 'Salvar Textos no Site';
-        document.getElementById('save-status').textContent = 'Tudo atualizado';
-        document.getElementById('save-status').style.color = '#888';
     }
+
+    document.getElementById('save-status').textContent = 'Tudo atualizado';
+    document.getElementById('save-status').style.color = '#888';
 }
 
 // ---- UPLOAD LOGIC ----
