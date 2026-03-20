@@ -510,7 +510,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const indexGrid = document.getElementById('index-product-grid');
 
     if (shopGrid || indexGrid) {
-        fetch('data/products.json')
+        fetch(`data/products.json?v=${Date.now()}`)
             .then(response => response.json())
             .then(data => {
                 const products = data.products || data;
