@@ -354,6 +354,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
             });
         });
+
+        // Make the whole card clickable for better UX
+        document.querySelectorAll('.card-glass').forEach(card => {
+            card.style.cursor = 'pointer';
+            card.addEventListener('click', (e) => {
+                // If it's a dot, the dot listener already handles it and stops propagation
+                if (e.target.closest('.gallery-dots')) return;
+                
+                const link = card.querySelector('a.btn-outline').getAttribute('href');
+                if (link) window.open(link, '_blank');
+            });
+        });
     }
 
     function applyTiltEffect(cards) {
