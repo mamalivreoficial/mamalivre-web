@@ -108,6 +108,159 @@ h1, h2, h3 {
     font-size: 1.5rem;
 }
 
+.product-info p {
+    color: #ccc;
+    font-size: 0.85rem;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    /* Line clamp for grid */
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Detail Page Specifics */
+.product-detail-container {
+    padding: 120px 5% 80px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    min-height: 80vh;
+}
+
+@media (max-width: 968px) {
+    .product-detail-container {
+        grid-template-columns: 1fr;
+        gap: 30px;
+        padding-top: 100px;
+    }
+}
+
+.detail-gallery {
+    position: sticky;
+    top: 120px;
+    align-self: start;
+}
+
+.detail-main-img-wrap {
+    width: 100%;
+    aspect-ratio: 4/5;
+    background: #111;
+    border-radius: 20px;
+    overflow: hidden;
+    border: 1px solid var(--glass-border);
+    margin-bottom: 20px;
+}
+
+.detail-main-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.detail-thumbs {
+    display: flex;
+    gap: 15px;
+    overflow-x: auto;
+    padding-bottom: 10px;
+}
+
+.thumb-item {
+    width: 80px;
+    aspect-ratio: 1;
+    border-radius: 10px;
+    overflow: hidden;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: var(--transition-smooth);
+    opacity: 0.6;
+}
+
+.thumb-item:hover, .thumb-item.active {
+    opacity: 1;
+    border-color: var(--neon-teal);
+    box-shadow: 0 0 10px var(--neon-teal);
+}
+
+.thumb-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.detail-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.detail-info-header {
+    margin-bottom: 30px;
+    border-bottom: 1px solid var(--glass-border);
+    padding-bottom: 20px;
+}
+
+.detail-category {
+    color: var(--neon-magenta);
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+}
+
+.detail-title {
+    font-family: var(--font-heading);
+    font-size: 3rem;
+    margin-bottom: 15px;
+    color: #fff;
+    line-height: 1.1;
+}
+
+.detail-price {
+    font-size: 1.8rem;
+    color: var(--neon-teal);
+    font-family: var(--font-heading);
+}
+
+.detail-full-desc {
+    font-size: 1rem;
+    line-height: 1.8;
+    color: #ccc;
+    margin-bottom: 40px;
+    white-space: pre-wrap;
+}
+
+.buy-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.btn-whatsapp {
+    background: #25D366;
+    color: #fff;
+    padding: 20px 40px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 700;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 10px 20px rgba(37, 211, 102, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}
+
+.btn-whatsapp:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(37, 211, 102, 0.4);
+    background: #20ba5a;
+}
 .hero-neon-logo {
     font-family: var(--font-heading);
     font-size: clamp(3rem, 10vw, 7rem);

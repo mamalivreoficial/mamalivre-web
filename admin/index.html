@@ -12,5 +12,38 @@
 <body>
   <!-- Include the script that builds the page and powers Decap CMS -->
   <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+  <script>
+    // Custom Product Preview Component
+    const ProductPreview = createClass({
+      render: function() {
+        const entry = this.props.entry;
+        const name = entry.getIn(['data', 'name']);
+        const price = entry.getIn(['data', 'price']);
+        const category = entry.getIn(['data', 'category']);
+        const bio = entry.getIn(['data', 'description']);
+        const mainImage = this.props.getAsset(entry.getIn(['data', 'image']));
+        
+        // This mimics the product.html style
+        return h('div', { className: 'product-preview-wrap', style: { padding: '20px', backgroundColor: '#000', minHeight: '100vh', color: '#fff', fontFamily: 'Inter, sans-serif' } },
+          h('div', { style: { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '40px' } },
+            h('div', {},
+              h('div', { style: { borderRadius: '20px', overflow: 'hidden', border: '1px solid #333' } },
+                h('img', { src: mainImage, style: { width: '100%', display: 'block' } })
+              )
+            ),
+            h('div', {},
+              h('div', { style: { color: '#ff00ff', textTransform: 'uppercase', fontSize: '0.8rem', letterSpacing: '2px', marginBottom: '10px' } }, category),
+              h('h1', { style: { fontSize: '2.5rem', marginBottom: '15px' } }, name),
+              h('div', { style: { fontSize: '1.5rem', color: '#00f2fe', marginBottom: '20px' } }, price),
+              h('div', { style: { lineHeight: '1.6', color: '#ccc', whiteSpace: 'pre-wrap' } }, bio),
+              h('div', { style: { marginTop: '40px', padding: '15px', backgroundColor: '#25D366', borderRadius: '40px', textAlign: 'center', fontWeight: 'bold' } }, 'COMPRAR VIA WHATSAPP (BOTÃO)')
+            )
+          )
+        );
+      }
+    });
+
+    CMS.registerPreviewTemplate("products", ProductPreview);
+  </script>
 </body>
 </html>

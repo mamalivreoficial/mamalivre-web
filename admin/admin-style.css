@@ -18,29 +18,63 @@ body {
     border-right: 1px solid #222 !important;
 }
 
-/* List Items (Product Bars) */
+/* List Container */
+.nc-list-editor-list {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)) !important;
+    gap: 15px !important;
+    padding: 10px !important;
+}
+
+/* List Items (Product Bars) as Squares */
 .nc-list-editor-item {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    height: 220px !important;
     background: #1a1a1a !important;
     border: 1px solid #333 !important;
-    border-radius: 8px !important;
-    margin-bottom: 15px !important;
+    border-radius: 12px !important;
+    margin-bottom: 0px !important; /* Managed by grid gap */
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
     overflow: hidden !important;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.3) !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important;
+    position: relative !important;
+    cursor: grab !important;
 }
 
-.nc-list-editor-item:hover {
-    border-color: #00f2fe !important; /* var(--neon-teal) approximate */
-    box-shadow: 0 0 15px rgba(0, 242, 254, 0.2) !important;
-    transform: translateY(-2px) !important;
-}
-
+/* Header (Square Top) */
 .nc-list-editor-item-header {
-    background: #252525 !important;
-    padding: 10px 15px !important;
-    color: #fff !important;
-    font-weight: 600 !important;
-    border-bottom: 1px solid #333 !important;
+    background: #222 !important;
+    padding: 15px !important;
+    height: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+    border-bottom: none !important;
+}
+
+.nc-list-editor-item-summary {
+    font-size: 0.9rem !important;
+    color: #00f2fe !important;
+    word-break: break-word !important;
+    line-height: 1.4 !important;
+}
+
+/* Control Buttons (Top Right of Square) */
+.nc-list-editor-item-button-container {
+    position: absolute !important;
+    top: 5px !important;
+    right: 5px !important;
+    opacity: 0 !important;
+    transition: opacity 0.2s !important;
+    z-index: 10 !important;
+}
+
+.nc-list-editor-item:hover .nc-list-editor-item-button-container {
+    opacity: 1 !important;
 }
 
 /* Labels */

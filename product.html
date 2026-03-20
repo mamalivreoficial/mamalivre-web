@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DETALHES - MAMALIVRE | Futuristic Handmade</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Inter:wght@300;400;600&family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Hidden by default, revealed on load */
+        .product-detail-container { opacity: 0; transition: opacity 0.8s ease; }
+    </style>
+</head>
+<body>
+    <div class="noise-overlay"></div>
+    <div class="cursor-glow" id="cursor-glow"></div>
+
+    <nav class="navbar" id="navbar">
+        <a href="index.html" class="logo-link">
+            <img src="img/logo.png" alt="Mamalivre Logo" class="brand-logo">
+        </a>
+        <div class="nav-links">
+            <a href="index.html" class="nav-link">Home</a>
+            <a href="shop.html" class="nav-link">Loja</a>
+            <a href="blog.html" class="nav-link">Blog / Editorial</a>
+        </div>
+        <div class="mobile-menu-btn">
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+    </nav>
+
+    <main id="product-detail-root">
+        <!-- Injected by script.js -->
+        <div class="container" style="padding: 200px 5%; text-align: center;">
+            <p>Carregando relíquia...</p>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <img src="img/logo.png" alt="Mamalivre Logo" class="brand-logo" style="width: 60px; margin-bottom: 0.5rem;">
+                    <p>Criações originais, artesanais e intensas. <br>Feito em São Paulo.</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                &copy; 2026 MAMALIVRE. Todos os direitos reservados.
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        // Trigger product detail loading when DOM is ready
+        window.addEventListener('DOMContentLoaded', () => {
+            if (typeof loadProductDetail === 'function') {
+                loadProductDetail();
+            }
+        });
+    </script>
+</body>
+</html>

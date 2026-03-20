@@ -327,8 +327,8 @@ document.addEventListener('DOMContentLoaded', () => {
                             </div>
                         ` : ''}
 
-                        <a href="${product.link}" target="_blank" class="btn-outline">
-                            EU QUERO
+                        <a href="product.html?id=${product.id}" class="btn-outline">
+                            VER DETALHES
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M5 12h14m-7-7 7 7-7 7"/>
                             </svg>
@@ -337,6 +337,90 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             </div>
         `;
+    }
+
+    // New: Load product detail on product.html
+    async function loadProductDetail() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const productId = urlParams.get('id');
+        const root = document.getElementById('product-detail-root');
+
+        if (!productId || !root) return;
+
+        try {
+            const response = await fetch('data/products.json');
+            const data = await response.json();
+            const products = data.products || data;
+            const product = products.find(p => p.id === productId);
+
+            if (!product) {
+                root.innerHTML = `<div class="container" style="padding: 200px 5%; text-align: center;"><h2>Ops! Produto não encontrado.</h2><a href="shop.html" class="btn-outline" style="display:inline-block; margin-top:20px;">Voltar para Loja</a></div>`;
+                return;
+            }
+
+            // Build detail HTML
+            const waLink = `https://wa.me/5511959843718?text=${encodeURIComponent('Olá Priscila! Tenho interesse na peça: ' + product.name)}`;
+            
+            root.innerHTML = `
+                <div class="product-detail-container">
+                    <div class="detail-gallery reveal">
+                        <div class="detail-main-img-wrap">
+                            <img src="${product.image}" alt="${product.name}" class="detail-main-img" id="main-product-img">
+                        </div>
+                        ${product.images && product.images.length > 0 ? `
+                            <div class="detail-thumbs">
+                                <div class="thumb-item active" data-img="${product.image}">
+                                    <img src="${product.image}" alt="Thumb">
+                                </div>
+                                ${product.images.map(img => `
+                                    <div class="thumb-item" data-img="${img}">
+                                        <img src="${img}" alt="Thumb">
+                                    </div>
+                                `).join('')}
+                            </div>
+                        ` : ''}
+                    </div>
+
+                    <div class="detail-content reveal">
+                        <div class="detail-info-header">
+                            <div class="detail-category">${product.category}</div>
+                            <h1 class="detail-title">${product.name}</h1>
+                            <div class="detail-price">${product.price.startsWith('R$') ? product.price : 'R$ ' + product.price}</div>
+                        </div>
+
+                        <div class="detail-full-desc">${product.description}</div>
+
+                        <div class="buy-actions">
+                            <a href="${waLink}" target="_blank" class="btn-whatsapp">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M12.031 6.172c-2.277 0-4.129 1.852-4.129 4.129 0 1.258.558 2.38 1.43 3.125l-.143.513c-.085.305-.285.586-.558.784.004-.002.348-.112.551-.112.235 0 .438.1.58.261.71.808 1.748 1.303 2.91 1.303 2.277 0 4.129-1.852 4.129-4.129 0-2.277-1.852-4.129-4.129-4.129zM12 2C6.477 2 2 6.477 2 12c0 1.891.524 3.662 1.438 5.176l-1.438 5.235 5.35-1.405c1.458.83 3.141 1.309 4.935 1.309 5.523 0 10-4.477 10-10S17.523 2 12 2zm0 18c-1.558 0-3.04-.423-4.322-1.163l-.31-.18-3.21.843.86-3.13-.197-.313c-.785-1.246-1.21-2.7-1.21-4.214 0-4.411 3.589-8 8-8s8 3.589 8 8-3.589 8-8 8z"/>
+                                </svg>
+                                COMPRAR VIA WHATSAPP
+                            </a>
+                            <p style="text-align: center; color: #666; font-size: 0.8rem;">Vendas exclusivas via atendimento personalizado.</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Reveal after built
+            const detailContainer = document.querySelector('.product-detail-container');
+            if (detailContainer) detailContainer.style.opacity = '1';
+
+            // Init thumbnail logic
+            document.querySelectorAll('.thumb-item').forEach(thumb => {
+                thumb.addEventListener('click', () => {
+                    document.querySelectorAll('.thumb-item').forEach(t => t.classList.remove('active'));
+                    thumb.classList.add('active');
+                    document.getElementById('main-product-img').src = thumb.dataset.img;
+                });
+            });
+
+            setTimeout(reveal, 100);
+
+        } catch (error) {
+            console.error('Erro ao carregar detalhes:', error);
+        }
     }
 
     // Add function to handle gallery dots
@@ -362,8 +446,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 // If it's a dot, the dot listener already handles it and stops propagation
                 if (e.target.closest('.gallery-dots')) return;
                 
-                const link = card.querySelector('a.btn-outline').getAttribute('href');
-                if (link) window.open(link, '_blank');
+                const productId = card.querySelector('.btn-outline').getAttribute('href').split('=')[1];
+                if (productId) window.location.href = `product.html?id=${productId}`;
             });
         });
     }
@@ -428,5 +512,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             })
             .catch(error => console.error("Erro carregando produtos:", error));
+    }
+
+    // Initialize Detail Page if root exists
+    if (document.getElementById('product-detail-root')) {
+        loadProductDetail();
     }
 });
