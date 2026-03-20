@@ -406,15 +406,10 @@ function updatePreview() {
 
     // Apply values from form to array
     const newId = document.getElementById('p-id').value.trim();
-    const idExists = currentProducts.some(p => p.id === newId && p !== prod);
-    
-    if (newId && !idExists) {
+    // Don't validate or block anymore, just store what's there
+    if (newId) {
         prod.id = newId;
-        document.getElementById('p-id').style.borderColor = 'rgba(255,255,255,0.1)';
-    } else if (idExists) {
-        document.getElementById('p-id').style.borderColor = 'var(--neon-magenta)';
     }
-
     prod.name = document.getElementById('p-name').value;
     prod.category = document.getElementById('p-category').value;
     prod.price = document.getElementById('p-price').value;
@@ -465,15 +460,12 @@ async function saveToGitHub() {
     let typeParam;
 
     if (activeMainTab === 'products') {
-        // Validation: Ensure all products have IDs
-        const invalidProd = currentProducts.find(p => !p.id || p.id.trim() === '');
-        if (invalidProd) {
-            alert(`Erro: O produto "${invalidProd.name}" está sem ID. Por favor, defina um ID único.`);
-            btn.textContent = originalText;
-            btn.disabled = false;
-            selectProduct(invalidProd.id || currentProducts.indexOf(invalidProd));
-            return;
-        }
+        // Validation: Ensure all products have IDs (Auto-generate if missing)
+        currentProducts.forEach((p, index) => {
+            if (!p.id || p.id.trim() === '') {
+                p.id = 'p-' + Date.now() + '-' + index;
+            }
+        });
 
         defaultProductsJson.products = currentProducts;
         payloadContent = defaultProductsJson;
