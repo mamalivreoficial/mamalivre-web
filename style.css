@@ -1105,33 +1105,176 @@ h1, h2, h3 {
     }
 }
 
-/* --- AUDIO CONTROL v3.5 --- */
+/* --- AUDIO CONTROL v3.5 (LEGACY - HIDDEN v3.7) --- */
 .audio-toggle {
-    position: absolute;
-    bottom: 40px;
-    right: 40px;
-    z-index: 100;
-    width: 45px;
-    height: 45px;
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 50%;
+    display: none !important;
+}
+
+/* --- SPLASH SCREEN v3.8 --- */
+.splash-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: #000;
+    z-index: 10000;
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.8s;
+}
+
+.splash-screen.fade-out {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.splash-content {
+    text-align: center;
+    color: white;
+}
+
+.splash-logo {
+    font-family: 'Syncopate', sans-serif;
+    font-size: 3rem;
+    letter-spacing: 15px;
+    margin-bottom: 30px;
+    animation: textGlowFade 3s infinite alternate;
+}
+
+.splash-loader {
+    width: 100px;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.1);
+    margin: 20px auto 40px;
+    position: relative;
+    overflow: hidden;
+}
+
+.splash-loader::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: var(--neon-magenta);
+    box-shadow: 0 0 15px var(--neon-magenta);
+    animation: loaderMove 2s infinite ease-in-out;
+}
+
+@keyframes loaderMove {
+    0% { left: -100%; }
+    100% { left: 100%; }
+}
+
+@keyframes textGlowFade {
+    0% { opacity: 0.5; text-shadow: 0 0 10px rgba(255,255,255,0.2); }
+    100% { opacity: 1; text-shadow: 0 0 30px var(--neon-magenta); }
+}
+
+.btn-enter {
+    background: transparent;
+    border: 1px solid var(--neon-teal);
+    color: var(--neon-teal);
+    padding: 15px 40px;
+    font-family: 'Inter', sans-serif;
+    letter-spacing: 4px;
+    font-size: 0.9rem;
     cursor: pointer;
     transition: all 0.3s ease;
+    box-shadow: 0 0 10px rgba(0, 243, 255, 0.1);
+}
+
+.btn-enter:hover {
+    background: var(--neon-teal);
+    color: black;
+    box-shadow: 0 0 30px var(--neon-teal);
+    transform: translateY(-2px);
+}
+
+
+/* --- SPLASH SCREEN v3.8 --- */
+.splash-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: #000;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.8s;
+}
+
+.splash-screen.fade-out {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.splash-content {
+    text-align: center;
     color: white;
-    font-size: 1.2rem;
 }
 
-.audio-toggle:hover {
-    background: rgba(255, 255, 255, 0.15);
-    transform: scale(1.1);
-    box-shadow: 0 0 20px rgba(0, 243, 255, 0.2);
+.splash-logo {
+    font-family: 'Syncopate', sans-serif;
+    font-size: 3rem;
+    letter-spacing: 15px;
+    margin-bottom: 30px;
+    animation: textGlowFade 3s infinite alternate;
 }
 
-.audio-toggle i {
-    pointer-events: none;
+.splash-loader {
+    width: 100px;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.1);
+    margin: 20px auto 40px;
+    position: relative;
+    overflow: hidden;
+}
+
+.splash-loader::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: var(--neon-magenta);
+    box-shadow: 0 0 15px var(--neon-magenta);
+    animation: loaderMove 2s infinite ease-in-out;
+}
+
+@keyframes loaderMove {
+    0% { left: -100%; }
+    100% { left: 100%; }
+}
+
+@keyframes textGlowFade {
+    0% { opacity: 0.5; text-shadow: 0 0 10px rgba(255,255,255,0.2); }
+    100% { opacity: 1; text-shadow: 0 0 30px var(--neon-magenta); }
+}
+
+.btn-enter {
+    background: transparent;
+    border: 1px solid var(--neon-teal);
+    color: var(--neon-teal);
+    padding: 15px 40px;
+    font-family: 'Inter', sans-serif;
+    letter-spacing: 4px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 10px rgba(0, 243, 255, 0.1);
+}
+
+.btn-enter:hover {
+    background: var(--neon-teal);
+    color: black;
+    box-shadow: 0 0 30px var(--neon-teal);
+    transform: translateY(-2px);
 }
