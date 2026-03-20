@@ -151,7 +151,6 @@ async function handleImageUpload(event, targetInputId) {
         }
         
         updatePreview();
-        markUnsaved();
         event.target.value = ''; // Allow re-selecting the same file
     } catch (error) {
         alert('Falha no upload: ' + error.message);
