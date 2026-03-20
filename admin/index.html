@@ -45,19 +45,19 @@
     </div>
 
     <!-- PRODUCTS VIEW -->
-    <div class="split-view" id="view-products">
+    <div class="split-view" id="view-products" style="display: flex; flex: 1; overflow: hidden; height: calc(100vh - 130px);">
         <!-- Left Panel: Grid -->
-            <div class="panel-left">
+            <div class="panel-left" style="flex: 0 0 450px; border-right: 1px solid var(--border-color); padding: 20px; display: flex; flex-direction: column; background: var(--bg-dark); overflow-y: auto;">
                 <h2>Seus Produtos</h2>
                 <input type="text" class="search-bar" id="search-products" placeholder="Buscar por nome ou categoria..." onkeyup="filterGrid()">
-                <div class="product-grid" id="product-grid">
+                <div class="product-grid" id="product-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding-bottom: 50px;">
                     <!-- Cards will be injected via JS -->
                     <div class="loading-spinner">Carregando seus produtos do GitHub...</div>
                 </div>
             </div>
 
             <!-- RIGHT PANEL: PREVIEW & EDITOR -->
-            <div class="panel-right">
+            <div class="panel-right" style="flex: 1; background: #0d0d0d; overflow-y: auto; position: relative;">
                 
                 <!-- If nothing selected -->
                 <div id="empty-state" class="empty-selection">

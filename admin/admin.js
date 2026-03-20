@@ -205,22 +205,22 @@ function populateCategories() {
 function renderGrid() {
     const grid = document.getElementById('product-grid');
     grid.innerHTML = currentProducts.map((p, index) => `
-        <div class="product-card ${p.id === selectedProductId ? 'active' : ''}" 
+        <div class="p-card ${p.id === selectedProductId ? 'active' : ''}" 
              data-idx="${index}"
              draggable="true"
              onclick="selectProduct('${p.id}')"
              style="cursor: grab;">
-            ${p.image ? `<img src="../${p.image}" class="cover-img">` : '<div class="cover-img">Sem Foto</div>'}
-            <div class="card-info">
-                <div class="category">${p.category}</div>
-                <div class="name">${p.name}</div>
-                <div class="price">R$ ${parseFloat(p.price.replace(',', '.')).toFixed(2).replace('.',',')}</div>
+            ${p.image ? `<div class="p-card-img" style="background-image: url('../${p.image}')"></div>` : '<div class="p-card-img" style="background: #222; display: flex; align-items: center; justify-content: center;">Sem Foto</div>'}
+            <div class="p-card-info">
+                <div class="p-cat">${p.category}</div>
+                <div class="p-name">${p.name}</div>
+                <div class="p-price">R$ ${parseFloat(p.price.replace(',', '.')).toFixed(2).replace('.',',')}</div>
             </div>
         </div>
     `).join('');
 
     // Attach Drag and Drop Listeners
-    const cards = document.querySelectorAll('.product-card');
+    const cards = document.querySelectorAll('.p-card');
     cards.forEach(card => {
         card.addEventListener('dragstart', handleDragStart);
         card.addEventListener('dragover', handleDragOver);
