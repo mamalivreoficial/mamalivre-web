@@ -140,6 +140,9 @@ async function loadSiteConfig() {
         document.getElementById('s-customHighlight').value = currentSiteConfig.customTitleHighlight || '';
         document.getElementById('s-customText1').value = currentSiteConfig.customText1 || '';
         document.getElementById('s-customText2').value = currentSiteConfig.customText2 || '';
+        document.getElementById('s-customBullet1').value = currentSiteConfig.customBullet1 || '';
+        document.getElementById('s-customBullet2').value = currentSiteConfig.customBullet2 || '';
+        document.getElementById('s-customBullet3').value = currentSiteConfig.customBullet3 || '';
         
         document.getElementById('s-shopLogo').value = currentSiteConfig.shopLogo || '';
         document.getElementById('s-shopDesc').value = currentSiteConfig.shopDesc || '';
@@ -166,6 +169,9 @@ function gatherSiteConfig() {
         customTitleHighlight: document.getElementById('s-customHighlight').value,
         customText1: document.getElementById('s-customText1').value,
         customText2: document.getElementById('s-customText2').value,
+        customBullet1: document.getElementById('s-customBullet1').value,
+        customBullet2: document.getElementById('s-customBullet2').value,
+        customBullet3: document.getElementById('s-customBullet3').value,
         shopLogo: document.getElementById('s-shopLogo').value,
         shopDesc: document.getElementById('s-shopDesc').value
     };

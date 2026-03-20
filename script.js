@@ -19,6 +19,9 @@ document.addEventListener('DOMContentLoaded', () => {
             setText('dyn-customTitleHighlight', site.customTitleHighlight);
             setText('dyn-customText1', site.customText1);
             setText('dyn-customText2', site.customText2);
+            setText('dyn-customBullet1', site.customBullet1);
+            setText('dyn-customBullet2', site.customBullet2);
+            setText('dyn-customBullet3', site.customBullet3);
             setText('dyn-shopLogo', site.shopLogo);
             setText('dyn-shopDesc', site.shopDesc);
 
