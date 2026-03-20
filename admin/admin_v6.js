@@ -406,9 +406,15 @@ function updatePreview() {
 
     // Apply values from form to array
     const newId = document.getElementById('p-id').value.trim();
-    if (newId) {
+    const idExists = currentProducts.some(p => p.id === newId && p !== prod);
+    
+    if (newId && !idExists) {
         prod.id = newId;
+        document.getElementById('p-id').style.borderColor = 'rgba(255,255,255,0.1)';
+    } else if (idExists) {
+        document.getElementById('p-id').style.borderColor = 'var(--neon-magenta)';
     }
+
     prod.name = document.getElementById('p-name').value;
     prod.category = document.getElementById('p-category').value;
     prod.price = document.getElementById('p-price').value;
@@ -502,10 +508,15 @@ async function saveToGitHub() {
         } else {
             siteConfigSha = data.newSha;
         }
+        // Success
+        if (activeMainTab === 'products') {
+            currentSha = data.newSha;
+        } else {
+            siteConfigSha = data.newSha;
+        }
         document.getElementById('save-status').textContent = '✓ Tudo atualizado no Site';
         document.getElementById('save-status').style.color = '#25D366';
-        alert('Salvo com sucesso! O painel será recarregado para sincronizar.');
-        setTimeout(() => window.location.reload(), 2000);
+        alert('Salvo com sucesso no GitHub! As mudanças podem levar até 1 minuto para refletir no site público devido ao cache do Vercel.');
     } catch (e) {
         alert(e.message);
         if (e.message.includes('Senha')) {
