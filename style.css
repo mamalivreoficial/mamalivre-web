@@ -92,6 +92,22 @@ h1, h2, h3 {
     text-shadow: 0 0 10px var(--neon-teal), 0 0 20px var(--neon-teal), 0 0 40px var(--neon-teal);
 }
 
+.neon-title-black {
+    color: #000;
+    text-shadow: 
+        -1px -1px 0 #fff,  
+         1px -1px 0 #fff,
+        -1px  1px 0 #fff,
+         1px  1px 0 #fff,
+         0 0 8px #fff, 
+         0 0 15px #fff;
+    font-family: var(--font-heading);
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    font-weight: 800;
+    font-size: 1.5rem;
+}
+
 /* Navigation */
 .navbar {
     position: fixed;
@@ -518,6 +534,17 @@ h1, h2, h3 {
     overflow: hidden;
     margin-bottom: 24px;
     position: relative;
+    background: #000;
+}
+
+/* Fix for home page cropping when cards are wide */
+#index-product-grid .product-img-wrap {
+    height: 450px;
+}
+
+#index-product-grid .product-card {
+    max-width: 500px;
+    margin: 0 auto;
 }
 
 .product-img {
