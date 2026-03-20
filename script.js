@@ -487,6 +487,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
 
                 if (shopGrid) {
+                    const shopFiltersContainer = document.getElementById('dynamic-shop-filters');
+                    
+                    // Extract unique categories
+                    const uniqueCategories = [...new Set(products.map(p => p.category))].filter(Boolean);
+                    const categories = ['Tudo', ...uniqueCategories];
+                    
+                    if (shopFiltersContainer) {
+                        shopFiltersContainer.innerHTML = categories.map(cat => 
+                            `<button class="btn-outline ${cat === 'Tudo' ? 'active-filter' : ''}">${cat}</button>`
+                        ).join('');
+                    }
+
                     const renderShop = (filter = 'Tudo') => {
                         const filtered = filter === 'Tudo' 
                             ? products 
@@ -500,15 +512,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     renderShop();
 
-                    // Filter Logic
-                    const filterBtns = document.querySelectorAll('.shop-filters .btn-outline');
-                    filterBtns.forEach(btn => {
-                        btn.addEventListener('click', () => {
-                            filterBtns.forEach(b => b.classList.remove('active-filter'));
-                            btn.classList.add('active-filter');
-                            renderShop(btn.textContent.trim());
+                    // Filter Logic (reattach listeners to dynamic buttons)
+                    if (shopFiltersContainer) {
+                        const filterBtns = shopFiltersContainer.querySelectorAll('.btn-outline');
+                        filterBtns.forEach(btn => {
+                            btn.addEventListener('click', () => {
+                                filterBtns.forEach(b => b.classList.remove('active-filter'));
+                                btn.classList.add('active-filter');
+                                renderShop(btn.textContent.trim());
+                            });
                         });
-                    });
+                    }
                 }
             })
             .catch(error => console.error("Erro carregando produtos:", error));

@@ -1,50 +1,131 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="pt-BR">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="robots" content="noindex" />
-  <title>MAMALIVRE | Admin Control Panel</title>
-  <!-- Netlify Identity Widget -->
-  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-  <link rel="cms-config-url" type="text/yaml" href="/admin/config.yml" />
-  <link rel="stylesheet" href="admin-style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MAMALIVRE | Admin</title>
+    <link rel="stylesheet" href="admin-style.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900&family=Outfit:wght@100..900&display=swap" rel="stylesheet">
 </head>
 <body>
-  <!-- Include the script that builds the page and powers Decap CMS -->
-  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
-  <script>
-    // Custom Product Preview Component
-    const ProductPreview = createClass({
-      render: function() {
-        const entry = this.props.entry;
-        const name = entry.getIn(['data', 'name']);
-        const price = entry.getIn(['data', 'price']);
-        const category = entry.getIn(['data', 'category']);
-        const bio = entry.getIn(['data', 'description']);
-        const mainImage = this.props.getAsset(entry.getIn(['data', 'image']));
-        
-        // This mimics the product.html style
-        return h('div', { className: 'product-preview-wrap', style: { padding: '20px', backgroundColor: '#000', minHeight: '100vh', color: '#fff', fontFamily: 'Inter, sans-serif' } },
-          h('div', { style: { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '40px' } },
-            h('div', {},
-              h('div', { style: { borderRadius: '20px', overflow: 'hidden', border: '1px solid #333' } },
-                h('img', { src: mainImage, style: { width: '100%', display: 'block' } })
-              )
-            ),
-            h('div', {},
-              h('div', { style: { color: '#ff00ff', textTransform: 'uppercase', fontSize: '0.8rem', letterSpacing: '2px', marginBottom: '10px' } }, category),
-              h('h1', { style: { fontSize: '2.5rem', marginBottom: '15px' } }, name),
-              h('div', { style: { fontSize: '1.5rem', color: '#00f2fe', marginBottom: '20px' } }, price),
-              h('div', { style: { lineHeight: '1.6', color: '#ccc', whiteSpace: 'pre-wrap' } }, bio),
-              h('div', { style: { marginTop: '40px', padding: '15px', backgroundColor: '#25D366', borderRadius: '40px', textAlign: 'center', fontWeight: 'bold' } }, 'COMPRAR VIA WHATSAPP (BOTÃO)')
-            )
-          )
-        );
-      }
-    });
 
-    CMS.registerPreviewTemplate("products", ProductPreview);
-  </script>
+    <!-- LOGIN SCREEN -->
+    <div id="login-screen" class="login-screen">
+        <div class="login-box">
+            <h1 class="logo-neon-text">MAMA LIVRE</h1>
+            <p>Área Restrita da Administração</p>
+            <div id="login-error" class="error-msg"></div>
+            <input type="password" id="admin-password" placeholder="Digite sua senha de acesso" onkeypress="if(event.key === 'Enter') login()">
+            <button class="btn-primary" onclick="login()">Acessar Painel</button>
+        </div>
+    </div>
+
+    <!-- MAIN DASHBOARD -->
+    <div id="dashboard" class="dashboard hidden">
+        
+        <header class="dashboard-header">
+            <h1 class="logo-neon-text" style="font-size: 1.5rem; letter-spacing: 2px;">MAMA LIVRE ADMIN</h1>
+            <div class="header-actions">
+                <span id="save-status">Tudo atualizado</span>
+                <button class="btn-secondary" onclick="addNewProduct()">+ Novo Produto</button>
+                <button class="btn-primary" onclick="saveToGitHub()" id="btn-save">Salvar no Site</button>
+                <button class="btn-outline" onclick="logout()">Sair</button>
+            </div>
+        </header>
+
+        <div class="split-view">
+            
+            <!-- LEFT PANEL: GRID LIST -->
+            <div class="panel-left">
+                <h2>Seus Produtos</h2>
+                <input type="text" class="search-bar" id="search-products" placeholder="Buscar por nome ou categoria..." onkeyup="filterGrid()">
+                <div class="product-grid" id="product-grid">
+                    <!-- Cards will be injected via JS -->
+                    <div class="loading-spinner">Carregando seus produtos do GitHub...</div>
+                </div>
+            </div>
+
+            <!-- RIGHT PANEL: PREVIEW & EDITOR -->
+            <div class="panel-right">
+                
+                <!-- If nothing selected -->
+                <div id="empty-state" class="empty-selection">
+                    Esolha um produto ao lado para editar ou crie um novo.
+                </div>
+
+                <!-- Editor Container -->
+                <div id="editor-container" class="editor-container hidden">
+                    
+                    <div class="editor-tabs">
+                        <button class="tab-btn active" onclick="switchTab('edit')">Editar Dados</button>
+                        <button class="tab-btn" onclick="switchTab('preview')">Pré-visualização</button>
+                    </div>
+
+                    <!-- TAB: EDIT FORM -->
+                    <div id="tab-edit" class="tab-content">
+                        <div class="form-group">
+                            <label>ID (Identificador Único, sem acentos ou espaços, ex: bolsa-preta)</label>
+                            <input type="text" id="p-id" oninput="updatePreview()">
+                        </div>
+                        <div class="form-group">
+                            <label>Nome do Produto</label>
+                            <input type="text" id="p-name" oninput="updatePreview()">
+                        </div>
+                        <div class="form-group">
+                            <label>Categoria (Escreva uma nova ou escolha da lista clicando e apertando a seta pra baixo)</label>
+                            <input type="text" id="p-category" list="cat-suggestions" placeholder="Ex: Bags, Chokers..." oninput="updatePreview()">
+                            <datalist id="cat-suggestions">
+                                <!-- Preenchido pelo JS -->
+                            </datalist>
+                        </div>
+                        <div class="form-group">
+                            <label>Preço (R$)</label>
+                            <input type="text" id="p-price" placeholder="R$ 150,00" oninput="updatePreview()">
+                        </div>
+                        <div class="form-group">
+                            <label>URL Imagem de Capa (ex: img/bolsa.jpg)</label>
+                            <input type="text" id="p-image" oninput="updatePreview()">
+                            <img id="p-image-preview" src="" style="width:100px; margin-top:10px; border-radius:5px; display:none;">
+                        </div>
+                        <div class="form-group">
+                            <label>Imagens Extras (URLs separadas por vírgula)</label>
+                            <input type="text" id="p-images" placeholder="img/b1.jpg, img/b2.jpg" oninput="updatePreview()">
+                        </div>
+                        <div class="form-group">
+                            <label>Descrição Detalhada</label>
+                            <textarea id="p-desc" rows="6" oninput="updatePreview()"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Link (Opcional - caso queira manter do Instagram)</label>
+                            <input type="text" id="p-link" oninput="updatePreview()">
+                        </div>
+                        <button class="btn-danger" style="margin-top: 20px; width: 100%;" onclick="deleteCurrentProduct()">Excluir Este Produto</button>
+                    </div>
+
+                    <!-- TAB: LIVE PREVIEW -->
+                    <div id="tab-preview" class="tab-content hidden">
+                        <div class="live-preview-box">
+                            <div class="lp-gallery">
+                                <img src="" alt="Capa" id="lp-main-img">
+                            </div>
+                            <div class="lp-info">
+                                <div class="lp-cat" id="lp-category">Categoria</div>
+                                <h1 class="lp-name" id="lp-name">Nome do Produto</h1>
+                                <div class="lp-price" id="lp-price">R$ 0,00</div>
+                                <div class="lp-desc" id="lp-desc">Descrição longa do produto aparecerá aqui com quebras de linha...</div>
+                                <div class="lp-buy-btn">COMPRAR VIA WHATSAPP (Demonstração)</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="admin.js"></script>
 </body>
 </html>
