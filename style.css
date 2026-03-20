@@ -575,17 +575,16 @@ h1, h2, h3 {
     position: absolute;
     top: 50%;
     left: 50%;
-    width: 100%;
-    height: 100%;
+    width: 100vw;
+    height: 100vh;
     object-fit: cover;
     z-index: 1;
     transform: translate(-50%, -50%);
-    transition: var(--transition-smooth);
+    transition: none; /* No jumping on hover */
+    pointer-events: none; /* Let clicks pass through to the unmute button */
 }
 
-.hero-bag-video:hover {
-    transform: scale(1.02);
-}
+/* Removed problematic hover that caused 'fuga' */
 
 .scroll-indicator {
     position: absolute;
