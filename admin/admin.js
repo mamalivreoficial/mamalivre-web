@@ -216,6 +216,13 @@ function populateCategories() {
     }
 }
 
+function formatPrice(price) {
+    if (price === undefined || price === null) return "0,00";
+    let str = String(price).replace('R$', '').trim().replace(',', '.');
+    let num = parseFloat(str);
+    return isNaN(num) ? "0,00" : num.toFixed(2).replace('.', ',');
+}
+
 function renderGrid() {
     const grid = document.getElementById('product-grid');
     grid.innerHTML = currentProducts.map((p, index) => `
@@ -226,9 +233,9 @@ function renderGrid() {
              style="cursor: grab;">
             ${p.image ? `<div class="p-card-img" style="background-image: url('../${p.image}')"></div>` : '<div class="p-card-img" style="background: #222; display: flex; align-items: center; justify-content: center;">Sem Foto</div>'}
             <div class="p-card-info">
-                <div class="p-cat">${p.category}</div>
-                <div class="p-name">${p.name}</div>
-                <div class="p-price">R$ ${parseFloat(p.price.replace(',', '.')).toFixed(2).replace('.',',')}</div>
+                <div class="p-cat">${p.category || ''}</div>
+                <div class="p-name">${p.name || ''}</div>
+                <div class="p-price">R$ ${formatPrice(p.price)}</div>
             </div>
         </div>
     `).join('');
