@@ -111,10 +111,12 @@ async function handleImageUpload(event, targetInputId) {
                 targetInput.value = data.url;
             }
             updatePreview();
-            markUnsaved(); // Assuming markUnsaved is a function that exists
+            markUnsaved();
+            event.target.value = ''; // Allow re-selecting the same file
         } catch (error) {
             alert('Falha no upload: ' + error.message);
             targetInput.value = oldVal;
+            event.target.value = ''; 
         }
     };
     reader.readAsDataURL(file);
