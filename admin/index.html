@@ -158,8 +158,12 @@
                 <input type="text" id="s-heroLogo" oninput="markSiteUnsaved()">
             </div>
             <div class="form-group">
-                <label>Caminho do Vídeo de Fundo (Home) — ex: img/hero.mp4</label>
-                <input type="text" id="s-heroVideo" placeholder="img/hero.mp4" oninput="markSiteUnsaved()">
+                <label>Vídeo de Fundo (Home) — ex: hero_video.mp4</label>
+                <div style="display: flex; gap: 10px; align-items: flex-start;">
+                    <input type="text" id="s-heroVideo" placeholder="hero_video.mp4" oninput="markSiteUnsaved()" style="flex:1;">
+                    <button class="btn-secondary" onclick="document.getElementById('upload-video').click()" style="white-space:nowrap; padding: 0 15px; height: 42px; border-radius: 4px;">⬆️ Upload</button>
+                    <input type="file" id="upload-video" accept="video/mp4" style="display:none;" onchange="handleImageUpload(event, 's-heroVideo')">
+                </div>
             </div>
             
             <hr style="border-color: #222; margin: 25px 0;">
