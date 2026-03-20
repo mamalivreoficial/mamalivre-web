@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // 0. Fetch Global Site Content
     async function initSiteContent() {
         try {
-            const res = await fetch('data/site.json');
+            const res = await fetch(`data/site.json?v=${Date.now()}`);
             if(!res.ok) return;
             const site = await res.json();
             
