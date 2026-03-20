@@ -1,6 +1,7 @@
 backend:
-  name: git-gateway
-  branch: main # Branch to update (optional; defaults to master)
+  name: github
+  repo: mamalivreoficial/mamalivre-web
+  branch: main
 
 media_folder: "img"
 public_folder: "img"
