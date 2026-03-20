@@ -513,7 +513,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const products = data.products || data;
 
                 if (indexGrid) {
-                    indexGrid.innerHTML = products.slice(0, 3).map(createProductCard).join('');
+                    indexGrid.innerHTML = products.slice(0, 9).map(createProductCard).join('');
                     applyTiltEffect(indexGrid.querySelectorAll('.card-glass'));
                     initGalleries();
                     setTimeout(reveal, 100);
