@@ -190,10 +190,14 @@ async function loadSiteConfig() {
     }
 }
 
+function markUnsaved() {
+    document.getElementById('save-status').textContent = '⚠️ Alterações não salvas';
+    document.getElementById('save-status').style.color = '#ffaa00';
+}
+
 function markSiteUnsaved() {
     if (activeMainTab === 'site') {
-        document.getElementById('save-status').textContent = '⚠️ Alterações nos Textos não salvas';
-        document.getElementById('save-status').style.color = '#ffaa00';
+        markUnsaved();
     }
 }
 
@@ -332,7 +336,7 @@ function handleDrop(e) {
         currentProducts.splice(dragDestIndex, 0, draggedItem);
         
         renderGrid();
-        markUnsaved(); // Enable the "Save" button to show unsaved state
+        markUnsaved(); 
     }
     return false;
 }
