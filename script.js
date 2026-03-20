@@ -395,7 +395,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             // Build detail HTML
-            const waLink = `https://wa.me/5511959843718?text=${encodeURIComponent('Olá Priscila! Tenho interesse na peça: ' + product.name)}`;
+            const waLink = `https://wa.me/5511953648074?text=${encodeURIComponent('Olá Priscila! Tenho interesse na peça: ' + product.name)}`;
             
             root.innerHTML = `
                 <div class="product-detail-container">
