@@ -205,9 +205,11 @@ document.addEventListener('DOMContentLoaded', () => {
             heroVideo.play().catch(e => console.log("Audio play blocked", e));
             document.removeEventListener('click', unmuteOnFirstClick);
             document.removeEventListener('touchstart', unmuteOnFirstClick);
+            document.removeEventListener('mousemove', unmuteOnFirstClick);
         };
         document.addEventListener('click', unmuteOnFirstClick);
         document.addEventListener('touchstart', unmuteOnFirstClick);
+        document.addEventListener('mousemove', unmuteOnFirstClick);
 
         // B. Autopause on Scroll: Only play when visible (Performance)
         const videoObserver = new IntersectionObserver((entries) => {
