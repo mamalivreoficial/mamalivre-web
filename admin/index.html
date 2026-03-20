@@ -95,12 +95,22 @@
                         </div>
                         <div class="form-group">
                             <label>URL Imagem de Capa (ex: img/bolsa.jpg)</label>
-                            <input type="text" id="p-image" oninput="updatePreview()">
-                            <img id="p-image-preview" src="" style="width:100px; margin-top:10px; border-radius:5px; display:none;">
+                            <div style="display: flex; gap: 10px; align-items: start;">
+                                <div style="flex:1;">
+                                    <input type="text" id="p-image" oninput="updatePreview()">
+                                    <img id="p-image-preview" src="" style="width:100px; margin-top:10px; border-radius:5px; display:none;">
+                                </div>
+                                <button class="btn-secondary" onclick="document.getElementById('upload-cover').click()" style="white-space:nowrap; padding: 0 15px; border-radius: 4px; height: 42px;">⬆️ Fazer Upload</button>
+                                <input type="file" id="upload-cover" accept="image/*" style="display:none;" onchange="handleImageUpload(event, 'p-image')">
+                            </div>
                         </div>
                         <div class="form-group">
                             <label>Imagens Extras (URLs separadas por vírgula)</label>
-                            <input type="text" id="p-images" placeholder="img/b1.jpg, img/b2.jpg" oninput="updatePreview()">
+                            <div style="display: flex; gap: 10px;">
+                                <input type="text" id="p-images" placeholder="img/b1.jpg, img/b2.jpg" oninput="updatePreview()" style="flex: 1;">
+                                <button class="btn-secondary" onclick="document.getElementById('upload-extra').click()" style="white-space:nowrap; padding: 0 15px; border-radius: 4px; height: 42px;">⬆️ Mais Fotos</button>
+                                <input type="file" id="upload-extra" accept="image/*" style="display:none;" onchange="handleImageUpload(event, 'p-images')">
+                            </div>
                         </div>
                         <div class="form-group">
                             <label>Descrição Detalhada</label>
@@ -195,7 +205,15 @@
         </div>
     </div>
 
+    <style>
+        .drag-over {
+            border: 2px dashed var(--neon-teal) !important;
+            opacity: 0.8;
+            transform: scale(1.02);
+            transition: all 0.2s ease;
+        }
+    </style>
     <!-- Scripts -->
-    <script src="/admin/admin.js?v=3"></script>
+    <script src="/admin/admin.js?v=4"></script>
 </body>
 </html>

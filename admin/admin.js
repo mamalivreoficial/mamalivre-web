@@ -63,6 +63,55 @@ function switchMainTab(tab) {
     }
 }
 
+// ---- UPLOAD LOGIC ----
+async function handleImageUpload(event, targetInputId) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const targetInput = document.getElementById(targetInputId);
+    const oldVal = targetInput.value;
+    targetInput.value = 'Fazendo Upload... Aguarde.';
+
+    const reader = new FileReader();
+    reader.onload = async (e) => {
+        const base64Content = e.target.result.split(',')[1];
+        
+        try {
+            const response = await fetch('/api/admin?type=upload', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    password: savedPassword,
+                    filename: file.name.replace(/\s+/g, '-').toLowerCase(),
+                    content: base64Content
+                })
+            });
+
+            if (!response.ok) {
+                const err = await response.json();
+                throw new Error(err.error || 'Erro no upload');
+            }
+
+            const data = await response.json();
+            
+            if (targetInputId === 'p-images') { // Corrected from 'p-extraImages' to 'p-images' based on context
+                // If the input already has values, append the new URL
+                const currentImages = oldVal === 'Fazendo Upload... Aguarde.' || !oldVal ? [] : oldVal.split(',').map(s => s.trim()).filter(s => s);
+                currentImages.push(data.url);
+                targetInput.value = currentImages.join(', ');
+            } else {
+                targetInput.value = data.url;
+            }
+            updatePreview();
+            markUnsaved(); // Assuming markUnsaved is a function that exists
+        } catch (error) {
+            alert('Falha no upload: ' + error.message);
+            targetInput.value = oldVal;
+        }
+    };
+    reader.readAsDataURL(file);
+}
+
 // ---- SITE CONFIG LOGIC ----
 async function loadSiteConfig() {
     try {
@@ -153,41 +202,79 @@ function populateCategories() {
     }
 }
 
-function renderGrid(filterText = '') {
+function renderGrid() {
     const grid = document.getElementById('product-grid');
-    grid.innerHTML = '';
-    
-    let toShow = currentProducts;
-    if (filterText) {
-        toShow = currentProducts.filter(p => 
-            p.name.toLowerCase().includes(filterText.toLowerCase()) || 
-            p.category.toLowerCase().includes(filterText.toLowerCase())
-        );
-    }
-
-    if (toShow.length === 0) {
-        grid.innerHTML = '<p style="color:#888;">Nenhum produto encontrado.</p>';
-        return;
-    }
-
-    toShow.forEach(p => {
-        const card = document.createElement('div');
-        card.className = `p-card ${p.id === selectedProductId ? 'active' : ''}`;
-        card.onclick = () => selectProduct(p.id);
-        
-        // Show R$ cleanly
-        const priceFmt = p.price.startsWith('R$') ? p.price : `R$ ${p.price}`;
-        
-        card.innerHTML = `
-            <div class="p-card-img" style="background-image: url('../${p.image}')"></div>
-            <div class="p-card-info">
-                <span class="p-cat">${p.category}</span>
-                <span class="p-name">${p.name}</span>
-                <span class="p-price">${priceFmt}</span>
+    grid.innerHTML = currentProducts.map((p, index) => `
+        <div class="product-card ${p.id === selectedProductId ? 'active' : ''}" 
+             data-idx="${index}"
+             draggable="true"
+             onclick="selectProduct('${p.id}')"
+             style="cursor: grab;">
+            ${p.image ? `<img src="../${p.image}" class="cover-img">` : '<div class="cover-img">Sem Foto</div>'}
+            <div class="card-info">
+                <div class="category">${p.category}</div>
+                <div class="name">${p.name}</div>
+                <div class="price">R$ ${parseFloat(p.price.replace(',', '.')).toFixed(2).replace('.',',')}</div>
             </div>
-        `;
-        grid.appendChild(card);
+        </div>
+    `).join('');
+
+    // Attach Drag and Drop Listeners
+    const cards = document.querySelectorAll('.product-card');
+    cards.forEach(card => {
+        card.addEventListener('dragstart', handleDragStart);
+        card.addEventListener('dragover', handleDragOver);
+        card.addEventListener('drop', handleDrop);
+        card.addEventListener('dragenter', handleDragEnter);
+        card.addEventListener('dragleave', handleDragLeave);
+        card.addEventListener('dragend', () => cards.forEach(c => c.style.opacity = '1'));
     });
+}
+
+// Drag & Drop Handlers
+let dragSourceIndex = null;
+
+function handleDragStart(e) {
+    dragSourceIndex = this.getAttribute('data-idx');
+    e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.setData('text/html', this.innerHTML);
+    this.style.opacity = '0.4';
+}
+
+function handleDragOver(e) {
+    if (e.preventDefault) e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+    return false;
+}
+
+function handleDragEnter(e) {
+    this.classList.add('drag-over');
+    this.style.border = '2px dashed var(--neon-teal)';
+}
+
+function handleDragLeave(e) {
+    this.classList.remove('drag-over');
+    this.style.border = '1px solid var(--border-color)';
+}
+
+function handleDrop(e) {
+    if (e.stopPropagation) e.stopPropagation();
+    this.classList.remove('drag-over');
+    this.style.border = '1px solid var(--border-color)';
+    
+    document.querySelectorAll('.product-card').forEach(c => c.style.opacity = '1');
+    
+    const dragDestIndex = parseInt(this.getAttribute('data-idx'));
+    dragSourceIndex = parseInt(dragSourceIndex);
+
+    if (dragSourceIndex !== dragDestIndex && !isNaN(dragSourceIndex)) {
+        const draggedItem = currentProducts.splice(dragSourceIndex, 1)[0];
+        currentProducts.splice(dragDestIndex, 0, draggedItem);
+        
+        renderGrid();
+        markUnsaved(); // Enable the "Save" button to show unsaved state
+    }
+    return false;
 }
 
 function filterGrid() {

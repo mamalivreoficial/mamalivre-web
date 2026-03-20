@@ -5,7 +5,14 @@ export default async function handler(req, res) {
   
   // Route determination based on query param
   const type = req.query.type || 'products';
-  const PATH = type === 'site' ? 'data/site.json' : 'data/products.json';
+  let PATH;
+  if (type === 'site') {
+      PATH = 'data/site.json';
+  } else if (type === 'upload') {
+      PATH = 'img/' + (req.body.filename || `upload_${Date.now()}.jpg`);
+  } else {
+      PATH = 'data/products.json';
+  }
 
   // Security checks
   if (req.method !== 'GET' && req.method !== 'POST') {
@@ -44,12 +51,44 @@ export default async function handler(req, res) {
       });
 
     } else if (req.method === 'POST') {
-      const { password, content, sha } = req.body;
+      const { password, content, sha, filename } = req.body;
 
       if (password !== ADMIN_PASSWORD) {
         return res.status(401).json({ error: 'Senha incorreta!' });
       }
 
+      // Special Route: Image Upload
+      if (type === 'upload') {
+          if (!content || !filename) return res.status(400).json({error: 'Falta conteúdo ou nome do arquivo.'});
+          
+          let fileSha = undefined;
+          try {
+             const getRes = await fetch(`https://api.github.com/repos/${REPO}/contents/${PATH}?ref=main`, { headers });
+             if (getRes.ok) {
+                 const getData = await getRes.json();
+                 fileSha = getData.sha;
+             }
+          } catch(e) {}
+
+          const body = {
+            message: `Upload image ${filename} via Admin Dashboard`,
+            content: content,
+            branch: 'main'
+          };
+          if (fileSha) body.sha = fileSha;
+
+          const putResponse = await fetch(`https://api.github.com/repos/${REPO}/contents/${PATH}`, {
+            method: 'PUT',
+            headers,
+            body: JSON.stringify(body)
+          });
+          
+          if (!putResponse.ok) throw new Error('Erro no upload de imagem');
+          
+          return res.status(200).json({ success: true, url: PATH });
+      }
+
+      // Standard Route: Products & Site configuration edits
       if (!content || !sha) {
         return res.status(400).json({ error: 'Conteúdo ou SHA inválido ou ausente.' });
       }
