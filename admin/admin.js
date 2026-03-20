@@ -72,54 +72,92 @@ function switchMainTab(tab) {
 }
 
 // ---- UPLOAD LOGIC ----
+async function compressImage(file, maxDimension = 1280, quality = 0.8) {
+    return new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = (event) => {
+            const img = new Image();
+            img.src = event.target.result;
+            img.onload = () => {
+                const canvas = document.createElement('canvas');
+                let width = img.width;
+                let height = img.height;
+                if (width > height) {
+                    if (width > maxDimension) {
+                        height = Math.round((height * maxDimension) / width);
+                        width = maxDimension;
+                    }
+                } else {
+                    if (height > maxDimension) {
+                        width = Math.round((width * maxDimension) / height);
+                        height = maxDimension;
+                    }
+                }
+                canvas.width = width;
+                canvas.height = height;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0, width, height);
+                resolve(canvas.toDataURL('image/jpeg', quality).split(',')[1]);
+            };
+        };
+    });
+}
+
 async function handleImageUpload(event, targetInputId) {
     const file = event.target.files[0];
     if (!file) return;
 
     const targetInput = document.getElementById(targetInputId);
     const oldVal = targetInput.value;
-    targetInput.value = 'Fazendo Upload... Aguarde.';
+    targetInput.value = 'Processando e Enviando...';
 
-    const reader = new FileReader();
-    reader.onload = async (e) => {
-        const base64Content = e.target.result.split(',')[1];
-        
-        try {
-            const response = await fetch('/api/admin?type=upload', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    password: savedPassword,
-                    filename: file.name.replace(/\s+/g, '-').toLowerCase(),
-                    content: base64Content
-                })
+    try {
+        let base64Content;
+        if (file.type.startsWith('image/')) {
+            base64Content = await compressImage(file);
+        } else {
+            // For videos, use direct base64 (must be under 4.5MB)
+            const reader = new FileReader();
+            base64Content = await new Promise((resolve) => {
+                reader.readAsDataURL(file);
+                reader.onload = (e) => resolve(e.target.result.split(',')[1]);
             });
-
-            if (!response.ok) {
-                const err = await response.json();
-                throw new Error(err.error || 'Erro no upload');
-            }
-
-            const data = await response.json();
-            
-            if (targetInputId === 'p-images') { // Corrected from 'p-extraImages' to 'p-images' based on context
-                // If the input already has values, append the new URL
-                const currentImages = oldVal === 'Fazendo Upload... Aguarde.' || !oldVal ? [] : oldVal.split(',').map(s => s.trim()).filter(s => s);
-                currentImages.push(data.url);
-                targetInput.value = currentImages.join(', ');
-            } else {
-                targetInput.value = data.url;
-            }
-            updatePreview();
-            markUnsaved();
-            event.target.value = ''; // Allow re-selecting the same file
-        } catch (error) {
-            alert('Falha no upload: ' + error.message);
-            targetInput.value = oldVal;
-            event.target.value = ''; 
         }
-    };
-    reader.readAsDataURL(file);
+        
+        const response = await fetch('/api/admin?type=upload', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                password: savedPassword,
+                filename: file.name.replace(/\s+/g, '-').toLowerCase(),
+                content: base64Content
+            })
+        });
+
+        if (!response.ok) {
+            const err = await response.json();
+            throw new Error(err.error || 'Erro no upload');
+        }
+
+        const data = await response.json();
+        
+        if (targetInputId === 'p-images') {
+            const currentImages = oldVal === 'Processando e Enviando...' || !oldVal ? [] : oldVal.split(',').map(s => s.trim()).filter(s => s);
+            currentImages.push(data.url);
+            targetInput.value = currentImages.join(', ');
+        } else {
+            targetInput.value = data.url;
+        }
+        
+        updatePreview();
+        markUnsaved();
+        event.target.value = ''; // Allow re-selecting the same file
+    } catch (error) {
+        alert('Falha no upload: ' + error.message);
+        targetInput.value = oldVal;
+        event.target.value = ''; 
+    }
 }
 
 // ---- SITE CONFIG LOGIC ----
