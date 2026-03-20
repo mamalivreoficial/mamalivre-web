@@ -1,6 +1,6 @@
 export default async function handler(req, res) {
-  const GITHUB_PAT = process.env.GITHUB_PAT || ('ghp_' + 'GQ0kcfv' + 'Lr6hQzZ1o0' + 'NBkVgOZjO' + 'fWty1azIkT');
-  const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'MaLivre22$';
+  const GITHUB_PAT = process.env.GITHUB_PAT;
+  const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
   const REPO = 'mamalivreoficial/mamalivre-web';
   const PATH = 'data/products.json';
 
