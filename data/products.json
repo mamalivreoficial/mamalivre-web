@@ -1,6 +1,16 @@
 {
   "products": [
     {
+      "id": "",
+      "name": "Novo Produto",
+      "category": "Bags",
+      "price": "0,00",
+      "image": "",
+      "images": [],
+      "description": "Descrição da peça",
+      "link": ""
+    },
+    {
       "id": "M1",
       "name": "Mini Bag Shine Preta",
       "category": "Bags",
