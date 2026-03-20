@@ -191,44 +191,35 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 6.5 Splash Screen & Autonomous Hero v3.8
-    const splash = document.getElementById('splash-entry');
-    const enterBtn = document.getElementById('enter-btn');
+    // 6.5 Hero Audio & Viewport Control v3.9
     const heroVideo = document.getElementById('dyn-heroVideo');
     const heroSec = document.getElementById('hero-section');
 
-    if (splash && enterBtn && heroVideo) {
-        // Start muted just in case of pre-interaction glitches
+    if (heroVideo && heroSec) {
+        // Start muted for autoplay success
         heroVideo.muted = true;
 
-        enterBtn.addEventListener('click', () => {
-            // Unmute and Play FIRST to capture the user interaction
+        // A. Interaction-to-Unmute: Unmute on first click anywhere
+        const unmuteOnFirstClick = () => {
             heroVideo.muted = false;
             heroVideo.play().catch(e => console.log("Audio play blocked", e));
-            
-            // Fade out the splash screen
-            splash.classList.add('fade-out');
-            
-            // Remove from DOM after fade to keep things clean
-            setTimeout(() => {
-                splash.style.display = 'none';
-            }, 800);
-        });
+            document.removeEventListener('click', unmuteOnFirstClick);
+            document.removeEventListener('touchstart', unmuteOnFirstClick);
+        };
+        document.addEventListener('click', unmuteOnFirstClick);
+        document.addEventListener('touchstart', unmuteOnFirstClick);
 
         // B. Autopause on Scroll: Only play when visible (Performance)
         const videoObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    // Only resume if splash is gone
-                    if (splash.classList.contains('fade-out')) {
-                        heroVideo.play().catch(() => {});
-                    }
+                    heroVideo.play().catch(() => {});
                 } else {
                     heroVideo.pause();
                 }
             });
         }, { threshold: 0.1 });
-        videoObserver.observe(heroSec || document.body);
+        videoObserver.observe(heroSec);
     }
 
     // 7. Interactive Particles in Hero Background
