@@ -29,22 +29,42 @@ export default async function handler(req, res) {
       return res.status(500).send('Authentication failed: No token received.');
     }
 
-    // Decap CMS requires a specific popup postMessage to consume the token
     const script = `
-      <script>
-        const receiveMessage = (message) => {
-          if (!message.origin.includes('mamalivre.com.br') && !message.origin.includes('localhost')) {
-            return;
-          }
-          window.opener.postMessage(
-            'authorization:github:success:{"token":"${token}","provider":"github"}',
-            message.origin
-          );
-          window.removeEventListener("message", receiveMessage, false);
-        }
-        window.addEventListener("message", receiveMessage, false);
-        window.opener.postMessage("authorizing:github", "*");
-      </script>
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <title>Autenticando...</title>
+        <style>
+          body { font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; background: #111; color: #fff; margin: 0; }
+        </style>
+      </head>
+      <body>
+        <div><h2>Autenticado! Redirecionando...</h2><p>Pode fechar esta janela se não sumir sozinha.</p></div>
+        <script>
+          (function() {
+            function sendToken() {
+              if (window.opener) {
+                // Send the success message to the parent window
+                window.opener.postMessage(
+                  'authorization:github:success:{"token":"${token}","provider":"github"}',
+                  "*"
+                );
+              }
+            }
+            
+            // Try immediately
+            sendToken();
+            
+            // Also try when receiving a ping from the CMS
+            window.addEventListener("message", function(e) {
+              if (e.data === "authorizing:github" || e.data && e.data.match(/authorizing/)) {
+                sendToken();
+              }
+            }, false);
+          })();
+        </script>
+      </body>
+      </html>
     `;
 
     res.setHeader('Content-Type', 'text/html');
