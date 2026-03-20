@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Inter:wght@300;400;600;800&family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=2.7">
+    <link rel="stylesheet" href="style.css?v=2.8">
     
     <!-- Netlify Identity Widget (Required for /admin login token processing) -->
     <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
@@ -34,17 +34,13 @@
     </nav>
 
     <header class="hero" id="hero-section">
-        <canvas id="hero-particles" class="hero-canvas"></canvas>
         <div class="hero-bg">
             <!-- Will load the generated image via CSS -->
         </div>
-        <div class="hero-content hero-split-wrapper">
-                <!-- Logo text removed as per user request -->
-            </div>
-            
-            <div class="hero-right" style="flex: 1; display: flex; align-items: center; justify-content: center;">
+        <div class="hero-content hero-split-wrapper" style="justify-content: center;">
+            <div class="hero-right" style="flex: 1; display: flex; align-items: center; justify-content: center; z-index: 10;">
                 <div class="animated-bag-container" style="width: 100%; max-width: 1000px;">
-                    <video autoplay loop muted playsinline class="hero-bag-video" id="dyn-heroVideo" style="width: 100%; height: auto; border-radius: 20px; box-shadow: 0 0 50px rgba(0, 255, 204, 0.2);">
+                    <video autoplay loop muted playsinline class="hero-bag-video" id="dyn-heroVideo" style="width: 100%; height: auto;">
                         <source src="hero_cyber_loop.mp4" type="video/mp4" id="dyn-heroVideoSrc">
                         Seu navegador não suporta a tag de vídeo.
                     </video>
@@ -121,7 +117,7 @@
         </div>
     </footer>
 
-    <script src="script.js?v=2.7"></script>
+    <script src="script.js?v=2.8"></script>
 
     <!-- Netlify Identity Redirect (Forces user back into the admin panel after login) -->
     <script>

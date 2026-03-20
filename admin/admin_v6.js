@@ -491,7 +491,8 @@ async function saveToGitHub() {
         }
         document.getElementById('save-status').textContent = '✓ Tudo atualizado no Site';
         document.getElementById('save-status').style.color = '#25D366';
-        alert('Salvo com sucesso! O Vercel atualizará o site em 1 minuto.');
+        alert('Salvo com sucesso! O painel será recarregado para sincronizar.');
+        setTimeout(() => window.location.reload(), 2000);
     } catch (e) {
         alert(e.message);
         if (e.message.includes('Senha')) {
