@@ -162,7 +162,7 @@ async function handleImageUpload(event, targetInputId) {
 // ---- SITE CONFIG LOGIC ----
 async function loadSiteConfig() {
     try {
-        const response = await fetch('/api/admin?type=site');
+        const response = await fetch(`/api/admin?type=site&t=${Date.now()}`);
         if (!response.ok) throw new Error('Falha ao carregar site.json do GitHub');
         
         const data = await response.json();
@@ -223,7 +223,7 @@ function gatherSiteConfig() {
 // ---- PRODUCTS LOGIC ----
 async function loadProducts() {
     try {
-        const response = await fetch('/api/admin?type=products');
+        const response = await fetch(`/api/admin?type=products&t=${Date.now()}`);
         if (!response.ok) throw new Error('Falha ao carregar produtos do GitHub');
         
         const data = await response.json();

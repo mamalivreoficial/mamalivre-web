@@ -387,7 +387,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!productId || !root) return;
 
         try {
-            const response = await fetch('data/products.json');
+            const response = await fetch(`data/products.json?v=${Date.now()}`);
             const data = await response.json();
             const products = data.products || data;
             const product = products.find(p => p.id === productId);

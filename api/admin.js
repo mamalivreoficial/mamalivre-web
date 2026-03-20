@@ -42,7 +42,7 @@ export default async function handler(req, res) {
 
   try {
     if (req.method === 'GET') {
-      const response = await fetch(`https://api.github.com/repos/${REPO}/contents/${PATH}?ref=main`, { headers });
+      const response = await fetch(`https://api.github.com/repos/${REPO}/contents/${PATH}?ref=main&t=${Date.now()}`, { headers });
       if (!response.ok) {
         throw new Error(`GitHub API error: ${response.status} ${response.statusText}`);
       }
