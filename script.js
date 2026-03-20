@@ -191,28 +191,35 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 6.5 Hero Audio Toggle v3.5
-    const audioBtn = document.getElementById('hero-audio-btn');
+    // 6.5 Hero Audio & Viewport Control v3.7
     const heroVideo = document.getElementById('dyn-heroVideo');
+    const heroSec = document.getElementById('hero-section');
 
-    if (audioBtn && heroVideo) {
+    if (heroVideo && heroSec) {
         // Start muted for autoplay success
         heroVideo.muted = true;
 
-        audioBtn.addEventListener('click', () => {
-            heroVideo.muted = !heroVideo.muted;
-            const icon = audioBtn.querySelector('i');
-            
-            if (heroVideo.muted) {
-                icon.classList.replace('fa-volume-up', 'fa-volume-mute');
-                audioBtn.title = "Ativar Som";
-            } else {
-                icon.classList.replace('fa-volume-mute', 'fa-volume-up');
-                audioBtn.title = "Mutar";
-                // Play to ensure it's active after user interaction
-                heroVideo.play().catch(e => console.log("Audio play blocked", e));
-            }
-        });
+        // A. Interaction-to-Unmute: Unmute on first click anywhere
+        const unmuteOnFirstClick = () => {
+            heroVideo.muted = false;
+            heroVideo.play().catch(e => console.log("Audio play blocked", e));
+            document.removeEventListener('click', unmuteOnFirstClick);
+            document.removeEventListener('touchstart', unmuteOnFirstClick);
+        };
+        document.addEventListener('click', unmuteOnFirstClick);
+        document.addEventListener('touchstart', unmuteOnFirstClick);
+
+        // B. Autopause on Scroll: Only play when visible
+        const videoObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    heroVideo.play().catch(() => {});
+                } else {
+                    heroVideo.pause();
+                }
+            });
+        }, { threshold: 0.1 });
+        videoObserver.observe(heroSec);
     }
 
     // 7. Interactive Particles in Hero Background
