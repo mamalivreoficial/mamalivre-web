@@ -1,6 +1,6 @@
 export default async function handler(req, res) {
   const GITHUB_PAT = process.env.GITHUB_PAT;
-  const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
+  const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'MaLivre22$';
   const REPO = 'mamalivreoficial/mamalivre-web';
   const PATH = 'data/products.json';
 
@@ -9,8 +9,8 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method Not Allowed' });
   }
   
-  if (!GITHUB_PAT || !ADMIN_PASSWORD) {
-    return res.status(500).json({ error: 'Configuração do Vercel incompleta (Falta GITHUB_PAT ou ADMIN_PASSWORD)' });
+  if (!GITHUB_PAT && req.method === 'POST') {
+    return res.status(500).json({ error: 'Configuração incompleta: Falta a chave do GITHUB_PAT.' });
   }
 
   const headers = {
