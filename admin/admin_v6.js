@@ -405,7 +405,10 @@ function updatePreview() {
     if (!prod) return;
 
     // Apply values from form to array
-    prod.id = document.getElementById('p-id').value;
+    const newId = document.getElementById('p-id').value.trim();
+    if (newId) {
+        prod.id = newId;
+    }
     prod.name = document.getElementById('p-name').value;
     prod.category = document.getElementById('p-category').value;
     prod.price = document.getElementById('p-price').value;
@@ -456,6 +459,16 @@ async function saveToGitHub() {
     let typeParam;
 
     if (activeMainTab === 'products') {
+        // Validation: Ensure all products have IDs
+        const invalidProd = currentProducts.find(p => !p.id || p.id.trim() === '');
+        if (invalidProd) {
+            alert(`Erro: O produto "${invalidProd.name}" está sem ID. Por favor, defina um ID único.`);
+            btn.textContent = originalText;
+            btn.disabled = false;
+            selectProduct(invalidProd.id || currentProducts.indexOf(invalidProd));
+            return;
+        }
+
         defaultProductsJson.products = currentProducts;
         payloadContent = defaultProductsJson;
         targetSha = currentSha;
