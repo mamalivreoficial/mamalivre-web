@@ -1,3 +1,11 @@
+export const config = {
+  api: {
+    bodyParser: {
+      sizeLimit: '10mb',
+    },
+  },
+};
+
 export default async function handler(req, res) {
   const GITHUB_PAT = process.env.GITHUB_PAT;
   const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
