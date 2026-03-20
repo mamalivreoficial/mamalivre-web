@@ -16,8 +16,9 @@ collections:
           - label: "Produtos"
             name: "products"
             widget: "list"
+            summary: "{{name}} - {{price}}"
             fields:
-              - {label: "ID do Produto", name: "id", widget: "string", hint: "Ex: M1, M2..."}
+              - {label: "ID (Identificador Único)", name: "id", widget: "string", hint: "Use o nome da peça sem espaços (ex: minibagpreta)"}
               - {label: "Nome da Peça", name: "name", widget: "string"}
               - {label: "Categoria", name: "category", widget: "select", options: ["Bags", "Chokers", "Acessórios", "(Encomende)"]}
               - {label: "Preço", name: "price", widget: "string", hint: "Formato: R$ 0,00"}

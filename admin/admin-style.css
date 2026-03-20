@@ -1,0 +1,92 @@
+/* Custom Admin CSS for Decap CMS */
+
+/* Main UI Background */
+body {
+    background: #0a0a0a !important;
+}
+
+/* Header Styling */
+.nc-app-header {
+    background: #111 !important;
+    border-bottom: 2px solid #333 !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.5) !important;
+}
+
+/* Sidebar Styling */
+.nc-sidebar {
+    background: #0f0f0f !important;
+    border-right: 1px solid #222 !important;
+}
+
+/* List Items (Product Bars) */
+.nc-list-editor-item {
+    background: #1a1a1a !important;
+    border: 1px solid #333 !important;
+    border-radius: 8px !important;
+    margin-bottom: 15px !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    overflow: hidden !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3) !important;
+}
+
+.nc-list-editor-item:hover {
+    border-color: #00f2fe !important; /* var(--neon-teal) approximate */
+    box-shadow: 0 0 15px rgba(0, 242, 254, 0.2) !important;
+    transform: translateY(-2px) !important;
+}
+
+.nc-list-editor-item-header {
+    background: #252525 !important;
+    padding: 10px 15px !important;
+    color: #fff !important;
+    font-weight: 600 !important;
+    border-bottom: 1px solid #333 !important;
+}
+
+/* Labels */
+label {
+    color: #aaa !important;
+    font-size: 0.85rem !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1px !important;
+}
+
+/* Inputs */
+input, textarea, select {
+    background: #050505 !important;
+    border: 1px solid #222 !important;
+    color: #eee !important;
+    border-radius: 4px !important;
+    padding: 8px 12px !important;
+}
+
+input:focus, textarea:focus {
+    border-color: #00f2fe !important;
+    outline: none !important;
+}
+
+/* Buttons */
+.nc-button {
+    border-radius: 20px !important;
+    text-transform: uppercase !important;
+    font-weight: 600 !important;
+    letter-spacing: 1px !important;
+}
+
+.nc-button-primary {
+    background: linear-gradient(135deg, #FF00FF, #00f2fe) !important;
+    border: none !important;
+    color: #000 !important;
+}
+
+/* Preview Pane */
+.nc-preview-pane-frame {
+    border-left: 2px solid #333 !important;
+    background: #000 !important;
+}
+
+/* Summary text in list items */
+.nc-list-editor-item-summary {
+    font-size: 1.1rem !important;
+    color: #00f2fe !important;
+}
