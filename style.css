@@ -691,8 +691,8 @@ h1, h2, h3 {
 /* Products Glassmorphism */
 .product-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 40px;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
 }
 
 .product-card {
@@ -734,7 +734,7 @@ h1, h2, h3 {
 }
 
 #index-product-grid .product-card {
-    max-width: 380px;
+    max-width: 320px;
     margin: 0 auto;
 }
 
