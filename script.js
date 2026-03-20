@@ -191,6 +191,30 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // 6.5 Hero Audio Toggle v3.5
+    const audioBtn = document.getElementById('hero-audio-btn');
+    const heroVideo = document.getElementById('dyn-heroVideo');
+
+    if (audioBtn && heroVideo) {
+        // Start muted for autoplay success
+        heroVideo.muted = true;
+
+        audioBtn.addEventListener('click', () => {
+            heroVideo.muted = !heroVideo.muted;
+            const icon = audioBtn.querySelector('i');
+            
+            if (heroVideo.muted) {
+                icon.classList.replace('fa-volume-up', 'fa-volume-mute');
+                audioBtn.title = "Ativar Som";
+            } else {
+                icon.classList.replace('fa-volume-mute', 'fa-volume-up');
+                audioBtn.title = "Mutar";
+                // Play to ensure it's active after user interaction
+                heroVideo.play().catch(e => console.log("Audio play blocked", e));
+            }
+        });
+    }
+
     // 7. Interactive Particles in Hero Background
     const canvas = document.getElementById('hero-particles');
     if (canvas) {

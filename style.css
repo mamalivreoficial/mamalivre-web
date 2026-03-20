@@ -1105,3 +1105,34 @@ h1, h2, h3 {
         font-size: 1.8rem;
     }
 }
+
+/* --- AUDIO CONTROL v3.5 --- */
+.audio-toggle {
+    position: absolute;
+    bottom: 40px;
+    right: 40px;
+    z-index: 100;
+    width: 45px;
+    height: 45px;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: white;
+    font-size: 1.2rem;
+}
+
+.audio-toggle:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: scale(1.1);
+    box-shadow: 0 0 20px rgba(0, 243, 255, 0.2);
+}
+
+.audio-toggle i {
+    pointer-events: none;
+}
