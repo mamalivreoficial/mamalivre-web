@@ -8,8 +8,11 @@ document.addEventListener('DOMContentLoaded', () => {
             
             const setText = (id, text) => {
                 const el = document.getElementById(id);
-                if (el && text) el.textContent = text;
-            }
+                if (el) {
+                    el.textContent = text;
+                    el.setAttribute('data-text', text);
+                }
+            };
             
             setText('dyn-heroLogo', site.heroLogo);
             setText('dyn-homeProductsTitlePrefix', site.homeProductsTitlePrefix);
