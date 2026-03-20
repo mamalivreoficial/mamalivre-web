@@ -514,9 +514,9 @@ async function saveToGitHub() {
         } else {
             siteConfigSha = data.newSha;
         }
-        document.getElementById('save-status').textContent = '✓ Tudo atualizado no Site';
+        document.getElementById('save-status').innerHTML = `✓ Salvo no GitHub! <br><small style="color:#888;font-size:0.7rem;">Sync: ${data.debug?.serverTime || 'Unknown'} | v${data.debug?.version || '3.1'}</small>`;
         document.getElementById('save-status').style.color = '#25D366';
-        alert('Salvo com sucesso no GitHub! As mudanças podem levar até 1 minuto para refletir no site público devido ao cache do Vercel.');
+        alert('Salvo com sucesso no GitHub! Verifique o rodapé do site principal para a marca "v3.1".');
     } catch (e) {
         alert(e.message);
         if (e.message.includes('Senha')) {

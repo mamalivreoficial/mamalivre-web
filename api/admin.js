@@ -124,10 +124,14 @@ export default async function handler(req, res) {
 
       const putData = await putResponse.json();
 
-      return res.status(200).json({
-        success: true,
-        newSha: putData.content.sha
-      });
+        return res.status(200).json({ 
+            success: true, 
+            newSha: putData.content.sha,
+            debug: {
+                serverTime: new Date().toISOString(),
+                version: '3.1-DEFINITIVE'
+            }
+        });
     }
 
   } catch (error) {
