@@ -191,24 +191,13 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 6.5 Hero Audio & Viewport Control v3.9
+    // 6.5 Hero Viewport Control v5.0
     const heroVideo = document.getElementById('dyn-heroVideo');
     const heroSec = document.getElementById('hero-section');
 
     if (heroVideo && heroSec) {
-        // Start muted for autoplay success
+        // Enforce muted for autoplay success
         heroVideo.muted = true;
-        heroVideo.volume = 0.6; // Reduced 40% as requested
-
-        // A. Interaction-to-Unmute: Unmute on first click anywhere
-        const unmuteOnFirstClick = () => {
-            heroVideo.muted = false;
-            heroVideo.play().catch(e => console.log("Audio play blocked", e));
-            document.removeEventListener('click', unmuteOnFirstClick);
-            document.removeEventListener('touchstart', unmuteOnFirstClick);
-        };
-        document.addEventListener('click', unmuteOnFirstClick, { once: true });
-        document.addEventListener('touchstart', unmuteOnFirstClick, { once: true });
 
         // B. Autopause on Scroll: Only play when visible (Performance)
         const videoObserver = new IntersectionObserver((entries) => {
