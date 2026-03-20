@@ -108,6 +108,44 @@ h1, h2, h3 {
     font-size: 1.5rem;
 }
 
+.hero-neon-logo {
+    font-family: var(--font-heading);
+    font-size: clamp(3rem, 10vw, 7rem);
+    font-weight: 800;
+    text-transform: uppercase;
+    color: #fff;
+    text-align: left;
+    line-height: 0.9;
+    letter-spacing: -2px;
+    z-index: 10;
+    position: relative;
+    text-shadow: 
+        0 0 10px #fff,
+        0 0 20px #fff,
+        0 0 40px var(--neon-magenta),
+        0 0 80px var(--neon-magenta),
+        0 0 120px var(--neon-magenta);
+    animation: heroNeonPulse 4s ease-in-out infinite alternate;
+}
+
+@keyframes heroNeonPulse {
+    0% {
+        text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 40px var(--neon-magenta), 0 0 80px var(--neon-magenta);
+        transform: scale(1) skewX(-2deg);
+        color: #fff;
+    }
+    50% {
+        text-shadow: 0 0 15px #fff, 0 0 30px #fff, 0 0 60px var(--neon-teal), 0 0 100px var(--neon-teal);
+        transform: scale(1.02) skewX(0deg);
+        color: #f0f0f0;
+    }
+    100% {
+        text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 40px var(--neon-magenta), 0 0 80px var(--neon-magenta);
+        transform: scale(1) skewX(2deg);
+        color: #fff;
+    }
+}
+
 /* Navigation */
 .navbar {
     position: fixed;
@@ -604,6 +642,30 @@ h1, h2, h3 {
 .btn-outline:hover {
     color: var(--neon-teal);
     gap: 15px; /* extends arrow slightly */
+}
+
+/* Gallery Indicators */
+.gallery-dots {
+    display: flex;
+    gap: 8px;
+    margin-top: 15px;
+    margin-bottom: 10px;
+    justify-content: center;
+}
+
+.dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    cursor: pointer;
+    transition: var(--transition-smooth);
+}
+
+.dot.active {
+    background: var(--neon-teal);
+    box-shadow: 0 0 8px var(--neon-teal);
+    transform: scale(1.3);
 }
 
 /* Custom Section */

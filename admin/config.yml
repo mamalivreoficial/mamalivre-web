@@ -17,10 +17,11 @@ collections:
             name: "products"
             widget: "list"
             fields:
-              - {label: "ID do Produto", name: "id", widget: "string"}
+              - {label: "ID do Produto", name: "id", widget: "string", hint: "Ex: M1, M2..."}
               - {label: "Nome da Peça", name: "name", widget: "string"}
-              - {label: "Categoria", name: "category", widget: "select", options: ["Bags", "Chokers", "Acessórios", "Custom"]}
-              - {label: "Preço", name: "price", widget: "string"}
-              - {label: "Foto Oficial", name: "image", widget: "image"}
+              - {label: "Categoria", name: "category", widget: "select", options: ["Bags", "Chokers", "Acessórios", "(Encomende)"]}
+              - {label: "Preço", name: "price", widget: "string", hint: "Formato: R$ 0,00"}
+              - {label: "Foto de Capa (Principal)", name: "image", widget: "image"}
+              - {label: "Galeria de Fotos (Até 5 extras)", name: "images", widget: "list", field: {label: "Foto Extra", name: "image", widget: "image"}}
               - {label: "Descrição Editorial", name: "description", widget: "text"}
-              - {label: "Link do WhatsApp (Comprar)", name: "link", widget: "string"}
+              - {label: "Link do Instagram", name: "link", widget: "string", hint: "Link para o post ou perfil"}

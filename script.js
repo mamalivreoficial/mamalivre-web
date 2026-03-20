@@ -314,9 +314,19 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div class="product-info">
                         <h3 style="display: flex; justify-content: space-between; align-items: center;">
                             ${product.name}
-                            <span style="font-size: 0.9rem; color: var(--neon-teal); font-weight: 400;">${product.price}</span>
+                            <span style="font-size: 0.9rem; color: var(--neon-teal); font-weight: 400;">
+                                ${product.price.startsWith('R$') ? product.price : 'R$ ' + product.price}
+                            </span>
                         </h3>
                         <p>${product.description}</p>
+                        
+                        ${product.images && product.images.length > 0 ? `
+                            <div class="gallery-dots">
+                                <div class="dot active" data-img="${product.image}"></div>
+                                ${product.images.map(img => `<div class="dot" data-img="${img}"></div>`).join('')}
+                            </div>
+                        ` : ''}
+
                         <a href="${product.link}" target="_blank" class="btn-outline">
                             EU QUERO
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -327,6 +337,23 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             </div>
         `;
+    }
+
+    // Add function to handle gallery dots
+    function initGalleries() {
+        document.querySelectorAll('.gallery-dots').forEach(dots => {
+            const card = dots.closest('.card-glass');
+            const img = card.querySelector('.product-img');
+            dots.querySelectorAll('.dot').forEach(dot => {
+                dot.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    img.src = dot.dataset.img;
+                    dots.querySelectorAll('.dot').forEach(d => d.classList.remove('active'));
+                    dot.classList.add('active');
+                });
+            });
+        });
     }
 
     function applyTiltEffect(cards) {
@@ -357,8 +384,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 const products = data.products || data;
 
                 if (indexGrid) {
-                    indexGrid.innerHTML = products.slice(0, 2).map(createProductCard).join('');
+                    indexGrid.innerHTML = products.slice(0, 3).map(createProductCard).join('');
                     applyTiltEffect(indexGrid.querySelectorAll('.card-glass'));
+                    initGalleries();
                     setTimeout(reveal, 100);
                 }
 
@@ -370,6 +398,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         
                         shopGrid.innerHTML = filtered.map(createProductCard).join('');
                         applyTiltEffect(shopGrid.querySelectorAll('.card-glass'));
+                        initGalleries();
                         setTimeout(reveal, 100);
                     };
 
