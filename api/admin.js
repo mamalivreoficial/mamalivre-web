@@ -14,10 +14,13 @@ export default async function handler(req, res) {
   }
 
   const headers = {
-    Authorization: `Bearer ${GITHUB_PAT}`,
     Accept: 'application/vnd.github.v3+json',
     'User-Agent': 'MamaLivre-Admin-Dashboard' // Required by GitHub API
   };
+  
+  if (GITHUB_PAT) {
+    headers.Authorization = `Bearer ${GITHUB_PAT}`;
+  }
 
   try {
     if (req.method === 'GET') {
