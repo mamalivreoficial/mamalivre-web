@@ -1,4 +1,37 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // 0. Fetch Global Site Content
+    async function initSiteContent() {
+        try {
+            const res = await fetch('data/site.json');
+            if(!res.ok) return;
+            const site = await res.json();
+            
+            const setText = (id, text) => {
+                const el = document.getElementById(id);
+                if (el && text) el.textContent = text;
+            }
+            
+            setText('dyn-heroLogo', site.heroLogo);
+            setText('dyn-homeProductsTitlePrefix', site.homeProductsTitlePrefix);
+            setText('dyn-homeProductsTitleHighlight', site.homeProductsTitleHighlight);
+            setText('dyn-homeProductsDesc', site.homeProductsDesc);
+            setText('dyn-customTitlePrefix', site.customTitlePrefix);
+            setText('dyn-customTitleHighlight', site.customTitleHighlight);
+            setText('dyn-customText1', site.customText1);
+            setText('dyn-customText2', site.customText2);
+            setText('dyn-shopLogo', site.shopLogo);
+            setText('dyn-shopDesc', site.shopDesc);
+
+            if (site.heroVideo && document.getElementById('dyn-heroVideoSrc')) {
+                document.getElementById('dyn-heroVideoSrc').src = site.heroVideo;
+                document.getElementById('dyn-heroVideo').load();
+            }
+        } catch (e) {
+            console.error('Failed to load site content', e);
+        }
+    }
+    initSiteContent();
+
     // 1. Glowing Cursor Effect
     const cursorGlow = document.querySelector('.cursor-glow');
     let isMouseMoving = false;

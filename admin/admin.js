@@ -4,6 +4,10 @@ let defaultProductsJson = { products: [] };
 let selectedProductId = null;
 let savedPassword = sessionStorage.getItem('mama_admin_pwd') || '';
 
+let siteConfigSha = null;
+let currentSiteConfig = {};
+let activeMainTab = 'products'; // 'products' or 'site'
+
 document.addEventListener('DOMContentLoaded', () => {
     if (savedPassword) {
         showDashboard();
@@ -31,12 +35,90 @@ async function showDashboard() {
     document.getElementById('login-screen').classList.add('hidden');
     document.getElementById('dashboard').classList.remove('hidden');
     await loadProducts();
+    await loadSiteConfig();
 }
 
+// MAIN TABS
+function switchMainTab(tab) {
+    activeMainTab = tab;
+    document.getElementById('mtab-products').style.borderColor = tab === 'products' ? 'var(--neon-teal)' : '#333';
+    document.getElementById('mtab-site').style.borderColor = tab === 'site' ? 'var(--neon-teal)' : '#333';
+    document.getElementById('mtab-products').style.color = tab === 'products' ? '#fff' : '#888';
+    document.getElementById('mtab-site').style.color = tab === 'site' ? '#fff' : '#888';
+
+    if (tab === 'products') {
+        document.getElementById('view-products').classList.remove('hidden');
+        document.getElementById('view-site').classList.add('hidden');
+        document.getElementById('btn-new-product').classList.remove('hidden');
+        document.getElementById('btn-save').textContent = 'Salvar Produtos no Site';
+        document.getElementById('save-status').textContent = 'Tudo atualizado';
+        document.getElementById('save-status').style.color = '#888';
+    } else {
+        document.getElementById('view-products').classList.add('hidden');
+        document.getElementById('view-site').classList.remove('hidden');
+        document.getElementById('btn-new-product').classList.add('hidden');
+        document.getElementById('btn-save').textContent = 'Salvar Textos no Site';
+        document.getElementById('save-status').textContent = 'Tudo atualizado';
+        document.getElementById('save-status').style.color = '#888';
+    }
+}
+
+// ---- SITE CONFIG LOGIC ----
+async function loadSiteConfig() {
+    try {
+        const response = await fetch('/api/admin?type=site');
+        if (!response.ok) throw new Error('Falha ao carregar site.json do GitHub');
+        
+        const data = await response.json();
+        siteConfigSha = data.sha;
+        currentSiteConfig = data.content || {};
+
+        document.getElementById('s-heroLogo').value = currentSiteConfig.heroLogo || '';
+        document.getElementById('s-heroVideo').value = currentSiteConfig.heroVideo || '';
+        document.getElementById('s-homePrefix').value = currentSiteConfig.homeProductsTitlePrefix || '';
+        document.getElementById('s-homeHighlight').value = currentSiteConfig.homeProductsTitleHighlight || '';
+        document.getElementById('s-homeDesc').value = currentSiteConfig.homeProductsDesc || '';
+        
+        document.getElementById('s-customPrefix').value = currentSiteConfig.customTitlePrefix || '';
+        document.getElementById('s-customHighlight').value = currentSiteConfig.customTitleHighlight || '';
+        document.getElementById('s-customText1').value = currentSiteConfig.customText1 || '';
+        document.getElementById('s-customText2').value = currentSiteConfig.customText2 || '';
+        
+        document.getElementById('s-shopLogo').value = currentSiteConfig.shopLogo || '';
+        document.getElementById('s-shopDesc').value = currentSiteConfig.shopDesc || '';
+    } catch (e) {
+        console.error('Site config error:', e);
+    }
+}
+
+function markSiteUnsaved() {
+    if (activeMainTab === 'site') {
+        document.getElementById('save-status').textContent = '⚠️ Alterações nos Textos não salvas';
+        document.getElementById('save-status').style.color = '#ffaa00';
+    }
+}
+
+function gatherSiteConfig() {
+    return {
+        heroLogo: document.getElementById('s-heroLogo').value,
+        heroVideo: document.getElementById('s-heroVideo').value,
+        homeProductsTitlePrefix: document.getElementById('s-homePrefix').value,
+        homeProductsTitleHighlight: document.getElementById('s-homeHighlight').value,
+        homeProductsDesc: document.getElementById('s-homeDesc').value,
+        customTitlePrefix: document.getElementById('s-customPrefix').value,
+        customTitleHighlight: document.getElementById('s-customHighlight').value,
+        customText1: document.getElementById('s-customText1').value,
+        customText2: document.getElementById('s-customText2').value,
+        shopLogo: document.getElementById('s-shopLogo').value,
+        shopDesc: document.getElementById('s-shopDesc').value
+    };
+}
+
+// ---- PRODUCTS LOGIC ----
 async function loadProducts() {
     try {
-        const response = await fetch('/api/admin');
-        if (!response.ok) throw new Error('Falha ao carregar dados do GitHub');
+        const response = await fetch('/api/admin?type=products');
+        if (!response.ok) throw new Error('Falha ao carregar produtos do GitHub');
         
         const data = await response.json();
         currentSha = data.sha;
@@ -52,8 +134,8 @@ async function loadProducts() {
         populateCategories();
         renderGrid();
     } catch (e) {
-        alert(e.message);
-        console.error(e);
+        // Suppress alert to prevent double popups, just log. We don't want to break the whole dash if products fail but site loads.
+        console.error('Products error:', e);
     }
 }
 
@@ -218,17 +300,29 @@ async function saveToGitHub() {
     btn.textContent = 'Salvando...';
     btn.disabled = true;
 
-    // Repackage exactly as before
-    defaultProductsJson.products = currentProducts;
+    let payloadContent;
+    let targetSha;
+    let typeParam;
+
+    if (activeMainTab === 'products') {
+        defaultProductsJson.products = currentProducts;
+        payloadContent = defaultProductsJson;
+        targetSha = currentSha;
+        typeParam = 'products';
+    } else {
+        payloadContent = gatherSiteConfig();
+        targetSha = siteConfigSha;
+        typeParam = 'site';
+    }
 
     try {
-        const response = await fetch('/api/admin', {
+        const response = await fetch(`/api/admin?type=${typeParam}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 password: savedPassword,
-                sha: currentSha,
-                content: defaultProductsJson
+                sha: targetSha,
+                content: payloadContent
             })
         });
 
@@ -239,7 +333,11 @@ async function saveToGitHub() {
         }
 
         // Success
-        currentSha = data.newSha;
+        if (activeMainTab === 'products') {
+            currentSha = data.newSha;
+        } else {
+            siteConfigSha = data.newSha;
+        }
         document.getElementById('save-status').textContent = '✓ Tudo atualizado no Site';
         document.getElementById('save-status').style.color = '#25D366';
         alert('Salvo com sucesso! O Vercel atualizará o site em 1 minuto.');

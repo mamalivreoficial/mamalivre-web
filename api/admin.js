@@ -2,7 +2,10 @@ export default async function handler(req, res) {
   const GITHUB_PAT = process.env.GITHUB_PAT;
   const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
   const REPO = 'mamalivreoficial/mamalivre-web';
-  const PATH = 'data/products.json';
+  
+  // Route determination based on query param
+  const type = req.query.type || 'products';
+  const PATH = type === 'site' ? 'data/site.json' : 'data/products.json';
 
   // Security checks
   if (req.method !== 'GET' && req.method !== 'POST') {
@@ -10,12 +13,12 @@ export default async function handler(req, res) {
   }
   
   if (!GITHUB_PAT && req.method === 'POST') {
-    return res.status(500).json({ error: 'Configuração incompleta: Falta a chave do GITHUB_PAT.' });
+    return res.status(500).json({ error: 'Configuração incompleta: Falta a variável GITHUB_PAT no Vercel.' });
   }
 
   const headers = {
     Accept: 'application/vnd.github.v3+json',
-    'User-Agent': 'MamaLivre-Admin-Dashboard' // Required by GitHub API
+    'User-Agent': 'MamaLivre-Admin-Dashboard'
   };
   
   if (GITHUB_PAT) {
@@ -26,50 +29,62 @@ export default async function handler(req, res) {
     if (req.method === 'GET') {
       const response = await fetch(`https://api.github.com/repos/${REPO}/contents/${PATH}?ref=main`, { headers });
       if (!response.ok) {
-        const errorText = await response.text();
-        return res.status(response.status).json({ error: 'Failed to fetch content from GitHub', details: errorText });
+        throw new Error(`GitHub API error: ${response.status} ${response.statusText}`);
       }
-      const data = await response.json();
-      const productsJson = Buffer.from(data.content, 'base64').toString('utf8');
       
-      return res.status(200).json({ sha: data.sha, content: JSON.parse(productsJson) });
-    }
+      const fileData = await response.json();
+      const contentBase64 = fileData.content;
+      // Decode content
+      const contentString = Buffer.from(contentBase64, 'base64').toString('utf8');
+      const content = JSON.parse(contentString);
 
-    if (req.method === 'POST') {
-      const { password, sha, content } = req.body;
-      
+      return res.status(200).json({
+        sha: fileData.sha,
+        content: content
+      });
+
+    } else if (req.method === 'POST') {
+      const { password, content, sha } = req.body;
+
       if (password !== ADMIN_PASSWORD) {
         return res.status(401).json({ error: 'Senha incorreta!' });
       }
 
-      if (!sha || !content) {
-        return res.status(400).json({ error: 'SHA ou conteúdo faltando na requisição.' });
+      if (!content || !sha) {
+        return res.status(400).json({ error: 'Conteúdo ou SHA inválido ou ausente.' });
       }
 
-      // Encode content back to base64
-      const encodedContent = Buffer.from(JSON.stringify(content, null, 2), 'utf8').toString('base64');
-      
-      const response = await fetch(`https://api.github.com/repos/${REPO}/contents/${PATH}`, {
+      const contentString = JSON.stringify(content, null, 2);
+      const contentBase64 = Buffer.from(contentString, 'utf8').toString('base64');
+
+      const body = {
+        message: `Update ${type} via Native Admin Dashboard`,
+        content: contentBase64,
+        sha: sha,
+        branch: 'main'
+      };
+
+      const putResponse = await fetch(`https://api.github.com/repos/${REPO}/contents/${PATH}`, {
         method: 'PUT',
         headers,
-        body: JSON.stringify({
-          message: 'Atualização de Produtos via Painel Admin V2',
-          content: encodedContent,
-          sha: sha,
-          branch: 'main'
-        })
+        body: JSON.stringify(body)
       });
-      
-      if (!response.ok) {
-         const err = await response.text();
-         return res.status(response.status).json({ error: 'Falha ao salvar no GitHub', details: err });
+
+      if (!putResponse.ok) {
+        const errorData = await putResponse.json();
+        throw new Error(errorData.message || 'Erro ao salvar no GitHub');
       }
-      
-      const data = await response.json();
-      return res.status(200).json({ success: true, newSha: data.content.sha });
+
+      const putData = await putResponse.json();
+
+      return res.status(200).json({
+        success: true,
+        newSha: putData.content.sha
+      });
     }
+
   } catch (error) {
-    console.error('API Error:', error);
-    return res.status(500).json({ error: 'Erro interno no servidor Vercel', details: error.message });
+    console.error('API /admin error:', error);
+    return res.status(500).json({ error: error.message });
   }
 }

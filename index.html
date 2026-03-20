@@ -40,13 +40,13 @@
         </div>
         <div class="hero-content hero-split-wrapper">
             <div class="hero-left" style="display: flex; align-items: center; justify-content: center;">
-                <h1 class="hero-neon-logo">MAMA LIVRE</h1>
+                <h1 class="hero-neon-logo" id="dyn-heroLogo">MAMA LIVRE</h1>
             </div>
             
             <div class="hero-right">
                 <div class="animated-bag-container">
-                    <video autoplay loop muted playsinline class="hero-bag-video">
-                        <source src="hero_video.mp4" type="video/mp4">
+                    <video autoplay loop muted playsinline class="hero-bag-video" id="dyn-heroVideo">
+                        <source src="hero_video.mp4" type="video/mp4" id="dyn-heroVideoSrc">
                         Seu navegador não suporta a tag de vídeo.
                     </video>
                 </div>
@@ -64,8 +64,8 @@
         <section id="collections" class="section">
             <div class="container">
                 <div class="section-header reveal">
-                    <h2 class="section-title">Nossos <span class="neon-text-teal">acessórios</span></h2>
-                    <p class="section-desc">Design exclusivo.</p>
+                    <h2 class="section-title"><span id="dyn-homeProductsTitlePrefix">Nossos</span> <span class="neon-text-teal" id="dyn-homeProductsTitleHighlight">acessórios</span></h2>
+                    <p class="section-desc" id="dyn-homeProductsDesc">Design exclusivo.</p>
                 </div>
 
                 <div class="product-grid" id="index-product-grid">
@@ -78,9 +78,9 @@
             <div class="container">
                 <div class="custom-grid">
                     <div class="custom-content reveal">
-                        <h2 class="section-title">Peças <span class="neon-text">Sob Medida</span></h2>
-                        <p class="custom-text">Arquitetura corporal. Dos harnesses de cintas brilhantes a roupas desenhadas perfeitamente para sua estrutura.</p>
-                        <p class="custom-text">Trabalhamos com materiais premium selecionados para quem vive sob a luz estroboscópica e a escuridão da noite.</p>
+                        <h2 class="section-title"><span id="dyn-customTitlePrefix">Peças</span> <span class="neon-text" id="dyn-customTitleHighlight">Sob Medida</span></h2>
+                        <p class="custom-text" id="dyn-customText1">Arquitetura corporal. Dos harnesses de cintas brilhantes a roupas desenhadas perfeitamente para sua estrutura.</p>
+                        <p class="custom-text" id="dyn-customText2">Trabalhamos com materiais premium selecionados para quem vive sob a luz estroboscópica e a escuridão da noite.</p>
                         <ul class="custom-list">
                             <li><span class="bullet"></span> Design Cyber-Goth / Dark 2026</li>
                             <li><span class="bullet"></span> Hardwares e corrimas blindadas</li>
