@@ -171,6 +171,7 @@ async function loadSiteConfig() {
 
         document.getElementById('s-heroLogo').value = currentSiteConfig.heroLogo || '';
         document.getElementById('s-heroVideo').value = currentSiteConfig.heroVideo || '';
+        document.getElementById('s-heroVideoMobile').value = currentSiteConfig.heroVideoMobile || '';
         document.getElementById('s-homePrefix').value = currentSiteConfig.homeProductsTitlePrefix || '';
         document.getElementById('s-homeHighlight').value = currentSiteConfig.homeProductsTitleHighlight || '';
         document.getElementById('s-homeDesc').value = currentSiteConfig.homeProductsDesc || '';
@@ -210,6 +211,7 @@ function gatherSiteConfig() {
     return {
         heroLogo: document.getElementById('s-heroLogo').value,
         heroVideo: document.getElementById('s-heroVideo').value,
+        heroVideoMobile: document.getElementById('s-heroVideoMobile').value,
         homeProductsTitlePrefix: document.getElementById('s-homePrefix').value,
         homeProductsTitleHighlight: document.getElementById('s-homeHighlight').value,
         homeProductsDesc: document.getElementById('s-homeDesc').value,

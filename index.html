@@ -39,8 +39,12 @@
             <!-- Will load the generated image via CSS -->
         </div>
         <div class="hero-content" style="display: flex; align-items: center; justify-content: center; width: 100%; height: 100%;">
-            <video autoplay loop muted playsinline class="hero-bag-video" id="dyn-heroVideo">
+            <video autoplay loop muted playsinline class="hero-bag-video hero-video-desktop" id="dyn-heroVideo">
                 <source src="hero_cyber_loop.mp4" type="video/mp4" id="dyn-heroVideoSrc">
+                Seu navegador não suporta a tag de vídeo.
+            </video>
+            <video autoplay loop muted playsinline class="hero-bag-video hero-video-mobile" id="dyn-heroVideoMobile">
+                <source src="video/hero-mobile.mp4" type="video/mp4" id="dyn-heroVideoMobileSrc">
                 Seu navegador não suporta a tag de vídeo.
             </video>
         </div>
@@ -146,7 +150,7 @@
         </div>
     </footer>
 
-    <script src="script.js?v=7.0"></script>
+    <script src="script.js?v=7.1"></script>
 
     <!-- Netlify Identity Redirect (Forces user back into the admin panel after login) -->
     <script>

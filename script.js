@@ -41,6 +41,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.getElementById('dyn-heroVideoSrc').src = site.heroVideo;
                 document.getElementById('dyn-heroVideo').load();
             }
+            if (site.heroVideoMobile && document.getElementById('dyn-heroVideoMobileSrc')) {
+                document.getElementById('dyn-heroVideoMobileSrc').src = site.heroVideoMobile;
+                const mobilePlayer = document.getElementById('dyn-heroVideoMobile');
+                if (mobilePlayer) mobilePlayer.load();
+            }
         } catch (e) {
             console.error('Failed to load site content', e);
         }
@@ -202,19 +207,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 6.5 Hero Viewport Control v5.0
     const heroVideo = document.getElementById('dyn-heroVideo');
+    const heroVideoMobile = document.getElementById('dyn-heroVideoMobile');
     const heroSec = document.getElementById('hero-section');
 
-    if (heroVideo && heroSec) {
+    if (heroSec) {
         // Enforce muted for autoplay success
-        heroVideo.muted = true;
+        if (heroVideo) heroVideo.muted = true;
+        if (heroVideoMobile) heroVideoMobile.muted = true;
 
         // B. Autopause on Scroll: Only play when visible (Performance)
         const videoObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    heroVideo.play().catch(() => {});
+                    if (heroVideo) heroVideo.play().catch(() => {});
+                    if (heroVideoMobile) heroVideoMobile.play().catch(() => {});
                 } else {
-                    heroVideo.pause();
+                    if (heroVideo) heroVideo.pause();
+                    if (heroVideoMobile) heroVideoMobile.pause();
                 }
             });
         }, { threshold: 0.1 });
