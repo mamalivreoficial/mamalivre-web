@@ -549,8 +549,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (shopGrid) {
                     const shopFiltersContainer = document.getElementById('dynamic-shop-filters');
                     
-                    // Extract unique categories
-                    const uniqueCategories = [...new Set(products.map(p => p.category))].filter(Boolean);
+                    // Extract unique categories (Normalized)
+                    const normalizedCats = products.map(p => {
+                        if (!p.category) return '';
+                        return p.category.trim().charAt(0).toUpperCase() + p.category.trim().slice(1).toLowerCase();
+                    }).filter(Boolean);
+                    
+                    const uniqueCategories = [...new Set(normalizedCats)].sort();
                     const categories = ['Tudo', ...uniqueCategories];
                     
                     if (shopFiltersContainer) {

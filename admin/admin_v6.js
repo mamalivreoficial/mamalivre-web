@@ -248,11 +248,15 @@ async function loadProducts() {
 function populateCategories() {
     const categories = new Set();
     currentProducts.forEach(p => {
-        if (p.category) categories.add(p.category.trim());
+        if (p.category) {
+            const normalized = p.category.trim().charAt(0).toUpperCase() + p.category.trim().slice(1).toLowerCase();
+            categories.add(normalized);
+        }
     });
     const datalist = document.getElementById('cat-suggestions');
     if (datalist) {
         datalist.innerHTML = Array.from(categories)
+            .sort()
             .filter(Boolean)
             .map(c => `<option value="${c}">`)
             .join('');
@@ -368,11 +372,14 @@ function selectProduct(id) {
 }
 
 function addNewProduct() {
+    // Get last used category or default
+    const lastCat = currentProducts.length > 0 ? currentProducts[0].category : "Peças";
+    
     const newId = 'novo-produto-' + Date.now();
     const newProd = {
         id: newId,
         name: "Novo Produto",
-        category: "Bags",
+        category: lastCat,
         price: "0,00",
         image: "",
         images: [],
@@ -381,6 +388,16 @@ function addNewProduct() {
     };
     currentProducts.unshift(newProd);
     selectProduct(newId);
+    
+    // Focus category to make choice easier
+    setTimeout(() => {
+        const catInput = document.getElementById('p-category');
+        if (catInput) {
+            catInput.focus();
+            catInput.select();
+        }
+    }, 100);
+
     document.getElementById('save-status').textContent = '⚠️ Alterações não salvas';
     document.getElementById('save-status').style.color = '#ffaa00';
 }
@@ -411,7 +428,11 @@ function updatePreview() {
         prod.id = newId;
     }
     prod.name = document.getElementById('p-name').value;
-    prod.category = document.getElementById('p-category').value;
+    
+    // Normalize Category on the fly
+    const rawCat = document.getElementById('p-category').value.trim();
+    prod.category = rawCat ? rawCat.charAt(0).toUpperCase() + rawCat.slice(1).toLowerCase() : '';
+    
     prod.price = document.getElementById('p-price').value;
     prod.image = document.getElementById('p-image').value;
     
@@ -420,6 +441,9 @@ function updatePreview() {
     
     prod.description = document.getElementById('p-desc').value;
     prod.link = document.getElementById('p-link').value;
+
+    // Refresh suggestions after category edit
+    populateCategories();
 
     // Update Live Preview UI
     document.getElementById('p-image-preview').src = '../' + prod.image;
