@@ -1,16 +1,6 @@
 {
   "products": [
     {
-      "id": "novo-produto-1774053698635",
-      "name": "Novo Produto",
-      "category": "Bags",
-      "price": "0,00",
-      "image": "img/img_8177.jpg",
-      "images": [],
-      "description": "Descrição da peça",
-      "link": ""
-    },
-    {
       "id": "novo-produto-1774053177559",
       "name": "Charms Shine",
       "category": "Charms",
