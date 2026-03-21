@@ -1,6 +1,16 @@
 {
   "products": [
     {
+      "id": "novo-produto-1774053177559",
+      "name": "Charms Shine",
+      "category": "Charms",
+      "price": "197,00",
+      "image": "img/img_8067.jpg",
+      "images": [],
+      "description": "Descrição da peça",
+      "link": ""
+    },
+    {
       "id": "novo-produto-1774052865968",
       "name": "Porta Isqueiro",
       "category": "Porta Isqueiro",
