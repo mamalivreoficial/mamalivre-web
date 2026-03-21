@@ -1110,4 +1110,42 @@ h1, h2, h3 {
     display: none !important;
 }
 
+/* SECTION SOBRE (v7.0) */
+.about-container {
+    padding-top: 60px;
+    padding-bottom: 60px;
+}
+.inner-about {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 50px;
+    align-items: center;
+    padding: 50px;
+    border-radius: 20px;
+}
+.about-img {
+    width: 100%;
+    border-radius: 15px;
+    filter: grayscale(0.5) contrast(1.2);
+    box-shadow: 0 0 30px rgba(0,255,204,0.1);
+    transition: var(--transition-fast);
+}
+.about-img:hover {
+    filter: grayscale(0) contrast(1.1);
+    box-shadow: 0 0 40px rgba(0,255,204,0.3);
+}
+.about-description {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: #ccc;
+    margin-top: 20px;
+    text-align: justify;
+}
 
+@media (max-width: 992px) {
+    .inner-about {
+        grid-template-columns: 1fr;
+        padding: 30px;
+        gap: 30px;
+    }
+}

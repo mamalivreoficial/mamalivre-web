@@ -18,6 +18,15 @@ document.addEventListener('DOMContentLoaded', () => {
             setText('dyn-homeProductsTitlePrefix', site.homeProductsTitlePrefix);
             setText('dyn-homeProductsTitleHighlight', site.homeProductsTitleHighlight);
             setText('dyn-homeProductsDesc', site.homeProductsDesc);
+
+            // Sobre (About)
+            setText('about-prefix', site.aboutTitlePrefix);
+            setText('about-highlight', site.aboutTitleHighlight);
+            setText('about-text', site.aboutText);
+            if (site.aboutImage && document.getElementById('about-image')) {
+                document.getElementById('about-image').src = site.aboutImage;
+            }
+
             setText('dyn-customTitlePrefix', site.customTitlePrefix);
             setText('dyn-customTitleHighlight', site.customTitleHighlight);
             setText('dyn-customText1', site.customText1);

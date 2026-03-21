@@ -183,6 +183,11 @@ async function loadSiteConfig() {
         document.getElementById('s-customBullet2').value = currentSiteConfig.customBullet2 || '';
         document.getElementById('s-customBullet3').value = currentSiteConfig.customBullet3 || '';
         
+        document.getElementById('s-aboutPrefix').value = currentSiteConfig.aboutTitlePrefix || '';
+        document.getElementById('s-aboutHighlight').value = currentSiteConfig.aboutTitleHighlight || '';
+        document.getElementById('s-aboutText').value = currentSiteConfig.aboutText || '';
+        document.getElementById('s-aboutImage').value = currentSiteConfig.aboutImage || '';
+        
         document.getElementById('s-shopLogo').value = currentSiteConfig.shopLogo || '';
         document.getElementById('s-shopDesc').value = currentSiteConfig.shopDesc || '';
     } catch (e) {
@@ -215,6 +220,10 @@ function gatherSiteConfig() {
         customBullet1: document.getElementById('s-customBullet1').value,
         customBullet2: document.getElementById('s-customBullet2').value,
         customBullet3: document.getElementById('s-customBullet3').value,
+        aboutTitlePrefix: document.getElementById('s-aboutPrefix').value,
+        aboutTitleHighlight: document.getElementById('s-aboutHighlight').value,
+        aboutText: document.getElementById('s-aboutText').value,
+        aboutImage: document.getElementById('s-aboutImage').value,
         shopLogo: document.getElementById('s-shopLogo').value,
         shopDesc: document.getElementById('s-shopDesc').value
     };
