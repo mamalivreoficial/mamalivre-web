@@ -1,6 +1,16 @@
 {
   "products": [
     {
+      "id": "novo-produto-1774052865968",
+      "name": "Porta Isqueiro",
+      "category": "Bags",
+      "price": "187,00",
+      "image": "img/img_8099.jpg",
+      "images": [],
+      "description": "Descrição da peça",
+      "link": ""
+    },
+    {
       "id": "M7",
       "name": "Mini Shine LeGo",
       "category": "porta Isqueiro",
