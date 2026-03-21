@@ -249,8 +249,7 @@ function populateCategories() {
     const categories = new Set();
     currentProducts.forEach(p => {
         if (p.category) {
-            const normalized = p.category.trim().charAt(0).toUpperCase() + p.category.trim().slice(1).toLowerCase();
-            categories.add(normalized);
+            categories.add(normalizeCategory(p.category));
         }
     });
     const datalist = document.getElementById('cat-suggestions');
@@ -261,6 +260,16 @@ function populateCategories() {
             .map(c => `<option value="${c}">`)
             .join('');
     }
+}
+
+// Category Normalization Helper
+function normalizeCategory(cat) {
+    if (!cat) return '';
+    return cat.trim()
+        .toLowerCase()
+        .split(' ')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' ');
 }
 
 function formatPrice(price) {
@@ -429,9 +438,8 @@ function updatePreview() {
     }
     prod.name = document.getElementById('p-name').value;
     
-    // Normalize Category on the fly
-    const rawCat = document.getElementById('p-category').value.trim();
-    prod.category = rawCat ? rawCat.charAt(0).toUpperCase() + rawCat.slice(1).toLowerCase() : '';
+    // Normalize Category on the fly (Title Case)
+    prod.category = normalizeCategory(document.getElementById('p-category').value);
     
     prod.price = document.getElementById('p-price').value;
     prod.image = document.getElementById('p-image').value;

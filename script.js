@@ -533,6 +533,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const shopGrid = document.getElementById('shop-product-grid');
     const indexGrid = document.getElementById('index-product-grid');
 
+    // Category Normalization Helper
+    const normalizeCategory = (cat) => {
+        if (!cat) return '';
+        return cat.trim()
+            .toLowerCase()
+            .split(' ')
+            .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+            .join(' ');
+    };
+
     if (shopGrid || indexGrid) {
         fetch(`data/products.json?v=${Date.now()}`)
             .then(response => response.json())
@@ -550,10 +560,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     const shopFiltersContainer = document.getElementById('dynamic-shop-filters');
                     
                     // Extract unique categories (Normalized)
-                    const normalizedCats = products.map(p => {
-                        if (!p.category) return '';
-                        return p.category.trim().charAt(0).toUpperCase() + p.category.trim().slice(1).toLowerCase();
-                    }).filter(Boolean);
+                    const normalizedCats = products.map(p => normalizeCategory(p.category)).filter(Boolean);
                     
                     const uniqueCategories = [...new Set(normalizedCats)].sort();
                     const categories = ['Tudo', ...uniqueCategories];
@@ -567,7 +574,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     const renderShop = (filter = 'Tudo') => {
                         const filtered = filter === 'Tudo' 
                             ? products 
-                            : products.filter(p => p.category === filter);
+                            : products.filter(p => normalizeCategory(p.category) === filter);
                         
                         shopGrid.innerHTML = filtered.map(createProductCard).join('');
                         applyTiltEffect(shopGrid.querySelectorAll('.card-glass'));
