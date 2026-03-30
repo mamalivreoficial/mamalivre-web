@@ -1,8 +1,18 @@
 {
   "products": [
     {
+      "id": "novo-produto-1774877427425",
+      "name": "",
+      "category": "Bags",
+      "price": "0,00",
+      "image": "",
+      "images": [],
+      "description": "Descrição da peça",
+      "link": ""
+    },
+    {
       "id": "M5",
-      "name": " (Charm Leather Rosa)",
+      "name": " (Bag Charm Rosa)",
       "category": "Porta Isqueiro",
       "price": "R$ 197,00",
       "images": [],
