@@ -31,16 +31,17 @@
 
     class Particle {
         constructor(x, y, color) {
-            this.x = Math.random() * width;
-            this.y = Math.random() * height;
+            // Spawn closer to target for faster initial visibility
+            this.x = x + (Math.random() - 0.5) * 200;
+            this.y = y + (Math.random() - 0.5) * 200;
             this.baseX = x;
             this.baseY = y;
-            this.vx = 0;
-            this.vy = 0;
+            this.vx = (Math.random() - 0.5) * 10;
+            this.vy = (Math.random() - 0.5) * 10;
             this.size = 0.7 + Math.random() * 0.9;
             this.color = color;
-            this.friction = 0.9;
-            this.ease = 0.12;
+            this.friction = 0.88; 
+            this.ease = 0.25; // Faster assembly
         }
 
         draw() {
@@ -73,8 +74,8 @@
             let mdx = mouse.x - this.x;
             let mdy = mouse.y - this.y;
             let mdist = Math.sqrt(mdx * mdx + mdy * mdy);
-            if (mdist < 120) {
-                let force = Math.pow((120 - mdist) / 120, 3) * 2;
+            if (mdist < 100) {
+                let force = Math.pow((100 - mdist) / 100, 3) * 2.5;
                 this.vx -= mdx * force * 0.2;
                 this.vy -= mdy * force * 0.2;
             }
@@ -86,8 +87,8 @@
             this.x = x;
             this.y = y;
             this.content = emitterItems[Math.floor(Math.random() * emitterItems.length)];
-            this.vx = (Math.random() - 0.5) * 1.5;
-            this.vy = (Math.random() - 0.5) * 1.5;
+            this.vx = (Math.random() - 0.5) * 2;
+            this.vy = (Math.random() - 0.5) * 2;
             this.size = 6 + Math.random() * 8;
             this.opacity = 1;
             this.rot = Math.random() * Math.PI * 2;
@@ -106,8 +107,8 @@
         update() {
             this.x += this.vx;
             this.y += this.vy;
-            this.opacity -= 0.012;
-            this.vx += Math.sin(Date.now() * 0.001) * 0.04;
+            this.opacity -= 0.015;
+            this.vx += Math.sin(Date.now() * 0.001) * 0.05;
         }
     }
 
@@ -174,14 +175,14 @@
         const rect = canvas.getBoundingClientRect();
         mouse.x = e.clientX - rect.left;
         mouse.y = e.clientY - rect.top;
-        if (Math.random() > 0.8) emitters.push(new Emitter(mouse.x, mouse.y));
+        if (Math.random() > 0.85) emitters.push(new Emitter(mouse.x, mouse.y));
     });
 
     window.addEventListener('touchmove', e => {
         const rect = canvas.getBoundingClientRect();
         mouse.x = e.touches[0].clientX - rect.left;
         mouse.y = e.touches[0].clientY - rect.top;
-        if (Math.random() > 0.75) emitters.push(new Emitter(mouse.x, mouse.y));
+        if (Math.random() > 0.8) emitters.push(new Emitter(mouse.x, mouse.y));
     });
 
     window.addEventListener('resize', () => {
@@ -190,9 +191,11 @@
         animate();
     });
 
-    // Start
+    // Start immediately if possible, then refine when font ready
+    resize();
+    animate();
+
     document.fonts.ready.then(() => {
-        resize();
-        animate();
+        resize(); // Recalculate with correct font metrics
     });
 })();
