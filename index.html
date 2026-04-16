@@ -38,15 +38,8 @@
         <div class="hero-bg">
             <!-- Will load the generated image via CSS -->
         </div>
-        <div class="hero-content" style="display: flex; align-items: center; justify-content: center; width: 100%; height: 100%;">
-            <video autoplay loop muted playsinline class="hero-bag-video hero-video-desktop" id="dyn-heroVideo">
-                <source src="hero_cyber_loop.mp4" type="video/mp4" id="dyn-heroVideoSrc">
-                Seu navegador não suporta a tag de vídeo.
-            </video>
-            <video autoplay loop muted playsinline class="hero-bag-video hero-video-mobile" id="dyn-heroVideoMobile">
-                <source src="video/hero-mobile.mp4" type="video/mp4" id="dyn-heroVideoMobileSrc">
-                Seu navegador não suporta a tag de vídeo.
-            </video>
+        <div class="hero-content" style="display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; overflow: hidden;">
+            <canvas id="hero-canvas" style="display: block; width: 100%; height: 100%;"></canvas>
         </div>
         <div class="scroll-indicator">
             <div class="mouse">
@@ -150,6 +143,7 @@
         </div>
     </footer>
 
+    <script src="hero-animation.js"></script>
     <script src="script.js?v=7.1"></script>
 
     <!-- Netlify Identity Redirect (Forces user back into the admin panel after login) -->
