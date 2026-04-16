@@ -119,6 +119,7 @@
         tCanvas.width = width;
         tCanvas.height = height;
 
+        // 1. Draw The Logo
         const fontSize = Math.min(width * 0.14, 110);
         tCtx.font = `bold ${fontSize}px Orbitron, sans-serif`;
         tCtx.textAlign = 'center';
@@ -126,16 +127,36 @@
         tCtx.fillStyle = 'white';
         tCtx.fillText('MAMALIVRE', width / 2, height / 2);
 
+        // 2. Draw 2 Large, Thin Hearts on the sides
+        tCtx.strokeStyle = 'white';
+        tCtx.lineWidth = 2.5; // Thicker line for better particle sampling
+        
+        function drawThinHeart(ctx, x, y, sizeW, sizeH) {
+            ctx.save();
+            ctx.translate(x, y);
+            ctx.beginPath();
+            ctx.moveTo(0, -sizeH / 2);
+            ctx.bezierCurveTo(-sizeW / 2, -sizeH, -sizeW, -sizeH / 4, 0, sizeH);
+            ctx.bezierCurveTo(sizeW, -sizeH / 4, sizeW / 2, -sizeH, 0, -sizeH / 2);
+            ctx.stroke();
+            ctx.restore();
+        }
+
+        const hW = width * 0.18;
+        const hH = height * 0.5;
+        drawThinHeart(tCtx, width * 0.1, height / 2, hW, hH);
+        drawThinHeart(tCtx, width * 0.9, height / 2, hW, hH);
+
         const imageData = tCtx.getImageData(0, 0, width, height).data;
-        const step = Math.max(2, Math.floor(width / 500)); 
-        const textWidth = fontSize * 5; 
+        const step = Math.max(2, Math.floor(width / 600)); 
+        const textWidth = fontSize * 3; // Wider mapping for gradient
 
         for (let y = 0; y < height; y += step) {
             for (let x = 0; x < width; x += step) {
                 const index = (y * width + x) * 4;
-                if (imageData[index + 3] > 128) {
-                    const relativeX = (x - (width/2 - textWidth/2)) / textWidth;
-                    const color = getRainbowColor(Math.max(0, Math.min(1, relativeX)));
+                if (imageData[index + 3] > 100) {
+                    const relativeX = (x / width); 
+                    const color = getRainbowColor(relativeX);
                     particles.push(new Particle(x, y, color));
                 }
             }
