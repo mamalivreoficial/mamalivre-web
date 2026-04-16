@@ -414,16 +414,16 @@ h1, h2, h3 {
     position: absolute;
     top: 50%;
     left: 50%;
-    width: 400px; /* Larger for better framing */
-    height: 400px;
+    width: 380px;
+    height: 380px;
     background: #ff00ff;
-    opacity: 0.7; /* Stronger presence */
-    filter: blur(50px); /* Defined but soft */
+    opacity: 0.8; /* Sharper presence */
+    filter: blur(15px); /* Much more defined */
     border-radius: 50%;
     transform-origin: center;
     pointer-events: none;
     mix-blend-mode: screen;
-    z-index: 1; /* In front of hero-bg, behind hero-content */
+    z-index: 1;
 }
 
 .hero-heart::before,
@@ -434,31 +434,31 @@ h1, h2, h3 {
     height: 100%;
     background: #ff00ff;
     border-radius: 50%;
-    box-shadow: 0 0 150px #ff00ff, 0 0 300px rgba(255, 0, 255, 0.4);
+    box-shadow: 0 0 40px #ff00ff, 0 0 100px rgba(255, 0, 255, 0.6);
 }
 
 .hero-heart::before { left: -50%; }
 .hero-heart::after { top: -50%; }
 
 .heart-left {
-    transform: translate(-110%, -55%) rotate(-35deg) scale(1);
+    transform: translate(-105%, -55%) rotate(-35deg) scale(0.9);
     animation: pulseHeartLeft 4s infinite alternate ease-in-out;
 }
 
 .heart-right {
-    transform: translate(10%, -55%) rotate(35deg) scale(1);
+    transform: translate(5%, -55%) rotate(35deg) scale(0.9);
     animation: pulseHeartRight 4s infinite alternate ease-in-out;
     background: #ff0077;
 }
 
 @keyframes pulseHeartLeft {
-    0% { transform: translate(-120%, -50%) rotate(-38deg) scale(0.85); opacity: 0.4; }
-    100% { transform: translate(-100%, -60%) rotate(-32deg) scale(1.1); opacity: 0.9; }
+    0% { transform: translate(-110%, -50%) rotate(-38deg) scale(0.8); opacity: 0.6; }
+    100% { transform: translate(-100%, -60%) rotate(-32deg) scale(1); opacity: 1; }
 }
 
 @keyframes pulseHeartRight {
-    0% { transform: translate(20%, -50%) rotate(38deg) scale(0.85); opacity: 0.4; }
-    100% { transform: translate(00%, -60%) rotate(32deg) scale(1.1); opacity: 0.9; }
+    0% { transform: translate(10%, -50%) rotate(38deg) scale(0.8); opacity: 0.6; }
+    100% { transform: translate(00%, -60%) rotate(32deg) scale(1); opacity: 1; }
 }
 
 .hero-bg::after {
