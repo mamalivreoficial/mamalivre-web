@@ -119,37 +119,48 @@
         tCanvas.width = width;
         tCanvas.height = height;
 
-        // 1. Draw The Logo
+        // 1. Setup Font & Measure
         const fontSize = Math.min(width * 0.14, 110);
         tCtx.font = `bold ${fontSize}px Orbitron, sans-serif`;
         tCtx.textAlign = 'center';
         tCtx.textBaseline = 'middle';
+        const textWidth = tCtx.measureText('MAMALIVRE').width;
+
+        // 2. Draw The Logo
         tCtx.fillStyle = 'white';
         tCtx.fillText('MAMALIVRE', width / 2, height / 2);
 
-        // 2. Draw 2 Large, Thin Hearts on the sides
+        // 3. Draw 2 Perfect Hearts (3x Font Size) flanking M and E
         tCtx.strokeStyle = 'white';
-        tCtx.lineWidth = 2.5; // Thicker line for better particle sampling
+        tCtx.lineWidth = 1.2; 
         
-        function drawThinHeart(ctx, x, y, sizeW, sizeH) {
+        function drawPerfectHeart(ctx, x, y, size) {
             ctx.save();
             ctx.translate(x, y);
+            ctx.rotate(Math.PI); // Orbitron coordinate match
             ctx.beginPath();
-            ctx.moveTo(0, -sizeH / 2);
-            ctx.bezierCurveTo(-sizeW / 2, -sizeH, -sizeW, -sizeH / 4, 0, sizeH);
-            ctx.bezierCurveTo(sizeW, -sizeH / 4, sizeW / 2, -sizeH, 0, -sizeH / 2);
+            // Parametric heart equation
+            for (let t = 0; t <= Math.PI * 2; t += 0.1) {
+                const hx = 16 * Math.pow(Math.sin(t), 3);
+                const hy = 13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t);
+                if (t === 0) ctx.moveTo(hx * size/20, hy * size/20);
+                else ctx.lineTo(hx * size/20, hy * size/20);
+            }
+            ctx.closePath();
             ctx.stroke();
             ctx.restore();
         }
 
-        const hW = width * 0.18;
-        const hH = height * 0.5;
-        drawThinHeart(tCtx, width * 0.1, height / 2, hW, hH);
-        drawThinHeart(tCtx, width * 0.9, height / 2, hW, hH);
+        const heartVisualSize = fontSize * 0.8; 
+        const sideGap = fontSize * 0.3;
+        
+        // Left Heart (next to M) - Balanced size
+        drawPerfectHeart(tCtx, width/2 - textWidth/2 - sideGap, height/2 + heartVisualSize * 0.2, heartVisualSize);
+        // Right Heart (next to E)
+        drawPerfectHeart(tCtx, width/2 + textWidth/2 + sideGap, height/2 + heartVisualSize * 0.2, heartVisualSize);
 
         const imageData = tCtx.getImageData(0, 0, width, height).data;
-        const step = Math.max(2, Math.floor(width / 600)); 
-        const textWidth = fontSize * 3; // Wider mapping for gradient
+        const step = Math.max(2, Math.floor(width / 700)); 
 
         for (let y = 0; y < height; y += step) {
             for (let x = 0; x < width; x += step) {
