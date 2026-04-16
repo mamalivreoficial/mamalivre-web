@@ -412,15 +412,18 @@ h1, h2, h3 {
 
 .hero-heart {
     position: absolute;
-    width: 300px;
-    height: 300px;
+    top: 50%;
+    left: 50%;
+    width: 350px;
+    height: 350px;
     background: var(--neon-magenta);
-    opacity: 0.35;
-    filter: blur(70px);
+    opacity: 0.5; /* More visible */
+    filter: blur(80px);
     border-radius: 50%;
     transform-origin: center;
     pointer-events: none;
     mix-blend-mode: screen;
+    z-index: -1;
 }
 
 /* Creating Heart Shape with pseudo-elements inside the blur */
@@ -432,7 +435,7 @@ h1, h2, h3 {
     height: 100%;
     background: var(--neon-magenta);
     border-radius: 50%;
-    box-shadow: 0 0 100px var(--neon-magenta), 0 0 200px var(--neon-magenta-glow);
+    box-shadow: 0 0 120px var(--neon-magenta), 0 0 250px var(--neon-magenta-glow);
 }
 
 .hero-heart::before {
@@ -444,24 +447,24 @@ h1, h2, h3 {
 }
 
 .heart-left {
-    transform: translate(-150px, -50px) rotate(-35deg) scale(0.8);
+    transform: translate(-90%, -60%) rotate(-35deg) scale(0.9);
     animation: pulseHeartLeft 5s infinite alternate ease-in-out;
 }
 
 .heart-right {
-    transform: translate(150px, -50px) rotate(35deg) scale(0.8);
+    transform: translate(-10%, -60%) rotate(35deg) scale(0.9);
     animation: pulseHeartRight 5s infinite alternate ease-in-out;
-    background: #ff00cc; /* Slight color variance for depth */
+    background: #ff00cc;
 }
 
 @keyframes pulseHeartLeft {
-    0% { transform: translate(-180px, -40px) rotate(-35deg) scale(0.75); opacity: 0.25; filter: blur(80px); }
-    100% { transform: translate(-150px, -60px) rotate(-32deg) scale(0.95); opacity: 0.45; filter: blur(60px); }
+    0% { transform: translate(-100%, -55%) rotate(-35deg) scale(0.8); opacity: 0.3; }
+    100% { transform: translate(-80%, -65%) rotate(-32deg) scale(1.1); opacity: 0.6; }
 }
 
 @keyframes pulseHeartRight {
-    0% { transform: translate(180px, -40px) rotate(35deg) scale(0.75); opacity: 0.25; filter: blur(80px); }
-    100% { transform: translate(150px, -60px) rotate(32deg) scale(0.95); opacity: 0.45; filter: blur(60px); }
+    0% { transform: translate(00%, -55%) rotate(35deg) scale(0.8); opacity: 0.3; }
+    100% { transform: translate(-20%, -65%) rotate(32deg) scale(1.1); opacity: 0.6; }
 }
 
 .hero-bg::after {
