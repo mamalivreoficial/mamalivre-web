@@ -423,7 +423,7 @@ h1, h2, h3 {
     transform-origin: center;
     pointer-events: none;
     mix-blend-mode: screen;
-    z-index: -1;
+    z-index: 1; /* Bring in front of parent background */
 }
 
 /* Creating Heart Shape with pseudo-elements inside the blur */
