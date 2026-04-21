@@ -19,41 +19,47 @@
             this.baseY = y;
             this.vx = 0;
             this.vy = 0;
-            this.size = 1 + Math.random() * 2; // Slightly larger for visibility with rectangles
+            this.size = 0.5 + Math.random() * 2.5; 
             this.color = '#fff';
             this.friction = 0.8;
             this.ease = 0.1;
+            // Scroll scatter directions
+            this.scatX = (Math.random() - 0.5) * 20;
+            this.scatY = (Math.random() - 0.5) * 20;
         }
 
         draw() {
             ctx.fillStyle = this.color;
-            // fillRect is significantly faster than arc for thousands of particles
             ctx.fillRect(this.x, this.y, this.size, this.size);
         }
 
         update() {
+            const scroll = window.scrollY;
+            const scatterForce = Math.min(scroll / 500, 1.5); // Adjust for speed
+
+            // Target position shifts as you scroll (disintegration)
+            let targetX = this.baseX + (this.scatX * scroll * 0.1);
+            let targetY = this.baseY - (scroll * 0.5) + (this.scatY * scroll * 0.1); // Also flies up slightly
+
             let mdx = mouse.x - this.x;
             let mdy = mouse.y - this.y;
             let mdist = Math.sqrt(mdx * mdx + mdy * mdy);
 
-            // ONLY calculate physics if mouse is nearby - saves CPU
             if (mdist < 120) {
                 let force = (120 - mdist) / 120;
                 this.x -= mdx * force * 0.15;
                 this.y -= mdy * force * 0.15;
             }
 
-            // High-performance catch back to base
-            let dx = this.baseX - this.x;
-            let dy = this.baseY - this.y;
-            if (Math.abs(dx) > 0.1 || Math.abs(dy) > 0.1) {
-                this.vx += dx * this.ease;
-                this.vy += dy * this.ease;
-                this.vx *= this.friction;
-                this.vy *= this.friction;
-                this.x += this.vx;
-                this.y += this.vy;
-            }
+            let dx = targetX - this.x;
+            let dy = targetY - this.y;
+            
+            this.vx += dx * this.ease;
+            this.vy += dy * this.ease;
+            this.vx *= this.friction;
+            this.vy *= this.friction;
+            this.x += this.vx;
+            this.y += this.vy;
         }
     }
 
@@ -147,13 +153,20 @@
     function animate() {
         ctx.clearRect(0, 0, width, height);
 
+        const scroll = window.scrollY;
+        // Fade out as we scroll: fully transparent by 400px
+        const opacity = Math.max(1 - scroll / 400, 0);
+
         // Render high-density logo particles when in hero viewport
-        if (window.scrollY < window.innerHeight) {
+        if (opacity > 0) {
+            ctx.save();
+            ctx.globalAlpha = opacity;
             for (let i = 0; i < particles.length; i++) {
                 const p = particles[i];
                 p.update();
                 p.draw();
             }
+            ctx.restore();
         }
 
         // Render sparkles globally with high performance
