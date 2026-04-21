@@ -115,13 +115,12 @@
         window.heroFontSize = fontSize;
 
         const imageData = tCtx.getImageData(0, 0, width, height).data;
-        // ULTRA-DENSITY: Step 2.5 for a perfect solid-yet-starry finish
-        const step = 2.5; 
+        // ULTRA-DENSITY: Step 2.0 for a pure particle finish without solid base
+        const step = 2.0; 
         
         for (let y = 0; y < height; y += step) {
             for (let x = 0; x < width; x += step) {
                 if (imageData[(Math.floor(y) * width + Math.floor(x)) * 4 + 3] > 128) {
-                    // Sharper jitter for a more crystalline look
                     const jx = (Math.random() - 0.5) * 2;
                     const jy = (Math.random() - 0.5) * 2;
                     particles.push(new Particle(x + jx, y + jy));
@@ -129,8 +128,8 @@
             }
         }
         
-        if (particles.length > 6000) {
-            particles = particles.sort(() => Math.random() - 0.5).slice(0, 6000);
+        if (particles.length > 8000) {
+            particles = particles.sort(() => Math.random() - 0.5).slice(0, 8000);
         }
     }
 
@@ -159,14 +158,8 @@
             ctx.save();
             ctx.globalAlpha = opacity;
 
-            // DRAW GHOST SOLID TEXT (Backbone for total legibility)
-            ctx.font = `bold ${fontSize}px Syncopate`; 
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'middle';
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.08)'; // Near invisible white backbone
-            
+            // NO SOLID BACKBONE: Only pixels (particles) as requested
             const scatterY = (window.scrollY * 0.5);
-            ctx.fillText('MAMALIVRE', width / 2, (height / 2) - scatterY);
             
             for (let i = 0; i < particles.length; i++) {
                 const p = particles[i];
