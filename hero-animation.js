@@ -10,11 +10,12 @@
     const ctx = canvas.getContext('2d');
     let width, height;
     let particles = [];
+    let bgParticles = [];
     let emitters = [];
     let mouse = { x: -1000, y: -1000 };
     let animationId;
 
-    const emitterItems = ['❤️', '💖', '💕', 'M', 'm', '✨'];
+    const emitterItems = ['✦', '✧', '✨', '⭐', '★', 'x', '+', '✨'];
     
     // Smooth Gradient stops
     function getRainbowColor(percent) {
@@ -27,6 +28,35 @@
             h = 280 + (330 - 280) * ((percent - 0.66) / 0.34); // Purple to Pink
         }
         return `hsl(${h}, 90%, 65%)`;
+    }
+
+    class BgParticle {
+        constructor(w, h) {
+            this.x = Math.random() * w;
+            this.y = Math.random() * h;
+            this.size = Math.random() * 1.5 + 0.2; // Tiny dust and stars
+            this.speedX = (Math.random() - 0.5) * 0.2;
+            this.speedY = (Math.random() - 0.5) * 0.2;
+            // Cyber/Nebula colors (soft pinks, purples, blues)
+            const hue = 250 + Math.random() * 100; // 250 to 350
+            this.color = `hsla(${hue}, 80%, 70%, ${Math.random() * 0.4})`;
+        }
+
+        update() {
+            this.x += this.speedX;
+            this.y += this.speedY;
+            if (this.x < 0) this.x = width;
+            if (this.x > width) this.x = 0;
+            if (this.y < 0) this.y = height;
+            if (this.y > height) this.y = 0;
+        }
+
+        draw(ctx) {
+            ctx.fillStyle = this.color;
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fill();
+        }
     }
 
     class Particle {
@@ -84,22 +114,27 @@
 
     class Emitter {
         constructor(x, y) {
-            this.x = x;
-            this.y = y;
+            // Spread them slightly around the cursor
+            this.x = x + (Math.random() - 0.5) * 30;
+            this.y = y + (Math.random() - 0.5) * 30;
             this.content = emitterItems[Math.floor(Math.random() * emitterItems.length)];
-            this.vx = (Math.random() - 0.5) * 2;
-            this.vy = (Math.random() - 0.5) * 2;
-            this.size = 6 + Math.random() * 8;
-            this.opacity = 1;
+            this.vx = (Math.random() - 0.5) * 2.5;
+            this.vy = (Math.random() - 0.5) * 2.5 - 1.5; // Drift upwards
+            this.size = 12 + Math.random() * 18; // Bigger sparkles
+            this.opacity = 0.8 + Math.random() * 0.2;
             this.rot = Math.random() * Math.PI * 2;
+            this.color = getRainbowColor(Math.random());
         }
 
         draw() {
             ctx.save();
             ctx.globalAlpha = this.opacity;
-            ctx.font = `${this.size}px Arial`;
+            ctx.font = `bold ${this.size}px Arial`;
             ctx.translate(this.x, this.y);
             ctx.rotate(this.rot + (1 - this.opacity));
+            ctx.fillStyle = this.color;
+            ctx.shadowColor = this.color;
+            ctx.shadowBlur = 15;
             ctx.fillText(this.content, 0, 0);
             ctx.restore();
         }
@@ -107,8 +142,9 @@
         update() {
             this.x += this.vx;
             this.y += this.vy;
-            this.opacity -= 0.015;
-            this.vx += Math.sin(Date.now() * 0.001) * 0.05;
+            this.opacity -= 0.015; // Slower fade for longer trail
+            this.vx += Math.sin(Date.now() * 0.003) * 0.15; // Cyber erratic movement
+            this.rot += 0.03;
         }
     }
 
@@ -151,16 +187,35 @@
             ctx.restore();
         }
 
-        const heartVisualSize = fontSize * 0.8; 
-        const sideGap = fontSize * 0.3;
+        let heartVisualSize = fontSize * 0.9; 
+        let sideGap = fontSize * 0.6;
+        let estimatedRadius = heartVisualSize * 0.8;
         
-        // Left Heart (next to M) - Balanced size
-        drawPerfectHeart(tCtx, width/2 - textWidth/2 - sideGap, height/2 + heartVisualSize * 0.2, heartVisualSize);
+        // Prevent side cut-offs by checking available space
+        const maxAvailableSpace = width/2 - textWidth/2;
+        if (maxAvailableSpace < sideGap + estimatedRadius) {
+            // Dynamically scale down hearts and gaps so they ALWAYS fit inside the canvas
+            const allowedForSide = Math.max(10, maxAvailableSpace - 10);
+            const totalNeeded = sideGap + estimatedRadius;
+            const shrinkRatio = allowedForSide / totalNeeded;
+            
+            sideGap *= shrinkRatio;
+            heartVisualSize *= shrinkRatio;
+        }
+
+        // Vertically centering the heart
+        const yOffset = (heartVisualSize * 6) / 20;
+        
+        const safeLeftX = width/2 - textWidth/2 - sideGap;
+        const safeRightX = width/2 + textWidth/2 + sideGap;
+
+        // Left Heart (next to M)
+        drawPerfectHeart(tCtx, safeLeftX, height/2 + yOffset, heartVisualSize);
         // Right Heart (next to E)
-        drawPerfectHeart(tCtx, width/2 + textWidth/2 + sideGap, height/2 + heartVisualSize * 0.2, heartVisualSize);
+        drawPerfectHeart(tCtx, safeRightX, height/2 + yOffset, heartVisualSize);
 
         const imageData = tCtx.getImageData(0, 0, width, height).data;
-        const step = Math.max(2, Math.floor(width / 700)); 
+        const step = Math.max(1, Math.floor(width / 800)); // Finer sampling for better definition
 
         for (let y = 0; y < height; y += step) {
             for (let x = 0; x < width; x += step) {
@@ -182,11 +237,24 @@
         width /= dpr;
         height /= dpr;
         
+        // Setup initial background starfield
+        bgParticles = [];
+        let numBg = Math.floor((width * height) / 3000); // Density of space dust
+        for(let i = 0; i < numBg; i++) {
+            bgParticles.push(new BgParticle(width, height));
+        }
+
         createTextParticles();
     }
 
     function animate() {
         ctx.clearRect(0, 0, width, height);
+
+        // Draw Deep Space background
+        bgParticles.forEach(bg => {
+            bg.update();
+            bg.draw(ctx);
+        });
 
         particles.forEach(p => {
             p.update();
@@ -207,14 +275,21 @@
         const rect = canvas.getBoundingClientRect();
         mouse.x = e.clientX - rect.left;
         mouse.y = e.clientY - rect.top;
-        if (Math.random() > 0.85) emitters.push(new Emitter(mouse.x, mouse.y));
+        // Increase spawn frequency heavily
+        if (Math.random() > 0.4) {
+            emitters.push(new Emitter(mouse.x, mouse.y));
+            if(Math.random() > 0.6) emitters.push(new Emitter(mouse.x, mouse.y)); // Frequent bursts
+        }
     });
 
     window.addEventListener('touchmove', e => {
         const rect = canvas.getBoundingClientRect();
         mouse.x = e.touches[0].clientX - rect.left;
         mouse.y = e.touches[0].clientY - rect.top;
-        if (Math.random() > 0.8) emitters.push(new Emitter(mouse.x, mouse.y));
+        if (Math.random() > 0.4) {
+            emitters.push(new Emitter(mouse.x, mouse.y));
+            if(Math.random() > 0.6) emitters.push(new Emitter(mouse.x, mouse.y));
+        }
     });
 
     window.addEventListener('resize', () => {
