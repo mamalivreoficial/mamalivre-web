@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MAMALIVRE | Opções de Logotipo e Corações</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #050505;
+            --neon-magenta: #ff00ff;
+            --neon-teal: #00ffcc;
+            --text-main: #f0f0f0;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            font-family: 'Orbitron', sans-serif;
+            margin: 0;
+            padding: 50px 20px;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 100px;
+        }
+
+        .option-box {
+            text-align: center;
+            padding: 80px 20px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .label {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 0.8rem;
+            color: var(--neon-teal);
+            letter-spacing: 2px;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 5px 10px;
+            border-radius: 4px;
+            z-index: 10;
+        }
+
+        .logo-wrap {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 40px;
+            font-size: clamp(2rem, 8vw, 4rem);
+            font-weight: 900;
+        }
+
+        /* OPÇÃO 1: NEON CLÁSSICO DEFINIDO */
+        .neon-text {
+            text-shadow: 0 0 10px var(--neon-teal), 0 0 20px var(--neon-teal);
+            background: linear-gradient(90deg, #fff, var(--neon-teal));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .heart-neon {
+            width: 80px;
+            height: 80px;
+            fill: none;
+            stroke: var(--neon-magenta);
+            stroke-width: 2;
+            filter: drop-shadow(0 0 10px var(--neon-magenta));
+            animation: pulse-simple 2s infinite ease-in-out;
+        }
+
+        @keyframes pulse-simple {
+            0%, 100% { transform: scale(1); opacity: 0.7; }
+            50% { transform: scale(1.15); opacity: 1; }
+        }
+
+        /* OPÇÃO 2: CORAÇÕES ORBITAIS */
+        .orbital-container {
+            position: relative;
+            padding: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .heart-orbital {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            fill: var(--neon-magenta);
+            filter: drop-shadow(0 0 8px var(--neon-magenta));
+            animation: orbit 6s linear infinite;
+        }
+
+        @keyframes orbit {
+            0% { transform: rotate(0deg) translateX(280px) rotate(0deg); }
+            100% { transform: rotate(360deg) translateX(280px) rotate(-360deg); }
+        }
+
+        /* OPÇÃO 3: GLITCH CIBERNÉTICO */
+        .glitch-text {
+            position: relative;
+            color: #fff;
+            text-shadow: 2px 0 var(--neon-magenta), -2px 0 var(--neon-teal);
+            animation: glitch-anim 2s infinite linear alternate-reverse;
+        }
+
+        @keyframes glitch-anim {
+            0% { clip: rect(44px, 9999px, 56px, 0); transform: skew(0.5deg); }
+            20% { clip: rect(12px, 9999px, 88px, 0); transform: skew(0.1deg); }
+            40% { clip: rect(67px, 9999px, 12px, 0); transform: skew(0.8deg); }
+            60% { clip: rect(2px, 9999px, 45px, 0); transform: skew(0.3deg); }
+            80% { clip: rect(89px, 9999px, 23px, 0); transform: skew(0.9deg); }
+            100% { clip: rect(10px, 9999px, 90px, 0); transform: skew(0.2deg); }
+        }
+
+        /* OPÇÃO 4: PARTICULAS FLUTUANTES */
+        #particle-canvas-demo {
+            width: 100%;
+            height: 250px;
+            display: block;
+        }
+
+        /* OPÇÃO 5: 3D CYBER HEART */
+        .heart-3d-box {
+            display: flex;
+            gap: 50px;
+            align-items: center;
+        }
+
+        .heart-3d {
+            perspective: 1000px;
+            width: 100px;
+            height: 100px;
+            position: relative;
+            transform-style: preserve-3d;
+            animation: rotate-3d 4s linear infinite;
+        }
+
+        @keyframes rotate-3d {
+            from { transform: rotateY(0); }
+            to { transform: rotateY(360deg); }
+        }
+
+        .heart-shape-3d {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: var(--neon-magenta);
+            clip-path: path('M50 15 C30 0 0 15 0 45 C0 75 50 100 50 100 C50 100 100 75 100 45 C100 15 70 0 50 15 Z');
+            transform: translateZ(20px);
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
+            filter: drop-shadow(0 0 15px var(--neon-magenta));
+        }
+
+        .heart-shape-3d-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: #440044;
+            clip-path: path('M50 15 C30 0 0 15 0 45 C0 75 50 100 50 100 C50 100 100 75 100 45 C100 15 70 0 50 15 Z');
+            transform: translateZ(-20px) rotateY(180deg);
+        }
+
+        .sub-desc {
+            margin-top: 30px;
+            color: #888;
+            font-size: 1rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+        }
+
+        button.select-btn {
+            background: none;
+            border: 1px solid var(--neon-teal);
+            color: var(--neon-teal);
+            padding: 10px 20px;
+            margin-top: 20px;
+            cursor: pointer;
+            font-family: inherit;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: 0.3s;
+        }
+
+        button.select-btn:hover {
+            background: var(--neon-teal);
+            color: #000;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="font-size: 2.5rem; margin-bottom: 10px;">MAMALIVRE</h1>
+    <p style="color: var(--neon-magenta); letter-spacing: 4px; margin-bottom: 50px;">STUDIO DE DESIGN EXPERIMENTAL</p>
+
+    <div class="container">
+        
+        <!-- OPÇÃO 1 -->
+        <div class="option-box">
+            <div class="label">OPÇÃO 1: NEON REFINADO</div>
+            <div class="logo-wrap">
+                <svg class="heart-neon" viewBox="0 0 32 32">
+                    <path d="M16 28.5L14.1 26.7C7.3 20.6 2.8 16.5 2.8 11.5C2.8 7.4 6 4.2 10.1 4.2C12.4 4.2 14.6 5.3 16 7.1C17.4 5.3 19.6 4.2 21.9 4.2C26 4.2 29.2 7.4 29.2 11.5C29.2 16.5 24.7 20.6 17.9 26.7L16 28.5Z"/>
+                </svg>
+                <div class="neon-text">MAMALIVRE</div>
+                <svg class="heart-neon" viewBox="0 0 32 32">
+                    <path d="M16 28.5L14.1 26.7C7.3 20.6 2.8 16.5 2.8 11.5C2.8 7.4 6 4.2 10.1 4.2C12.4 4.2 14.6 5.3 16 7.1C17.4 5.3 19.6 4.2 21.9 4.2C26 4.2 29.2 7.4 29.2 11.5C29.2 16.5 24.7 20.6 17.9 26.7L16 28.5Z"/>
+                </svg>
+            </div>
+            <p class="sub-desc">Foco na clareza. Corações nítidos com pulsação orgânica. Ideal para passar confiança e alta qualidade.</p>
+        </div>
+
+        <!-- OPÇÃO 2 -->
+        <div class="option-box">
+            <div class="label">OPÇÃO 2: SISTEMA ORBITAL</div>
+            <div class="orbital-container">
+                <svg class="heart-orbital" viewBox="0 0 32 32">
+                    <path d="M16 28.5L14.1 26.7C7.3 20.6 2.8 16.5 2.8 11.5C2.8 7.4 6 4.2 10.1 4.2C12.4 4.2 14.6 5.3 16 7.1C17.4 5.3 19.6 4.2 21.9 4.2C26 4.2 29.2 7.4 29.2 11.5C29.2 16.5 24.7 20.6 17.9 26.7L16 28.5Z"/>
+                </svg>
+                <svg class="heart-orbital" viewBox="0 0 32 32" style="animation-delay: -3s; animation-duration: 8s;">
+                    <path d="M16 28.5L14.1 26.7C7.3 20.6 2.8 16.5 2.8 11.5C2.8 7.4 6 4.2 10.1 4.2C12.4 4.2 14.6 5.3 16 7.1C17.4 5.3 19.6 4.2 21.9 4.2C26 4.2 29.2 7.4 29.2 11.5C29.2 16.5 24.7 20.6 17.9 26.7L16 28.5Z"/>
+                </svg>
+                <div class="logo-wrap">
+                    <div class="neon-text" style="background: white; -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-shadow: 0 0 20px rgba(255,255,255,0.5);">MAMALIVRE</div>
+                </div>
+            </div>
+            <p class="sub-desc">Dinâmico e moderno. Corações que orbitam o nome como satélites, criando uma aura de movimento constante.</p>
+        </div>
+
+        <!-- OPÇÃO 3 -->
+        <div class="option-box">
+            <div class="label">OPÇÃO 3: CIBERPUNK GLITCH</div>
+            <div class="logo-wrap">
+                <div class="glitch-text" data-text="MAMALIVRE">MAMALIVRE</div>
+            </div>
+            <p class="sub-desc">Estética underground e hacker. Um visual mais agressivo e artístico que se destaca na escuridão.</p>
+        </div>
+
+        <!-- OPÇÃO 4 -->
+        <div class="option-box">
+            <div class="label">OPÇÃO 4: POEIRA ESTELAR (REATIVA)</div>
+            <canvas id="particle-canvas-demo"></canvas>
+            <p class="sub-desc">Partículas que formam o logo e reagem ao seu toque. É a opção mais tecnológica e imersiva para o fundo do site.</p>
+        </div>
+
+        <!-- OPÇÃO 5 -->
+        <div class="option-box">
+            <div class="label">OPÇÃO 5: 3D NEON SCARLET</div>
+            <div class="logo-wrap heart-3d-box">
+                <div class="heart-3d">
+                    <div class="heart-shape-3d"></div>
+                    <div class="heart-shape-3d-back"></div>
+                </div>
+                <div class="neon-text">MAMALIVRE</div>
+                <div class="heart-3d">
+                    <div class="heart-shape-3d" style="animation-delay: -2s"></div>
+                    <div class="heart-shape-3d-back" style="animation-delay: -2s"></div>
+                </div>
+            </div>
+            <p class="sub-desc">O impacto visual máximo. Corações que parecem objetos físicos flutuando no espaço.</p>
+        </div>
+
+    </div>
+
+    <script>
+        const canvas = document.getElementById('particle-canvas-demo');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        
+        function resize() {
+            canvas.width = canvas.parentElement.clientWidth;
+            canvas.height = 250;
+        }
+        
+        window.addEventListener('resize', resize);
+        resize();
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.baseX = this.x;
+                this.baseY = this.y;
+                this.vx = (Math.random() - 0.5) * 2;
+                this.vy = (Math.random() - 0.5) * 2;
+                this.size = Math.random() * 2 + 1;
+                this.color = Math.random() > 0.5 ? '#00ffcc' : '#ff00ff';
+            }
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+                if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+            }
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        for(let i=0; i<150; i++) particles.push(new Particle());
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            ctx.fillStyle = 'rgba(255,255,255,0.05)';
+            ctx.font = 'bold 60px Orbitron';
+            ctx.textAlign = 'center';
+            ctx.fillText('MAMALIVRE', canvas.width/2, 140);
+            
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            requestAnimationFrame(animate);
+        }
+        animate();
+    </script>
+</body>
+</html>
