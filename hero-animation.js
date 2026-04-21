@@ -114,23 +114,23 @@
         tCtx.fillText('♥', width * 0.9, height / 2);
 
         const imageData = tCtx.getImageData(0, 0, width, height).data;
-        // ORGANIC DENSITY: Step 4 with jitter for a natural star-dust feel
-        const step = 4; 
+        // DIAMOND DENSITY: Step 3 for a rich, solid-yet-starry feel
+        const step = 3; 
         
         for (let y = 0; y < height; y += step) {
             for (let x = 0; x < width; x += step) {
                 if (imageData[(y * width + x) * 4 + 3] > 128) {
-                    // Add slight random noise to break the grid pattern
-                    const jitterX = (Math.random() - 0.5) * 3;
-                    const jitterY = (Math.random() - 0.5) * 3;
-                    particles.push(new Particle(x + jitterX, y + jitterY));
+                    // Organic jitter to break current 'dots' pattern
+                    const jx = (Math.random() - 0.5) * 4;
+                    const jy = (Math.random() - 0.5) * 4;
+                    particles.push(new Particle(x + jx, y + jy));
                 }
             }
         }
         
-        // Safety cap for high density
-        if (particles.length > 2200) {
-            particles = particles.filter((_, i) => i % 2 === 0).slice(0, 2200);
+        // High-density cap (Balanced for 60fps)
+        if (particles.length > 5000) {
+            particles = particles.filter((_, i) => i % 2 === 0).slice(0, 5000);
         }
     }
 
@@ -141,10 +141,20 @@
         ctx.scale(dpr, dpr);
         width /= dpr;
         height /= dpr;
+        createTextParticles(); // RE-ENABLED for Diamond Stardust
     }
 
     function animate() {
         ctx.clearRect(0, 0, width, height);
+
+        // Render high-density logo particles when in hero viewport
+        if (window.scrollY < window.innerHeight) {
+            for (let i = 0; i < particles.length; i++) {
+                const p = particles[i];
+                p.update();
+                p.draw();
+            }
+        }
 
         // Render sparkles globally with high performance
         for (let i = emitters.length - 1; i >= 0; i--) {
