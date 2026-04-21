@@ -13,16 +13,16 @@
     
     class Particle {
         constructor(x, y) {
-            this.x = Math.random() * width;
-            this.y = Math.random() * height;
+            this.x = x; // Instant formation
+            this.y = y;
             this.baseX = x;
             this.baseY = y;
             this.vx = 0;
             this.vy = 0;
-            this.size = 0.5 + Math.random() * 1.2;
+            this.size = 0.5 + Math.random() * 1.5;
             this.color = '#fff';
-            this.friction = 0.9;
-            this.ease = 0.15;
+            this.friction = 0.95;
+            this.ease = 0.1;
         }
 
         draw() {
@@ -30,13 +30,6 @@
             ctx.beginPath();
             ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
             ctx.fill();
-            
-            if (Math.random() > 0.99) {
-                ctx.fillStyle = 'rgba(255, 187, 241, 0.6)'; // Fofo pink pulse
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size * 2, 0, Math.PI * 2);
-                ctx.fill();
-            }
         }
 
         update() {
@@ -52,10 +45,10 @@
             let mdx = mouse.x - this.x;
             let mdy = mouse.y - this.y;
             let mdist = Math.sqrt(mdx * mdx + mdy * mdy);
-            if (mdist < 80) {
-                let force = (80 - mdist) / 80;
-                this.x -= mdx * force * 0.5;
-                this.y -= mdy * force * 0.5;
+            if (mdist < 100) {
+                let force = (100 - mdist) / 100;
+                this.x -= mdx * force * 0.1; // Much lighter effect
+                this.y -= mdy * force * 0.1;
             }
         }
     }
@@ -117,8 +110,8 @@
         tCtx.fillText('♥', width * 0.9, height / 2);
 
         const imageData = tCtx.getImageData(0, 0, width, height).data;
-        // Optimized step for performance - sampling every 3-4 pixels is plenty for large text
-        const step = Math.max(3, Math.floor(width / 600)); 
+        // ULTRA-PERFORMANCE: Sampling every 6 pixels for a massive font is still very sharp but 4x lighter.
+        const step = 6; 
         
         for (let y = 0; y < height; y += step) {
             for (let x = 0; x < width; x += step) {
@@ -128,9 +121,9 @@
             }
         }
         
-        // Safety cap for extremely large screens
-        if (particles.length > 3000) {
-            particles = particles.filter((_, i) => i % 2 === 0).slice(0, 3000);
+        // Lightweight cap
+        if (particles.length > 2000) {
+            particles = particles.filter((_, i) => i % 2 === 0).slice(0, 2000);
         }
     }
 
