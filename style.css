@@ -5,13 +5,13 @@
     --text-main: #f0f0f0;
     --text-muted: #888888;
     
-    --neon-magenta: #ff00ff;
-    --neon-magenta-glow: rgba(255, 0, 255, 0.6);
-    --neon-magenta-dim: rgba(255, 0, 255, 0.15);
+    --neon-magenta: #ffffff;
+    --neon-magenta-glow: rgba(255, 255, 255, 0.4);
+    --neon-magenta-dim: rgba(255, 255, 255, 0.1);
     
-    --neon-teal: #00ffcc;
-    --neon-teal-glow: rgba(0, 255, 204, 0.6);
-    --neon-teal-dim: rgba(0, 255, 204, 0.15);
+    --neon-teal: #ffffff;
+    --neon-teal-glow: rgba(255, 255, 255, 0.4);
+    --neon-teal-dim: rgba(255, 255, 255, 0.1);
     
     --glass-bg: rgba(20, 20, 20, 0.5);
     --glass-border: rgba(255, 255, 255, 0.08);
@@ -34,7 +34,7 @@ html {
 }
 
 body {
-    background: #050505; /* Base for cases where images load slow */
+    background: #000 !important; /* ULTRA-DARK DEPTH */
     color: var(--text-main);
     font-family: var(--font-body);
     line-height: 1.6;
@@ -50,15 +50,7 @@ html {
 
 /* Background Noise Texture */
 .noise-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    pointer-events: none;
-    z-index: 9999;
-    opacity: 0.04;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    display: none; /* Removed pixelation/noise as requested */
 }
 
 /* Glowing Cursor Follower */
@@ -450,7 +442,7 @@ h1, h2, h3 {
     inset: 0;
     width: 100vw;
     height: 100vh;
-    background: #000;
+    background: #000 !important; /* Total removal of gradients for mirror blackness */
     z-index: -5;
     overflow: hidden;
 }
