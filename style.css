@@ -63,16 +63,7 @@ html {
 
 /* Glowing Cursor Follower */
 .cursor-glow {
-    position: fixed;
-    width: 300px;
-    height: 300px;
-    border-radius: 50%;
-    background: radial-gradient(circle, var(--neon-magenta-dim) 0%, rgba(0,0,0,0) 70%);
-    pointer-events: none;
-    z-index: -1;
-    transform: translate(-50%, -50%);
-    transition: width 0.3s, height 0.3s, background 0.3s;
-    mix-blend-mode: screen;
+    display: none;
 }
 
 /* Typography */
@@ -279,8 +270,8 @@ h1, h2, h3 {
 
 .navbar.scrolled {
     padding: 15px 5%;
-    background: rgba(5, 5, 5, 0.85);
-    border-bottom: 1px solid var(--glass-border);
+    background: rgba(0, 0, 0, 0.95);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .logo-link {
@@ -412,19 +403,20 @@ h1, h2, h3 {
     width: 2px;
     height: 2px;
     box-shadow: 
-        400px 400px #00ffcc, 1300px 600px #ff00ff, 800px 100px #fff,
+        400px 400px #fff, 1300px 600px #fff, 800px 100px #fff,
         257px 1195px #FFF , 1134px 1111px #FFF , 1683px 1493px #FFF;
     animation: animStar 150s linear infinite;
-    opacity: 0.6;
+    opacity: 0.3;
 }
 
 #stars3 {
     width: 3px;
     height: 3px;
     box-shadow: 
-        1000px 200px #fff, 300px 900px rgba(255, 0, 255, 0.4), 
-        1700px 400px rgba(0, 255, 204, 0.4), 806px 1568px #FFF;
+        1000px 200px #fff, 300px 900px rgba(255, 255, 255, 0.4), 
+        1700px 400px rgba(255, 255, 255, 0.4), 806px 1568px #FFF;
     animation: animStar 200s linear infinite;
+    opacity: 0.2;
 }
 
 @keyframes animStar {
@@ -459,13 +451,6 @@ h1, h2, h3 {
     width: 100vw;
     height: 100vh;
     background: #000;
-    /* ULTRA-DARK LUXURY: Dominant Black with ghostly subtle glows */
-    background-image: 
-        radial-gradient(circle at 15% 15%, rgba(255, 0, 255, 0.08) 0%, transparent 80%),
-        radial-gradient(circle at 85% 85%, rgba(0, 255, 204, 0.07) 0%, transparent 80%),
-        radial-gradient(circle at 50% 50%, rgba(100, 0, 255, 0.05) 0%, transparent 100%),
-        radial-gradient(circle at 85% 15%, rgba(0, 255, 204, 0.05) 0%, transparent 70%),
-        radial-gradient(circle at 15% 85%, rgba(255, 0, 255, 0.06) 0%, transparent 70%);
     z-index: -5;
     overflow: hidden;
 }
