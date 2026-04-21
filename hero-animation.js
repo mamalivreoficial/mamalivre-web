@@ -192,12 +192,10 @@
     });
 
     window.addEventListener('resize', () => {
-        cancelAnimationFrame(animationId);
         resize();
-        animate();
     });
 
+    // START SINGLE LOOP
     resize();
     animate();
-    // No more text particles to wait for
 })();
