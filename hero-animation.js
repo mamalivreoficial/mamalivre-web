@@ -10,7 +10,6 @@
     const ctx = canvas.getContext('2d');
     let width, height;
     let particles = [];
-    let bgParticles = [];
     let emitters = [];
     let mouse = { x: -1000, y: -1000 };
     let animationId;
@@ -28,35 +27,6 @@
             h = 280 + (330 - 280) * ((percent - 0.66) / 0.34); // Purple to Pink
         }
         return `hsl(${h}, 90%, 65%)`;
-    }
-
-    class BgParticle {
-        constructor(w, h) {
-            this.x = Math.random() * w;
-            this.y = Math.random() * h;
-            this.size = Math.random() * 1.5 + 0.2; // Tiny dust and stars
-            this.speedX = (Math.random() - 0.5) * 0.2;
-            this.speedY = (Math.random() - 0.5) * 0.2;
-            // Cyber/Nebula colors (soft pinks, purples, blues)
-            const hue = 250 + Math.random() * 100; // 250 to 350
-            this.color = `hsla(${hue}, 80%, 70%, ${Math.random() * 0.4})`;
-        }
-
-        update() {
-            this.x += this.speedX;
-            this.y += this.speedY;
-            if (this.x < 0) this.x = width;
-            if (this.x > width) this.x = 0;
-            if (this.y < 0) this.y = height;
-            if (this.y > height) this.y = 0;
-        }
-
-        draw(ctx) {
-            ctx.fillStyle = this.color;
-            ctx.beginPath();
-            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-            ctx.fill();
-        }
     }
 
     class Particle {
@@ -237,24 +207,11 @@
         width /= dpr;
         height /= dpr;
         
-        // Setup initial background starfield
-        bgParticles = [];
-        let numBg = Math.floor((width * height) / 3000); // Density of space dust
-        for(let i = 0; i < numBg; i++) {
-            bgParticles.push(new BgParticle(width, height));
-        }
-
         createTextParticles();
     }
 
     function animate() {
         ctx.clearRect(0, 0, width, height);
-
-        // Draw Deep Space background
-        bgParticles.forEach(bg => {
-            bg.update();
-            bg.draw(ctx);
-        });
 
         particles.forEach(p => {
             p.update();

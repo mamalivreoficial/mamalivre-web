@@ -35,10 +35,14 @@
     </nav>
 
     <header class="hero" id="hero-section">
-        <div class="hero-bg"></div>
+        <div class="hero-bg">
+            <div id="stars"></div>
+            <div id="stars2"></div>
+            <div id="stars3"></div>
+        </div>
         
-        <div class="hero-content" style="display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; overflow: hidden;">
-            <canvas id="hero-canvas" style="display: block; width: 100%; height: 100%;"></canvas>
+        <div class="hero-content" style="display: flex; align-items: center; justify-content: center; width: 100%; max-width: none; height: 100%; overflow: visible;">
+            <canvas id="hero-canvas" style="display: block; position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 100vw; height: 100vh; pointer-events: auto; mix-blend-mode: screen; z-index: 5;"></canvas>
         </div>
         <div class="scroll-indicator">
             <div class="mouse">
