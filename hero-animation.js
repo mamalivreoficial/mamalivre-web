@@ -1,8 +1,3 @@
-/**
- * MAMALIVRE - Interactive Particle Hero Animation
- * Optimized for mamalivre.com
- */
-
 (function() {
     const canvas = document.getElementById('hero-canvas');
     if (!canvas) return;
@@ -14,34 +9,20 @@
     let mouse = { x: -1000, y: -1000 };
     let animationId;
 
-    const emitterItems = ['✦', '✧', '✨', '⭐', '★', 'x', '+', '✨'];
+    const emitterItems = ['✦', '✧', '✨']; // Finer selection
     
-    // Smooth Gradient stops
-    function getRainbowColor(percent) {
-        let h;
-        if (percent < 0.33) {
-            h = 50 + (200 - 50) * (percent / 0.33); // Yellow to Blue
-        } else if (percent < 0.66) {
-            h = 200 + (280 - 200) * ((percent - 0.33) / 0.33); // Blue to Purple
-        } else {
-            h = 280 + (330 - 280) * ((percent - 0.66) / 0.34); // Purple to Pink
-        }
-        return `hsl(${h}, 90%, 65%)`;
-    }
-
     class Particle {
-        constructor(x, y, color) {
-            // Spawn closer to target for faster initial visibility
-            this.x = x + (Math.random() - 0.5) * 200;
-            this.y = y + (Math.random() - 0.5) * 200;
+        constructor(x, y) {
+            this.x = Math.random() * width;
+            this.y = Math.random() * height;
             this.baseX = x;
             this.baseY = y;
-            this.vx = (Math.random() - 0.5) * 10;
-            this.vy = (Math.random() - 0.5) * 10;
-            this.size = 0.7 + Math.random() * 0.9;
-            this.color = color;
-            this.friction = 0.88; 
-            this.ease = 0.25; // Faster assembly
+            this.vx = 0;
+            this.vy = 0;
+            this.size = 0.5 + Math.random() * 1.2;
+            this.color = '#fff';
+            this.friction = 0.9;
+            this.ease = 0.15;
         }
 
         draw() {
@@ -50,10 +31,10 @@
             ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
             ctx.fill();
             
-            if (Math.random() > 0.98) {
-                ctx.fillStyle = 'rgba(255,255,255,0.7)';
+            if (Math.random() > 0.99) {
+                ctx.fillStyle = 'rgba(255, 187, 241, 0.6)'; // Fofo pink pulse
                 ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size * 0.4, 0, Math.PI * 2);
+                ctx.arc(this.x, this.y, this.size * 2, 0, Math.PI * 2);
                 ctx.fill();
             }
         }
@@ -61,60 +42,49 @@
         update() {
             let dx = this.baseX - this.x;
             let dy = this.baseY - this.y;
-            
             this.vx += dx * this.ease;
             this.vy += dy * this.ease;
             this.vx *= this.friction;
             this.vy *= this.friction;
-            
             this.x += this.vx;
             this.y += this.vy;
 
-            // Magnetic Subtlety
             let mdx = mouse.x - this.x;
             let mdy = mouse.y - this.y;
             let mdist = Math.sqrt(mdx * mdx + mdy * mdy);
-            if (mdist < 100) {
-                let force = Math.pow((100 - mdist) / 100, 3) * 2.5;
-                this.vx -= mdx * force * 0.2;
-                this.vy -= mdy * force * 0.2;
+            if (mdist < 80) {
+                let force = (80 - mdist) / 80;
+                this.x -= mdx * force * 0.5;
+                this.y -= mdy * force * 0.5;
             }
         }
     }
 
     class Emitter {
         constructor(x, y) {
-            // Spread them slightly around the cursor
-            this.x = x + (Math.random() - 0.5) * 30;
-            this.y = y + (Math.random() - 0.5) * 30;
+            this.x = x + (Math.random() - 0.5) * 20;
+            this.y = y + (Math.random() - 0.5) * 20;
             this.content = emitterItems[Math.floor(Math.random() * emitterItems.length)];
-            this.vx = (Math.random() - 0.5) * 2.5;
-            this.vy = (Math.random() - 0.5) * 2.5 - 1.5; // Drift upwards
-            this.size = 12 + Math.random() * 18; // Bigger sparkles
-            this.opacity = 0.8 + Math.random() * 0.2;
-            this.rot = Math.random() * Math.PI * 2;
-            this.color = getRainbowColor(Math.random());
+            this.vx = (Math.random() - 0.5) * 1.5;
+            this.vy = (Math.random() - 0.5) * 1.5 - 1;
+            this.size = 10 + Math.random() * 10;
+            this.opacity = 1;
+            this.color = '#ffbbf1'; // Soft pink for 'fofo'
         }
-
         draw() {
             ctx.save();
             ctx.globalAlpha = this.opacity;
-            ctx.font = `bold ${this.size}px Arial`;
-            ctx.translate(this.x, this.y);
-            ctx.rotate(this.rot + (1 - this.opacity));
+            ctx.font = `${this.size}px Arial`;
             ctx.fillStyle = this.color;
             ctx.shadowColor = this.color;
-            ctx.shadowBlur = 15;
-            ctx.fillText(this.content, 0, 0);
+            ctx.shadowBlur = 10;
+            ctx.fillText(this.content, this.x, this.y);
             ctx.restore();
         }
-
         update() {
             this.x += this.vx;
             this.y += this.vy;
-            this.opacity -= 0.015; // Slower fade for longer trail
-            this.vx += Math.sin(Date.now() * 0.003) * 0.15; // Cyber erratic movement
-            this.rot += 0.03;
+            this.opacity -= 0.02;
         }
     }
 
@@ -125,77 +95,42 @@
         tCanvas.width = width;
         tCanvas.height = height;
 
-        // 1. Setup Font & Measure
-        const fontSize = Math.min(width * 0.14, 110);
-        tCtx.font = `bold ${fontSize}px Orbitron, sans-serif`;
+                // TOTAL IMPACT SCALE: Fitting to viewport width perfectly
+        // We want the text 'MAMALIVRE' to take about 70% of the screen
+        const maxTextWidth = width * 0.7;
+        tCtx.font = `bold 100px Syncopate`; // Base for measuring
+        const baseWidth = tCtx.measureText('MAMALIVRE').width;
+        const fontSize = (maxTextWidth / baseWidth) * 100;
+        
+        tCtx.font = `bold ${fontSize}px Syncopate`; 
         tCtx.textAlign = 'center';
         tCtx.textBaseline = 'middle';
-        const textWidth = tCtx.measureText('MAMALIVRE').width;
-
-        // 2. Draw The Logo
         tCtx.fillStyle = 'white';
         tCtx.fillText('MAMALIVRE', width / 2, height / 2);
 
-        // 3. Draw 2 Perfect Hearts (3x Font Size) flanking M and E
-        tCtx.strokeStyle = 'white';
-        tCtx.lineWidth = 1.2; 
-        
-        function drawPerfectHeart(ctx, x, y, size) {
-            ctx.save();
-            ctx.translate(x, y);
-            ctx.rotate(Math.PI); // Orbitron coordinate match
-            ctx.beginPath();
-            // Parametric heart equation
-            for (let t = 0; t <= Math.PI * 2; t += 0.1) {
-                const hx = 16 * Math.pow(Math.sin(t), 3);
-                const hy = 13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t);
-                if (t === 0) ctx.moveTo(hx * size/20, hy * size/20);
-                else ctx.lineTo(hx * size/20, hy * size/20);
-            }
-            ctx.closePath();
-            ctx.stroke();
-            ctx.restore();
-        }
-
-        let heartVisualSize = fontSize * 0.9; 
-        let sideGap = fontSize * 0.6;
-        let estimatedRadius = heartVisualSize * 0.8;
-        
-        // Prevent side cut-offs by checking available space
-        const maxAvailableSpace = width/2 - textWidth/2;
-        if (maxAvailableSpace < sideGap + estimatedRadius) {
-            // Dynamically scale down hearts and gaps so they ALWAYS fit inside the canvas
-            const allowedForSide = Math.max(10, maxAvailableSpace - 10);
-            const totalNeeded = sideGap + estimatedRadius;
-            const shrinkRatio = allowedForSide / totalNeeded;
-            
-            sideGap *= shrinkRatio;
-            heartVisualSize *= shrinkRatio;
-        }
-
-        // Vertically centering the heart
-        const yOffset = (heartVisualSize * 6) / 20;
-        
-        const safeLeftX = width/2 - textWidth/2 - sideGap;
-        const safeRightX = width/2 + textWidth/2 + sideGap;
-
-        // Left Heart (next to M)
-        drawPerfectHeart(tCtx, safeLeftX, height/2 + yOffset, heartVisualSize);
-        // Right Heart (next to E)
-        drawPerfectHeart(tCtx, safeRightX, height/2 + yOffset, heartVisualSize);
+        // VISIBLE GIGANTIC HEARTS: Positioned to be always on screen
+        // Each heart will be 1.2x the text height
+        const textWidth = tCtx.measureText('MAMALIVRE').width;
+        tCtx.font = `${fontSize * 1.2}px Arial`; 
+        // Hearts placed at 10% and 90% of the viewport width respectively
+        tCtx.fillText('♥', width * 0.1, height / 2);
+        tCtx.fillText('♥', width * 0.9, height / 2);
 
         const imageData = tCtx.getImageData(0, 0, width, height).data;
-        const step = Math.max(1, Math.floor(width / 800)); // Finer sampling for better definition
-
+        // Optimized step for performance - sampling every 3-4 pixels is plenty for large text
+        const step = Math.max(3, Math.floor(width / 600)); 
+        
         for (let y = 0; y < height; y += step) {
             for (let x = 0; x < width; x += step) {
-                const index = (y * width + x) * 4;
-                if (imageData[index + 3] > 100) {
-                    const relativeX = (x / width); 
-                    const color = getRainbowColor(relativeX);
-                    particles.push(new Particle(x, y, color));
+                if (imageData[(y * width + x) * 4 + 3] > 128) {
+                    particles.push(new Particle(x, y));
                 }
             }
+        }
+        
+        // Safety cap for extremely large screens
+        if (particles.length > 3000) {
+            particles = particles.filter((_, i) => i % 2 === 0).slice(0, 3000);
         }
     }
 
@@ -206,14 +141,13 @@
         ctx.scale(dpr, dpr);
         width /= dpr;
         height /= dpr;
-        
         createTextParticles();
     }
 
     function animate() {
         ctx.clearRect(0, 0, width, height);
 
-        // Only process and draw logo particles if we are in the hero section (Performance)
+        // Render logo particles when in hero viewport
         if (window.scrollY < window.innerHeight) {
             particles.forEach(p => {
                 p.update();
@@ -221,7 +155,7 @@
             });
         }
 
-        // Always process and draw sparkles (Site-wide)
+        // Render sparkles globally
         emitters.forEach((e, i) => {
             e.update();
             e.draw();
@@ -231,25 +165,12 @@
         animationId = requestAnimationFrame(animate);
     }
 
-    // Events
     window.addEventListener('mousemove', e => {
         const rect = canvas.getBoundingClientRect();
         mouse.x = e.clientX - rect.left;
         mouse.y = e.clientY - rect.top;
-        // Increase spawn frequency heavily
-        if (Math.random() > 0.4) {
+        if (Math.random() > 0.6) { // Balance between sparse and frequent
             emitters.push(new Emitter(mouse.x, mouse.y));
-            if(Math.random() > 0.6) emitters.push(new Emitter(mouse.x, mouse.y)); // Frequent bursts
-        }
-    });
-
-    window.addEventListener('touchmove', e => {
-        const rect = canvas.getBoundingClientRect();
-        mouse.x = e.touches[0].clientX - rect.left;
-        mouse.y = e.touches[0].clientY - rect.top;
-        if (Math.random() > 0.4) {
-            emitters.push(new Emitter(mouse.x, mouse.y));
-            if(Math.random() > 0.6) emitters.push(new Emitter(mouse.x, mouse.y));
         }
     });
 
@@ -259,11 +180,7 @@
         animate();
     });
 
-    // Start immediately if possible, then refine when font ready
     resize();
     animate();
-
-    document.fonts.ready.then(() => {
-        resize(); // Recalculate with correct font metrics
-    });
+    document.fonts.ready.then(resize);
 })();

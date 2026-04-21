@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MAMALIVRE | Local Preview v3</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Syncopate:wght@400;700&family=Tenor+Sans&family=Cormorant+Garamond:wght@300;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #020202;
+            --soft-pink: #fbc2eb;
+            --candy-pink: #ff9a9e;
+            --elegant-white: #f8f9fa;
+            --neon-teal: #a18cd1; /* Softer teal/purple blend */
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--elegant-white);
+            font-family: 'Tenor Sans', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .hero-preview {
+            width: 100%;
+            height: 700px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            background: radial-gradient(circle at 50% 50%, rgba(251, 194, 235, 0.05) 0%, transparent 60%);
+            border-bottom: 2px solid rgba(255, 255, 255, 0.03);
+            overflow: hidden;
+        }
+
+        .nebula-hero {
+            position: absolute;
+            width: 80%;
+            height: 80%;
+            background: radial-gradient(circle, rgba(251, 194, 235, 0.08) 0%, rgba(161, 140, 209, 0.05) 40%, transparent 70%);
+            filter: blur(80px);
+            z-index: -1;
+            animation: nebula-drift 20s infinite alternate;
+        }
+
+        @keyframes nebula-drift {
+            from { transform: scale(1) translate(-50px, -50px); }
+            to { transform: scale(1.2) translate(50px, 50px); }
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            padding: 80px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 120px;
+        }
+
+        .label {
+            font-family: 'Syncopate', sans-serif;
+            font-size: 0.7rem;
+            letter-spacing: 6px;
+            color: var(--soft-pink);
+            margin-bottom: 40px;
+            opacity: 0.8;
+            text-transform: uppercase;
+        }
+
+        .option-card {
+            text-align: center;
+            padding: 100px 40px;
+            background: rgba(255, 255, 255, 0.01);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            border-radius: 50px;
+            backdrop-filter: blur(10px);
+            position: relative;
+        }
+
+        .logo-box {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 45px;
+        }
+
+        /* TIPOGRAFIAS REFINADAS */
+        .txt-tenor { font-family: 'Tenor Sans', sans-serif; font-size: 3.5rem; letter-spacing: 15px; text-transform: uppercase; }
+        .txt-cormorant { font-family: 'Cormorant Garamond', serif; font-size: 4.5rem; letter-spacing: 4px; font-weight: 300; }
+        .txt-cinzel { font-family: 'Cinzel Decorative', serif; font-size: 3.8rem; letter-spacing: 8px; font-weight: 400; }
+
+        /* CORAÇÕES FOFO & ELEGANTE */
+        .heart-svg {
+            width: 65px;
+            height: 65px;
+            fill: none;
+            stroke-width: 1;
+            transition: 0.4s;
+        }
+
+        /* ESTILO 1: BLOOM SUAVE (ROSA PASTEL) */
+        .heart-bloom {
+            stroke: var(--soft-pink);
+            filter: drop-shadow(0 0 12px var(--soft-pink));
+            animation: heart-float 4s infinite ease-in-out;
+        }
+
+        @keyframes heart-float {
+            0%, 100% { transform: translateY(0) scale(1); opacity: 0.6; }
+            50% { transform: translateY(-10px) scale(1.1); opacity: 1; }
+        }
+
+        /* ESTILO 2: NEON MINIMALISTA (TRAÇO FINO) */
+        .heart-minimal {
+            stroke: #fff;
+            stroke-width: 0.8;
+            filter: drop-shadow(0 0 5px rgba(255,255,255,0.5));
+            animation: heart-glow 3s infinite ease-in-out;
+        }
+
+        @keyframes heart-glow {
+            0%, 100% { opacity: 0.4; stroke-width: 0.5; }
+            50% { opacity: 1; stroke-width: 1.2; }
+        }
+
+        /* ESTILO 3: MAGICAL SPARKLE (PONTILHADO) */
+        .heart-sparkle {
+            stroke: var(--candy-pink);
+            stroke-dasharray: 1 3;
+            animation: dash-offset 5s linear infinite;
+        }
+
+        @keyframes dash-offset {
+            from { stroke-dashoffset: 0; }
+            to { stroke-dashoffset: 20; }
+        }
+
+        .explanation {
+            margin-top: 35px;
+            color: #888;
+            font-size: 1rem;
+            max-width: 550px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.8;
+            font-weight: 300;
+        }
+
+        /* SIMULAÇÃO DO SITE INTEIRO */
+        .site-body-sim {
+            width: 100%;
+            height: 400px;
+            background: #020202;
+            border-radius: 30px;
+            border: 1px solid rgba(255,255,255,0.05);
+            position: relative;
+            overflow: hidden;
+            margin-top: 40px;
+        }
+
+        .star {
+            position: absolute;
+            background: #fff;
+            border-radius: 50%;
+            animation: star-blink var(--d) infinite ease-in-out;
+            opacity: 0;
+        }
+
+        @keyframes star-blink {
+            0%, 100% { opacity: 0.1; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.3); }
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- HERO SECTION PREVIEW -->
+    <div class="hero-preview">
+        <div class="nebula-hero"></div>
+        <div class="label">VISÃO DO TOPO (COM NEBULOSA)</div>
+        
+        <div class="logo-box">
+            <svg class="heart-svg heart-bloom" viewBox="0 0 32 32">
+                <path d="M16 28.5L14.1 26.7C7.3 20.6 2.8 16.5 2.8 11.5C2.8 7.4 6 4.2 10.1 4.2C12.4 4.2 14.6 5.3 16 7.1C17.4 5.3 19.6 4.2 21.9 4.2C26 4.2 29.2 7.4 29.2 11.5C29.2 16.5 24.7 20.6 17.9 26.7L16 28.5Z"/>
+            </svg>
+            <div class="txt-tenor">MAMALIVRE</div>
+            <svg class="heart-svg heart-bloom" viewBox="0 0 32 32">
+                <path d="M16 28.5L14.1 26.7C7.3 20.6 2.8 16.5 2.8 11.5C2.8 7.4 6 4.2 10.1 4.2C12.4 4.2 14.6 5.3 16 7.1C17.4 5.3 19.6 4.2 21.9 4.2C26 4.2 29.2 7.4 29.2 11.5C29.2 16.5 24.7 20.6 17.9 26.7L16 28.5Z"/>
+            </svg>
+        </div>
+        <p class="explanation" style="color: #fff">Esta fonte (Tenor Sans) é ultra elegante e limpa, lembrando marcas de alta costura. Os corações têm um brilho rosa pastel "bloom" que traz o lado fofo sem ser agressivo.</p>
+    </div>
+
+    <div class="container">
+        
+        <!-- OPÇÃO 2 -->
+        <div class="option-card">
+            <div class="label">OPÇÃO: CLASSIC GOTH LUXE</div>
+            <div class="logo-box">
+                <svg class="heart-svg heart-minimal" viewBox="0 0 32 32">
+                    <path d="M16 28.5L14.1 26.7C7.3 20.6 2.8 16.5 2.8 11.5C2.8 7.4 6 4.2 10.1 4.2C12.4 4.2 14.6 5.3 16 7.1C17.4 5.3 19.6 4.2 21.9 4.2C26 4.2 29.2 7.4 29.2 11.5C29.2 16.5 24.7 20.6 17.9 26.7L16 28.5Z"/>
+                </svg>
+                <div class="txt-cinzel">MAMALIVRE</div>
+                <svg class="heart-svg heart-minimal" viewBox="0 0 32 32">
+                    <path d="M16 28.5L14.1 26.7C7.3 20.6 2.8 16.5 2.8 11.5C2.8 7.4 6 4.2 10.1 4.2C12.4 4.2 14.6 5.3 16 7.1C17.4 5.3 19.6 4.2 21.9 4.2C26 4.2 29.2 7.4 29.2 11.5C29.2 16.5 24.7 20.6 17.9 26.7L16 28.5Z"/>
+                </svg>
+            </div>
+            <p class="explanation">Aqui usamos a tipografia Cinzel Decorative, mas de forma muito leve. Os corações são apenas um contorno branco etéreo que brilha suavemente.</p>
+        </div>
+
+        <!-- OPÇÃO 3 -->
+        <div class="option-card">
+            <div class="label">OPÇÃO: STARDUST MAGICAL</div>
+            <div class="logo-box">
+                <svg class="heart-svg heart-sparkle" viewBox="0 0 32 32">
+                    <path d="M16 28.5L14.1 26.7C7.3 20.6 2.8 16.5 2.8 11.5C2.8 7.4 6 4.2 10.1 4.2C12.4 4.2 14.6 5.3 16 7.1C17.4 5.3 19.6 4.2 21.9 4.2C26 4.2 29.2 7.4 29.2 11.5C29.2 16.5 24.7 20.6 17.9 26.7L16 28.5Z"/>
+                </svg>
+                <div class="txt-cormorant">mamalivre</div>
+                <svg class="heart-svg heart-sparkle" viewBox="0 0 32 32">
+                    <path d="M16 28.5L14.1 26.7C7.3 20.6 2.8 16.5 2.8 11.5C2.8 7.4 6 4.2 10.1 4.2C12.4 4.2 14.6 5.3 16 7.1C17.4 5.3 19.6 4.2 21.9 4.2C26 4.2 29.2 7.4 29.2 11.5C29.2 16.5 24.7 20.6 17.9 26.7L16 28.5Z"/>
+                </svg>
+            </div>
+            <p class="explanation">Letras minúsculas e serifadas (Cormorant) para o auge da sofisticação poética. Os corações são pontilhados de luz rosa que parecem brilhar como poeira de estrelas.</p>
+        </div>
+
+        <!-- BODY PREVIEW -->
+        <div style="text-align: center;">
+            <div class="label">VISÃO DO SITE (CORPO / PRODUTOS)</div>
+            <p class="explanation">O fundo do site fora do topo fica assim: Limpo, escuro, com estrelas piscando suavemente para dar vida aos seus produtos.</p>
+            <div class="site-body-sim" id="starfield"></div>
+        </div>
+
+    </div>
+
+    <script>
+        const field = document.getElementById('starfield');
+        for(let i=0; i<30; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 100 + '%';
+            star.style.width = Math.random() * 3 + 'px';
+            star.style.height = star.style.width;
+            star.style.setProperty('--d', (Math.random() * 3 + 2) + 's');
+            star.style.animationDelay = Math.random() * 5 + 's';
+            field.appendChild(star);
+        }
+    </script>
+</body>
+</html>
