@@ -111,6 +111,9 @@
         tCtx.fillStyle = 'white';
         tCtx.fillText('MAMALIVRE', width / 2, height / 2);
 
+        // Save fontSize for ghost rendering
+        window.heroFontSize = fontSize;
+
         // VISIBLE GIGANTIC HEARTS: Positioned to be always on screen
         // Each heart will be 1.2x the text height
         const textWidth = tCtx.measureText('MAMALIVRE').width;
@@ -120,13 +123,12 @@
         tCtx.fillText('♥', width * 0.9, height / 2);
 
         const imageData = tCtx.getImageData(0, 0, width, height).data;
-        // DIAMOND DENSITY: Step 3 for a rich, solid-yet-starry feel
-        const step = 3; 
+        // ULTRA-DENSITY: Step 2.5 for a perfect solid-yet-starry finish
+        const step = 2.5; 
         
         for (let y = 0; y < height; y += step) {
             for (let x = 0; x < width; x += step) {
-                if (imageData[(y * width + x) * 4 + 3] > 128) {
-                    // Organic jitter to break current 'dots' pattern
+                if (imageData[(Math.floor(y) * width + Math.floor(x)) * 4 + 3] > 128) {
                     const jx = (Math.random() - 0.5) * 4;
                     const jy = (Math.random() - 0.5) * 4;
                     particles.push(new Particle(x + jx, y + jy));
@@ -134,9 +136,9 @@
             }
         }
         
-        // High-density cap (Balanced for 60fps)
-        if (particles.length > 5000) {
-            particles = particles.filter((_, i) => i % 2 === 0).slice(0, 5000);
+        if (particles.length > 6000) {
+            // UNIFORM DISTRIBUTION: Shuffle to avoid 'top-only' cutting
+            particles = particles.sort(() => Math.random() - 0.5).slice(0, 6000);
         }
     }
 
@@ -147,7 +149,9 @@
         ctx.scale(dpr, dpr);
         width /= dpr;
         height /= dpr;
-        createTextParticles(); // RE-ENABLED for Diamond Stardust
+        document.fonts.ready.then(() => {
+            createTextParticles(); 
+        });
     }
 
     function animate() {
@@ -156,11 +160,27 @@
         const scroll = window.scrollY;
         // Fade out as we scroll: fully transparent by 400px
         const opacity = Math.max(1 - scroll / 400, 0);
+        const fontSize = window.heroFontSize || 100;
 
         // Render high-density logo particles when in hero viewport
         if (opacity > 0) {
             ctx.save();
             ctx.globalAlpha = opacity;
+
+            // DRAW GHOST SOLID TEXT (Backbone for total legibility)
+            ctx.font = `bold ${fontSize}px Syncopate`; 
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.15)'; // Softer base for better blending
+            
+            const scatterY = (window.scrollY * 0.5);
+            ctx.fillText('MAMALIVRE', width / 2, (height / 2) - scatterY);
+            
+            // Hearts Ghost
+            ctx.font = `${fontSize * 1.2}px Arial`; 
+            ctx.fillText('♥', (width * 0.1), (height / 2) - scatterY);
+            ctx.fillText('♥', (width * 0.9), (height / 2) - scatterY);
+
             for (let i = 0; i < particles.length; i++) {
                 const p = particles[i];
                 p.update();
