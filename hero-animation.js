@@ -201,8 +201,8 @@
 
     function resize() {
         const dpr = window.devicePixelRatio || 1;
-        width = canvas.width = canvas.parentElement.clientWidth * dpr;
-        height = canvas.height = canvas.parentElement.clientHeight * dpr;
+        width = canvas.width = window.innerWidth * dpr;
+        height = canvas.height = window.innerHeight * dpr;
         ctx.scale(dpr, dpr);
         width /= dpr;
         height /= dpr;
@@ -213,11 +213,15 @@
     function animate() {
         ctx.clearRect(0, 0, width, height);
 
-        particles.forEach(p => {
-            p.update();
-            p.draw();
-        });
+        // Only process and draw logo particles if we are in the hero section (Performance)
+        if (window.scrollY < window.innerHeight) {
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+        }
 
+        // Always process and draw sparkles (Site-wide)
         emitters.forEach((e, i) => {
             e.update();
             e.draw();
