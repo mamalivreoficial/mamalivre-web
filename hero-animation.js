@@ -141,26 +141,18 @@
         ctx.scale(dpr, dpr);
         width /= dpr;
         height /= dpr;
-        createTextParticles();
     }
 
     function animate() {
         ctx.clearRect(0, 0, width, height);
 
-        // Render logo particles when in hero viewport
-        if (window.scrollY < window.innerHeight) {
-            particles.forEach(p => {
-                p.update();
-                p.draw();
-            });
-        }
-
-        // Render sparkles globally
-        emitters.forEach((e, i) => {
+        // Render sparkles globally with high performance
+        for (let i = emitters.length - 1; i >= 0; i--) {
+            const e = emitters[i];
             e.update();
             e.draw();
             if (e.opacity <= 0) emitters.splice(i, 1);
-        });
+        }
 
         animationId = requestAnimationFrame(animate);
     }
@@ -169,7 +161,9 @@
         const rect = canvas.getBoundingClientRect();
         mouse.x = e.clientX - rect.left;
         mouse.y = e.clientY - rect.top;
-        if (Math.random() > 0.6) { // Balance between sparse and frequent
+        
+        // Subtle trail effect
+        if (Math.random() > 0.4) {
             emitters.push(new Emitter(mouse.x, mouse.y));
         }
     });
@@ -182,5 +176,5 @@
 
     resize();
     animate();
-    document.fonts.ready.then(resize);
+    // No more text particles to wait for
 })();
