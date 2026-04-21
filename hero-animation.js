@@ -13,42 +13,46 @@
     
     class Particle {
         constructor(x, y) {
-            this.x = x; // Instant formation
+            this.x = x; 
             this.y = y;
             this.baseX = x;
             this.baseY = y;
             this.vx = 0;
             this.vy = 0;
-            this.size = 0.5 + Math.random() * 1.5;
+            this.size = 1 + Math.random() * 2; // Slightly larger for visibility with rectangles
             this.color = '#fff';
-            this.friction = 0.95;
+            this.friction = 0.8;
             this.ease = 0.1;
         }
 
         draw() {
             ctx.fillStyle = this.color;
-            ctx.beginPath();
-            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-            ctx.fill();
+            // fillRect is significantly faster than arc for thousands of particles
+            ctx.fillRect(this.x, this.y, this.size, this.size);
         }
 
         update() {
-            let dx = this.baseX - this.x;
-            let dy = this.baseY - this.y;
-            this.vx += dx * this.ease;
-            this.vy += dy * this.ease;
-            this.vx *= this.friction;
-            this.vy *= this.friction;
-            this.x += this.vx;
-            this.y += this.vy;
-
             let mdx = mouse.x - this.x;
             let mdy = mouse.y - this.y;
             let mdist = Math.sqrt(mdx * mdx + mdy * mdy);
-            if (mdist < 100) {
-                let force = (100 - mdist) / 100;
-                this.x -= mdx * force * 0.1; // Much lighter effect
-                this.y -= mdy * force * 0.1;
+
+            // ONLY calculate physics if mouse is nearby - saves CPU
+            if (mdist < 120) {
+                let force = (120 - mdist) / 120;
+                this.x -= mdx * force * 0.15;
+                this.y -= mdy * force * 0.15;
+            }
+
+            // High-performance catch back to base
+            let dx = this.baseX - this.x;
+            let dy = this.baseY - this.y;
+            if (Math.abs(dx) > 0.1 || Math.abs(dy) > 0.1) {
+                this.vx += dx * this.ease;
+                this.vy += dy * this.ease;
+                this.vx *= this.friction;
+                this.vy *= this.friction;
+                this.x += this.vx;
+                this.y += this.vy;
             }
         }
     }
@@ -110,20 +114,23 @@
         tCtx.fillText('♥', width * 0.9, height / 2);
 
         const imageData = tCtx.getImageData(0, 0, width, height).data;
-        // ULTRA-PERFORMANCE: Sampling every 6 pixels for a massive font is still very sharp but 4x lighter.
-        const step = 6; 
+        // ORGANIC DENSITY: Step 4 with jitter for a natural star-dust feel
+        const step = 4; 
         
         for (let y = 0; y < height; y += step) {
             for (let x = 0; x < width; x += step) {
                 if (imageData[(y * width + x) * 4 + 3] > 128) {
-                    particles.push(new Particle(x, y));
+                    // Add slight random noise to break the grid pattern
+                    const jitterX = (Math.random() - 0.5) * 3;
+                    const jitterY = (Math.random() - 0.5) * 3;
+                    particles.push(new Particle(x + jitterX, y + jitterY));
                 }
             }
         }
         
-        // Lightweight cap
-        if (particles.length > 2000) {
-            particles = particles.filter((_, i) => i % 2 === 0).slice(0, 2000);
+        // Safety cap for high density
+        if (particles.length > 2200) {
+            particles = particles.filter((_, i) => i % 2 === 0).slice(0, 2200);
         }
     }
 
