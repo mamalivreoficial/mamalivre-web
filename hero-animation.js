@@ -110,6 +110,11 @@
         tCtx.textBaseline = 'middle';
         tCtx.fillStyle = 'white';
         tCtx.fillText('MAMALIVRE', width / 2, height / 2);
+        
+        // STARDUST HEARTS: Symmetrically placed as pixels
+        tCtx.font = `bold ${fontSize * 0.8}px Arial`; 
+        tCtx.fillText('♥', width * 0.12, height / 2);
+        tCtx.fillText('♥', width * 0.88, height / 2);
 
         // Save fontSize for ghost rendering
         window.heroFontSize = fontSize;

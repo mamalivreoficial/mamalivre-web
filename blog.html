@@ -12,9 +12,10 @@
     <style>
         .tumblr-container {
             width: 100vw;
-            height: 90vh; /* Takes almost full height of screen */
+            height: calc(100vh - 80px); /* Full height below navbar */
             overflow: hidden;
             background: #000;
+            margin-top: 80px; /* Offset for sticky navbar */
         }
         .tumblr-container iframe {
             width: 100%;
@@ -58,15 +59,11 @@
         </div>
     </nav>
 
-    <!-- Page Header (Small Hero) -->
-    <header class="page-header section-darker" style="padding: 150px 5% 50px; text-align: center; border-bottom: 1px solid var(--glass-border);">
-        <h1 class="glitch-text" style="font-size: 3rem; margin-bottom: 1rem;"><span class="neon-text">EDITORIAL</span> DIARY</h1>
-        <p class="section-desc">Moodboard oficial, inspirações, backstages e processos da Mamalivre.</p>
-    </header>
+    <!-- Full-Page Tumblr integration below navbar -->
 
     <!-- Tumblr Integration Area -->
-    <section class="section" style="padding: 0; margin-top: -1px;">
-        <div class="tumblr-container reveal">
+    <section style="padding: 0; margin-top: 0;">
+        <div class="tumblr-container">
             <!-- Embedding Tumblr Blog Via iFrame for direct interaction -->
             <iframe src="https://mamalivre.tumblr.com/" title="Mamalivre Tumblr Blog"></iframe>
         </div>
