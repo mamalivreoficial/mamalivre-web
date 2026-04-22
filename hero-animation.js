@@ -8,6 +8,20 @@
     let emitters = [];
     let mouse = { x: -1000, y: -1000 };
     let animationId;
+    
+    // COLOR LAB: URL Presets for testing
+    const params = new URLSearchParams(window.location.search);
+    const colorParam = params.get('color') || 'white';
+    
+    const COL_PRESETS = {
+        white: { main: '#ffffff', glow: '#ffffff', blur: 10 },
+        neon_pink: { main: '#ff00ff', glow: '#ff00ff', blur: 20 },
+        soft_rose: { main: '#ffb6c1', glow: '#ffb6c1', blur: 5 },
+        stellar_purple: { main: '#9400d3', glow: '#9400d3', blur: 15 },
+        aurora: { main: 'aurora', glow: '#ffffff', blur: 12 }
+    };
+    
+    const currentPreset = COL_PRESETS[colorParam] || COL_PRESETS.white;
 
     const emitterItems = ['✦', '✧', '✨']; // Finer selection
     
@@ -20,7 +34,15 @@
             this.vx = 0;
             this.vy = 0;
             this.size = 0.5 + Math.random() * 2.5; 
-            this.color = '#fff';
+            
+            // Dynamic Color Logic
+            if (currentPreset.main === 'aurora') {
+                const rand = Math.random();
+                this.color = rand > 0.6 ? '#ff00ff' : (rand > 0.3 ? '#9400d3' : '#ffffff');
+            } else {
+                this.color = currentPreset.main;
+            }
+            
             this.friction = 0.8;
             this.ease = 0.1;
             // Scroll scatter directions
@@ -30,7 +52,14 @@
 
         draw() {
             ctx.fillStyle = this.color;
+            if (currentPreset.blur > 5) {
+                ctx.shadowColor = this.color;
+                ctx.shadowBlur = currentPreset.blur * 0.5;
+            } else {
+                ctx.shadowBlur = 0;
+            }
             ctx.fillRect(this.x, this.y, this.size, this.size);
+            ctx.shadowBlur = 0; // Reset for performance
         }
 
         update() {
@@ -69,10 +98,8 @@
             this.y = y + (Math.random() - 0.5) * 20;
             this.content = emitterItems[Math.floor(Math.random() * emitterItems.length)];
             this.vx = (Math.random() - 0.5) * 1.5;
-            this.vy = (Math.random() - 0.5) * 1.5 - 1;
-            this.size = 10 + Math.random() * 10;
-            this.opacity = 1;
-            this.color = '#ffffff'; // Diamond white sparks
+            this.color = currentPreset.main === 'aurora' ? '#ff00ff' : currentPreset.main;
+            this.glow = currentPreset.blur;
         }
         draw() {
             ctx.save();
@@ -80,7 +107,7 @@
             ctx.font = `${this.size}px Arial`;
             ctx.fillStyle = this.color;
             ctx.shadowColor = this.color;
-            ctx.shadowBlur = 10;
+            ctx.shadowBlur = this.glow;
             ctx.fillText(this.content, this.x, this.y);
             ctx.restore();
         }
