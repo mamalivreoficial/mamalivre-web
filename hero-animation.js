@@ -123,9 +123,11 @@
         tCanvas.width = width;
         tCanvas.height = height;
 
-                // TOTAL IMPACT SCALE: Fitting to viewport width perfectly
-        // We want the text 'MAMALIVRE' to take about 70% of the screen
-        const maxTextWidth = width * 0.7; // Reverted to elegant original size
+        // TOTAL IMPACT SCALE: Fitting to viewport width perfectly
+        // Mobile users get a much larger logo (95%) to fill the screen
+        const logoScale = width < 768 ? 0.95 : 0.72;
+        const maxTextWidth = width * logoScale; 
+        
         tCtx.font = `bold 100px Syncopate`; // Base for measuring
         const baseWidth = tCtx.measureText('MAMALIVRE').width;
         const fontSize = (maxTextWidth / baseWidth) * 100;
@@ -210,14 +212,26 @@
         animationId = requestAnimationFrame(animate);
     }
 
-    window.addEventListener('mousemove', e => {
+    const handleMove = (clientX, clientY) => {
         const rect = canvas.getBoundingClientRect();
-        mouse.x = e.clientX - rect.left;
-        mouse.y = e.clientY - rect.top;
+        mouse.x = clientX - rect.left;
+        mouse.y = clientY - rect.top;
         
         // Subtle trail effect
         if (Math.random() > 0.4) {
             emitters.push(new Emitter(mouse.x, mouse.y));
+        }
+    };
+
+    window.addEventListener('mousemove', e => handleMove(e.clientX, e.clientY));
+    window.addEventListener('touchmove', e => {
+        if (e.touches.length > 0) {
+            handleMove(e.touches[0].clientX, e.touches[0].clientY);
+        }
+    });
+    window.addEventListener('touchstart', e => {
+        if (e.touches.length > 0) {
+            handleMove(e.touches[0].clientX, e.touches[0].clientY);
         }
     });
 
