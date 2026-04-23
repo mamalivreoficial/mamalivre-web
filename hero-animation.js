@@ -90,10 +90,9 @@
             this.x = x + (Math.random() - 0.5) * 20;
             this.y = y + (Math.random() - 0.5) * 20;
             this.content = emitterItems[Math.floor(Math.random() * emitterItems.length)];
-            const isMobile = window.innerWidth < 768;
-            this.vx = (Math.random() - 0.5) * (isMobile ? 3 : 2.5);
-            this.vy = (Math.random() - 0.5) * (isMobile ? 3 : 2.5);
-            this.size = (isMobile ? 14 : 10) + Math.random() * 12; // Back to elegant but visible
+            this.vx = (Math.random() - 0.5) * 2.5;
+            this.vy = (Math.random() - 0.5) * 2.5;
+            this.size = 10 + Math.random() * 15;
             this.opacity = 1;
             const rand = Math.random();
             this.color = currentPreset.main === 'aurora' ? (rand > 0.6 ? '#ff00ff' : (rand > 0.3 ? '#9400d3' : '#00ffcc')) : currentPreset.main;
@@ -254,21 +253,7 @@
 
     let lastScroll = 0;
     window.addEventListener('scroll', () => {
-        const currentScroll = window.scrollY;
-        const isMobile = window.innerWidth < 768;
-        const threshold = isMobile ? 2 : 3;
-        
-        if (currentScroll < 1000 && Math.abs(currentScroll - lastScroll) > threshold) {
-            // SUPERNOVA SCROLL TRAIL: Extra intense on mobile
-            const count = isMobile ? 12 : 6;
-            for (let i = 0; i < count; i++) {
-                emitters.push(new Emitter(
-                    Math.random() * width, 
-                    currentScroll + height * 0.3 + (Math.random() * 200)
-                ));
-            }
-            lastScroll = currentScroll;
-        }
+        lastScroll = window.scrollY;
     });
 
     // START SINGLE LOOP
