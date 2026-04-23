@@ -90,9 +90,10 @@
             this.x = x + (Math.random() - 0.5) * 20;
             this.y = y + (Math.random() - 0.5) * 20;
             this.content = emitterItems[Math.floor(Math.random() * emitterItems.length)];
-            this.vx = (Math.random() - 0.5) * 2.5;
-            this.vy = (Math.random() - 0.5) * 2.5;
-            this.size = 10 + Math.random() * 15;
+            const isMobile = window.innerWidth < 768;
+            this.vx = (Math.random() - 0.5) * (isMobile ? 4 : 2.5);
+            this.vy = (Math.random() - 0.5) * (isMobile ? 4 : 2.5);
+            this.size = (isMobile ? 20 : 10) + Math.random() * 15;
             this.opacity = 1;
             const rand = Math.random();
             this.color = currentPreset.main === 'aurora' ? (rand > 0.6 ? '#ff00ff' : (rand > 0.3 ? '#9400d3' : '#00ffcc')) : currentPreset.main;
@@ -254,12 +255,16 @@
     let lastScroll = 0;
     window.addEventListener('scroll', () => {
         const currentScroll = window.scrollY;
-        if (currentScroll < 800 && Math.abs(currentScroll - lastScroll) > 3) {
-            // SUPERNOVA SCROLL TRAIL: More intense emission
-            for (let i = 0; i < 6; i++) {
+        const isMobile = window.innerWidth < 768;
+        const threshold = isMobile ? 2 : 3;
+        
+        if (currentScroll < 1000 && Math.abs(currentScroll - lastScroll) > threshold) {
+            // SUPERNOVA SCROLL TRAIL: Extra intense on mobile
+            const count = isMobile ? 12 : 6;
+            for (let i = 0; i < count; i++) {
                 emitters.push(new Emitter(
                     Math.random() * width, 
-                    currentScroll + height * 0.3 + (Math.random() * 150)
+                    currentScroll + height * 0.3 + (Math.random() * 200)
                 ));
             }
             lastScroll = currentScroll;
