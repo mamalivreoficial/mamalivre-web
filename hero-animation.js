@@ -116,52 +116,64 @@
         }
     }
 
-    function createTextParticles() {
+    function createBrandParticles() {
         particles = [];
+        const isMobile = width < 768; // Mobile breakout
+        
+        // Sampling canvas
         const tCanvas = document.createElement('canvas');
         const tCtx = tCanvas.getContext('2d');
-        tCanvas.width = width;
-        tCanvas.height = height;
+        const samplingStep = isMobile ? 1.5 : 2.0; // Higher density on mobile
 
-        // TOTAL IMPACT SCALE: Fitting to viewport width perfectly
-        // Mobile users get a much larger logo (95%) to fill the screen
-        const logoScale = width < 768 ? 0.95 : 0.72;
-        const maxTextWidth = width * logoScale; 
-        
-        tCtx.font = `bold 100px Syncopate`; // Base for measuring
-        const baseWidth = tCtx.measureText('MAMALIVRE').width;
-        const fontSize = (maxTextWidth / baseWidth) * 100;
-        
-        tCtx.font = `bold ${fontSize}px Syncopate`; 
-        tCtx.textAlign = 'center';
-        tCtx.textBaseline = 'middle';
-        tCtx.fillStyle = 'white';
-        tCtx.fillText('MAMALIVRE', width / 2, height / 2);
-        
-        // STARDUST HEARTS: Symmetrically placed as pixels
-        tCtx.font = `bold ${fontSize * 0.8}px Arial`; 
-        tCtx.fillText('♥', width * 0.12, height / 2);
-        tCtx.fillText('♥', width * 0.88, height / 2);
+        if (isMobile) {
+            // IMAGE BASED LOGO FOR MOBILE (The official "MM" design)
+            const logoImg = new Image();
+            logoImg.src = 'img/logo.png';
+            logoImg.onload = () => {
+                tCanvas.width = width;
+                tCanvas.height = height;
+                
+                const logoW = width * 0.92;
+                const logoH = (logoImg.height / logoImg.width) * logoW;
+                
+                tCtx.drawImage(logoImg, width/2 - logoW/2, height/2 - logoH/2, logoW, logoH);
+                sampleCanvas(tCtx, samplingStep);
+            };
+        } else {
+            // TEXT BASED LOGO FOR DESKTOP
+            tCanvas.width = width;
+            tCanvas.height = height;
+            
+            const maxTextWidth = width * 0.72; 
+            tCtx.font = `bold 100px Syncopate`;
+            const baseWidth = tCtx.measureText('MAMALIVRE').width;
+            const fontSize = (maxTextWidth / baseWidth) * 100;
+            
+            tCtx.font = `bold ${fontSize}px Syncopate`; 
+            tCtx.textAlign = 'center';
+            tCtx.textBaseline = 'middle';
+            tCtx.fillStyle = 'white';
+            tCtx.fillText('MAMALIVRE', width / 2, height / 2);
 
-        // Save fontSize for ghost rendering
-        window.heroFontSize = fontSize;
+            // SIDE HEARTS
+            tCtx.font = `bold ${fontSize * 0.8}px Arial`; 
+            tCtx.fillText('♥', width * 0.12, height / 2);
+            tCtx.fillText('♥', width * 0.88, height / 2);
+            
+            sampleCanvas(tCtx, samplingStep);
+        }
+    }
 
+    function sampleCanvas(tCtx, step) {
         const imageData = tCtx.getImageData(0, 0, width, height).data;
-        // ULTRA-DENSITY: Step 2.0 for a pure particle finish without solid base
-        const step = 2.0; 
-        
         for (let y = 0; y < height; y += step) {
             for (let x = 0; x < width; x += step) {
                 if (imageData[(Math.floor(y) * width + Math.floor(x)) * 4 + 3] > 128) {
-                    const jx = (Math.random() - 0.5) * 2;
-                    const jy = (Math.random() - 0.5) * 2;
+                    const jx = (Math.random() - 0.5) * 1;
+                    const jy = (Math.random() - 0.5) * 1;
                     particles.push(new Particle(x + jx, y + jy));
                 }
             }
-        }
-        
-        if (particles.length > 8000) {
-            particles = particles.sort(() => Math.random() - 0.5).slice(0, 8000);
         }
     }
 
@@ -173,7 +185,7 @@
         width /= dpr;
         height /= dpr;
         document.fonts.ready.then(() => {
-            createTextParticles(); 
+        createBrandParticles();
         });
     }
 
@@ -237,6 +249,21 @@
 
     window.addEventListener('resize', () => {
         resize();
+    });
+
+    let lastScroll = 0;
+    window.addEventListener('scroll', () => {
+        const currentScroll = window.scrollY;
+        if (currentScroll < 800 && Math.abs(currentScroll - lastScroll) > 5) {
+            // Supernova scroll trail
+            for (let i = 0; i < 3; i++) {
+                emitters.push(new Emitter(
+                    Math.random() * width, 
+                    currentScroll + height * 0.2 + (Math.random() * 100)
+                ));
+            }
+            lastScroll = currentScroll;
+        }
     });
 
     // START SINGLE LOOP
