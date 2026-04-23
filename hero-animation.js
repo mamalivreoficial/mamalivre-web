@@ -122,7 +122,7 @@
 
                 // TOTAL IMPACT SCALE: Fitting to viewport width perfectly
         // We want the text 'MAMALIVRE' to take about 70% of the screen
-        const maxTextWidth = width * 0.92; // Monumentally larger as requested
+        const maxTextWidth = width * 0.7; // Reverted to elegant original size
         tCtx.font = `bold 100px Syncopate`; // Base for measuring
         const baseWidth = tCtx.measureText('MAMALIVRE').width;
         const fontSize = (maxTextWidth / baseWidth) * 100;

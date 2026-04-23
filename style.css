@@ -277,7 +277,7 @@ h1, h2, h3 {
 }
 
 .brand-logo {
-    height: 40px; /* Adjust this height as needed based on your logo's proportion */
+    height: 65px; /* Enlarged for better visibility as requested */
     width: auto;
     filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.3));
     transition: var(--transition-smooth);
@@ -457,7 +457,7 @@ h1, h2, h3 {
 
 .hero-monumental-logo {
     font-family: var(--font-heading);
-    font-size: clamp(3.5rem, 15vw, 12rem); /* Monumentally larger */
+    font-size: clamp(3rem, 12vw, 9rem);
     font-weight: 800;
     color: #fff;
     text-transform: uppercase;
