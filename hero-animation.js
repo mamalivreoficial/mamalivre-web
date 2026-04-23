@@ -254,12 +254,12 @@
     let lastScroll = 0;
     window.addEventListener('scroll', () => {
         const currentScroll = window.scrollY;
-        if (currentScroll < 800 && Math.abs(currentScroll - lastScroll) > 5) {
-            // Supernova scroll trail
-            for (let i = 0; i < 3; i++) {
+        if (currentScroll < 800 && Math.abs(currentScroll - lastScroll) > 3) {
+            // SUPERNOVA SCROLL TRAIL: More intense emission
+            for (let i = 0; i < 6; i++) {
                 emitters.push(new Emitter(
                     Math.random() * width, 
-                    currentScroll + height * 0.2 + (Math.random() * 100)
+                    currentScroll + height * 0.3 + (Math.random() * 150)
                 ));
             }
             lastScroll = currentScroll;
