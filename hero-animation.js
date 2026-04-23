@@ -91,9 +91,9 @@
             this.y = y + (Math.random() - 0.5) * 20;
             this.content = emitterItems[Math.floor(Math.random() * emitterItems.length)];
             const isMobile = window.innerWidth < 768;
-            this.vx = (Math.random() - 0.5) * (isMobile ? 4 : 2.5);
-            this.vy = (Math.random() - 0.5) * (isMobile ? 4 : 2.5);
-            this.size = (isMobile ? 20 : 10) + Math.random() * 15;
+            this.vx = (Math.random() - 0.5) * (isMobile ? 3 : 2.5);
+            this.vy = (Math.random() - 0.5) * (isMobile ? 3 : 2.5);
+            this.size = (isMobile ? 14 : 10) + Math.random() * 12; // Back to elegant but visible
             this.opacity = 1;
             const rand = Math.random();
             this.color = currentPreset.main === 'aurora' ? (rand > 0.6 ? '#ff00ff' : (rand > 0.3 ? '#9400d3' : '#00ffcc')) : currentPreset.main;
