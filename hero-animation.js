@@ -52,14 +52,7 @@
 
         draw() {
             ctx.fillStyle = this.color;
-            if (currentPreset.blur > 5) {
-                ctx.shadowColor = this.color;
-                ctx.shadowBlur = currentPreset.blur * 0.5;
-            } else {
-                ctx.shadowBlur = 0;
-            }
             ctx.fillRect(this.x, this.y, this.size, this.size);
-            ctx.shadowBlur = 0; // Reset for performance
         }
 
         update() {
@@ -99,15 +92,17 @@
             this.content = emitterItems[Math.floor(Math.random() * emitterItems.length)];
             this.vx = (Math.random() - 0.5) * 1.5;
             this.color = currentPreset.main === 'aurora' ? '#ff00ff' : currentPreset.main;
-            this.glow = currentPreset.blur;
+            this.glow = themeParam === 'light' ? 0 : 15; // Only glow in dark mode
         }
         draw() {
             ctx.save();
             ctx.globalAlpha = this.opacity;
             ctx.font = `${this.size}px Arial`;
             ctx.fillStyle = this.color;
-            ctx.shadowColor = this.color;
-            ctx.shadowBlur = this.glow;
+            if (this.glow > 0) {
+                ctx.shadowColor = this.color;
+                ctx.shadowBlur = this.glow;
+            }
             ctx.fillText(this.content, this.x, this.y);
             ctx.restore();
         }
@@ -127,7 +122,7 @@
 
                 // TOTAL IMPACT SCALE: Fitting to viewport width perfectly
         // We want the text 'MAMALIVRE' to take about 70% of the screen
-        const maxTextWidth = width * 0.7;
+        const maxTextWidth = width * 0.92; // Monumentally larger as requested
         tCtx.font = `bold 100px Syncopate`; // Base for measuring
         const baseWidth = tCtx.measureText('MAMALIVRE').width;
         const fontSize = (maxTextWidth / baseWidth) * 100;

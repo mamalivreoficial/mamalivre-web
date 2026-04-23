@@ -34,13 +34,17 @@ html {
 }
 
 body {
-    background: #080808 !important; /* Softened as requested */
+    background: #120a1a !important; /* Cosmic Purple Luminous Base */
     color: var(--text-main);
     font-family: var(--font-body);
     line-height: 1.6;
     overflow-x: hidden;
     position: relative;
     width: 100%;
+}
+
+body.theme-light {
+    background: #ffffff !important;
 }
 
 html {
@@ -442,18 +446,18 @@ h1, h2, h3 {
     inset: 0;
     width: 100vw;
     height: 100vh;
-    background: #080808 !important; /* Slightly lighter as requested */
+    background: #120a1a !important; 
     background-image: 
-        radial-gradient(circle at 10% 10%, rgba(255, 0, 255, 0.12) 0%, transparent 70%),
-        radial-gradient(circle at 90% 90%, rgba(150, 0, 255, 0.08) 0%, transparent 70%),
-        radial-gradient(circle at 50% 50%, rgba(0, 255, 204, 0.05) 0%, transparent 80%) !important;
+        radial-gradient(circle at 10% 10%, rgba(255, 0, 255, 0.3) 0%, transparent 70%),
+        radial-gradient(circle at 90% 90%, rgba(150, 0, 255, 0.2) 0%, transparent 70%),
+        radial-gradient(circle at 50% 50%, rgba(0, 255, 204, 0.1) 0%, transparent 80%) !important;
     z-index: -5;
     overflow: hidden;
 }
 
 .hero-monumental-logo {
     font-family: var(--font-heading);
-    font-size: clamp(3rem, 12vw, 9rem);
+    font-size: clamp(3.5rem, 15vw, 12rem); /* Monumentally larger */
     font-weight: 800;
     color: #fff;
     text-transform: uppercase;
