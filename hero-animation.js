@@ -90,19 +90,21 @@
             this.x = x + (Math.random() - 0.5) * 20;
             this.y = y + (Math.random() - 0.5) * 20;
             this.content = emitterItems[Math.floor(Math.random() * emitterItems.length)];
-            this.vx = (Math.random() - 0.5) * 1.5;
-            this.color = currentPreset.main === 'aurora' ? '#ff00ff' : currentPreset.main;
-            this.glow = themeParam === 'light' ? 0 : 15; // Only glow in dark mode
+            this.vx = (Math.random() - 0.5) * 2.5;
+            this.vy = (Math.random() - 0.5) * 2.5;
+            this.size = 10 + Math.random() * 15;
+            this.opacity = 1;
+            this.color = currentPreset.main === 'aurora' ? (Math.random() > 0.5 ? '#ff00ff' : '#ffffff') : currentPreset.main;
+            this.glow = 10; 
         }
         draw() {
+            if (this.opacity <= 0) return;
             ctx.save();
             ctx.globalAlpha = this.opacity;
             ctx.font = `${this.size}px Arial`;
             ctx.fillStyle = this.color;
-            if (this.glow > 0) {
-                ctx.shadowColor = this.color;
-                ctx.shadowBlur = this.glow;
-            }
+            ctx.shadowColor = this.color;
+            ctx.shadowBlur = this.glow;
             ctx.fillText(this.content, this.x, this.y);
             ctx.restore();
         }
