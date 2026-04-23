@@ -11,7 +11,7 @@
     
     // COLOR LAB: URL Presets for testing
     const params = new URLSearchParams(window.location.search);
-    const colorParam = params.get('color') || 'white';
+    const colorParam = params.get('color') || 'aurora';
     
     const COL_PRESETS = {
         white: { main: '#ffffff', glow: '#ffffff', blur: 10 },
