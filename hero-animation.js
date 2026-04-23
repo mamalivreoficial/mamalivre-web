@@ -23,7 +23,7 @@
     
     const currentPreset = COL_PRESETS[colorParam] || COL_PRESETS.white;
 
-    const emitterItems = ['✦', '✧', '✨']; // Finer selection
+    const emitterItems = ['✦', '✧', '✨', '♥']; // Added Herz back to mouse interaction
     
     class Particle {
         constructor(x, y) {
