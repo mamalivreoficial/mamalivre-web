@@ -35,10 +35,10 @@
             this.vy = 0;
             this.size = 0.5 + Math.random() * 2.5; 
             
-            // Dynamic Color Logic
+            // Dynamic Color Logic (Aurora Mix: Pink, Purple, Teal)
             if (currentPreset.main === 'aurora') {
                 const rand = Math.random();
-                this.color = rand > 0.6 ? '#ff00ff' : (rand > 0.3 ? '#9400d3' : '#ffffff');
+                this.color = rand > 0.6 ? '#ff00ff' : (rand > 0.3 ? '#9400d3' : '#00ffcc');
             } else {
                 this.color = currentPreset.main;
             }
@@ -94,7 +94,8 @@
             this.vy = (Math.random() - 0.5) * 2.5;
             this.size = 10 + Math.random() * 15;
             this.opacity = 1;
-            this.color = currentPreset.main === 'aurora' ? (Math.random() > 0.5 ? '#ff00ff' : '#ffffff') : currentPreset.main;
+            const rand = Math.random();
+            this.color = currentPreset.main === 'aurora' ? (rand > 0.6 ? '#ff00ff' : (rand > 0.3 ? '#9400d3' : '#00ffcc')) : currentPreset.main;
             this.glow = 10; 
         }
         draw() {
