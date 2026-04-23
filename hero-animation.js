@@ -229,9 +229,12 @@
         mouse.x = clientX - rect.left;
         mouse.y = clientY - rect.top;
         
-        // Subtle trail effect
-        if (Math.random() > 0.4) {
-            emitters.push(new Emitter(mouse.x, mouse.y));
+        // INTENSE DRAG: More particles when actively moving
+        const count = window.innerWidth < 768 ? 4 : 2;
+        for (let i = 0; i < count; i++) {
+            if (Math.random() > 0.2) {
+                emitters.push(new Emitter(mouse.x, mouse.y));
+            }
         }
     };
 
@@ -253,7 +256,17 @@
 
     let lastScroll = 0;
     window.addEventListener('scroll', () => {
-        lastScroll = window.scrollY;
+        const currentScroll = window.scrollY;
+        // SUBTLE SCROLL MAGIC: Only 1 particle occasionally
+        if (Math.abs(currentScroll - lastScroll) > 10) {
+            if (Math.random() > 0.7) {
+                emitters.push(new Emitter(
+                    Math.random() * width, 
+                    currentScroll + height * 0.4
+                ));
+            }
+            lastScroll = currentScroll;
+        }
     });
 
     // START SINGLE LOOP
